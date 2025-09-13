@@ -4,3 +4,4 @@ python-dotenv==1.0.0
 requests==2.31.0
 huggingface-hub==0.15.1
 pydantic==1.10.9
+gunicorn
