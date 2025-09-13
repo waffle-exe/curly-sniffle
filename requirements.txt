@@ -333,7 +333,6 @@ tokenizers==0.21.1
 toml==0.10.2
 tomli==2.2.1
 torch==2.7.1
-torchaudio==2.1.0
 torchcam==0.4.0
 torchvision==0.22.1
 tornado==6.4.2
