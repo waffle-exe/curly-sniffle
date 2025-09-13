@@ -189,7 +189,6 @@ nest-asyncio==1.6.0
 networkx==3.4.2
 nh3==0.2.21
 nibabel==5.3.2
-nnunet==1.7.0
 noise==1.2.2
 notebook==7.4.3
 notebook_shim==0.2.4
