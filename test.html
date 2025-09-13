@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNDU Physics Club</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a1a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        .bg-space {
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #4f46e5, #c026d3);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(192, 38, 211, 0.4);
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #fff;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #c026d3;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .active-link::after {
+             width: 100%;
+        }
+        .event-card img {
+            transition: transform 0.3s ease;
+        }
+        .event-card:hover img {
+            transform: scale(1.05);
+        }
+        .founder-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .founder-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-space">
+    <canvas id="starfield" class="fixed top-0 left-0 w-full h-full z-0"></canvas>
+    <div class="relative z-10">
+        <!-- Header -->
+        <header class="fixed top-0 left-0 right-0 z-50 glass-card mx-4 md:mx-8 lg:mx-16 mt-4">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <nav class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <svg class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span class="ml-2 font-bold text-xl text-white">GNDU Physics Club</span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#" class="nav-link text-gray-300">HOME</a>
+                        <a href="#" class="nav-link text-gray-300">ABOUT</a>
+                        <a href="#" class="nav-link text-gray-300 active-link text-white">EVENTS</a>
+                        <a href="#" class="nav-link text-gray-300">NEXT UP</a>
+                        <a href="#" class="nav-link text-gray-300">SUBSCRIBE/EVENTS</a>
+                        <a href="#" class="nav-link text-gray-300">OUR TEAM</a>
+                    </div>
+                    <div class="flex items-center">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300 hover:text-white transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <main class="pt-24 container mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Hero Section -->
+            <section class="text-center my-16 md:my-24">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight">
+                    GNDU PHYSICS CLUB
+                </h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-300">
+                    EXPLORING THE UNIVERSE, ONE EQUATION AT A TIME.
+                </p>
+            </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column -->
+                <div class="lg:col-span-2 space-y-12">
+                     <!-- Past Events -->
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-6">PAST EVENTS</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            <div class="event-card glass-card p-4 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Event 1" class="rounded-lg w-full h-32 object-cover mb-4">
+                                <h3 class="font-semibold text-white">Cosmic Colloquy</h3>
+                                <p class="text-sm text-gray-400">Orientation'23</p>
+                            </div>
+                            <div class="event-card glass-card p-4 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1517486808906-6538cb3b8656?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Event 2" class="rounded-lg w-full h-32 object-cover mb-4">
+                                <h3 class="font-semibold text-white">Quantum GCS Meet</h3>
+                                <p class="text-sm text-gray-400">Online Meet</p>
+                            </div>
+                            <div class="event-card glass-card p-4 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?q=80&w=1871&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Event 3" class="rounded-lg w-full h-32 object-cover mb-4">
+                                <h3 class="font-semibold text-white">Nebulanova Night</h3>
+                                <p class="text-sm text-gray-400">Stargazing</p>
+                            </div>
+                             <div class="event-card glass-card p-4 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1506784983877-45594efa4c85?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Event 4" class="rounded-lg w-full h-32 object-cover mb-4">
+                                <h3 class="font-semibold text-white">Mystery Hunt</h3>
+                                <p class="text-sm text-gray-400">Treasure Hunt</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Upcoming -->
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-6">UPCOMING</h2>
+                        <div class="space-y-6">
+                            <div class="glass-card p-6 flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white">Physics Jam 'Oct 28</h3>
+                                    <p class="text-gray-400">24H Live Quiz Session</p>
+                                </div>
+                                <button class="btn-primary text-white font-bold py-2 px-4 rounded-full">
+                                    JOIN
+                                </button>
+                            </div>
+                             <div class="glass-card p-6 flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white">Guest Lectures</h3>
+                                    <p class="text-gray-400">2H Webinar + More</p>
+                                </div>
+                                <button class="bg-gray-700 text-white font-bold py-2 px-4 rounded-full hover:bg-gray-600 transition">
+                                    MORE
+                                </button>
+                            </div>
+                             <div class="glass-card p-6 flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white">Star Gazing Trip</h3>
+                                    <p class="text-gray-400">See stars from range</p>
+                                </div>
+                                <button class="bg-gray-700 text-white font-bold py-2 px-4 rounded-full hover:bg-gray-600 transition">
+                                    MORE
+                                </button>
+                            </div>
+                             <div class="glass-card p-6 flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white">Gan Gazing Trip</h3>
+                                    <p class="text-gray-400">24h on-site + Food + Stay</p>
+                                </div>
+                                <button class="bg-gray-700 text-white font-bold py-2 px-4 rounded-full hover:bg-gray-600 transition">
+                                    JOIN
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Founders -->
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-6">FOUNDERS</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <div class="founder-card text-center">
+                                <img src="https://placehold.co/150x150/4f46e5/ffffff?text=AS" alt="Dr. Anju Sharma" class="rounded-full w-24 h-24 mx-auto mb-4 border-2 border-indigo-400">
+                                <h3 class="font-semibold text-white">Dr. Anju Sharma</h3>
+                                <p class="text-sm text-gray-400">Professor</p>
+                            </div>
+                            <div class="founder-card text-center">
+                                <img src="https://placehold.co/150x150/c026d3/ffffff?text=RD" alt="Prof Raj Deval" class="rounded-full w-24 h-24 mx-auto mb-4 border-2 border-purple-400">
+                                <h3 class="font-semibold text-white">Prof Raj Deval</h3>
+                                <p class="text-sm text-gray-400">Department Head</p>
+                            </div>
+                            <div class="founder-card text-center">
+                                <img src="https://placehold.co/150x150/10b981/ffffff?text=SP" alt="Prof. Tej Prital" class="rounded-full w-24 h-24 mx-auto mb-4 border-2 border-emerald-400">
+                                <h3 class="font-semibold text-white">Prof. Tej Prital</h3>
+                                <p class="text-sm text-gray-400">Department Professor</p>
+                            </div>
+                             <div class="founder-card text-center">
+                                <img src="https://placehold.co/150x150/f59e0b/ffffff?text=LM" alt="Dr. L.I. Mair" class="rounded-full w-24 h-24 mx-auto mb-4 border-2 border-amber-400">
+                                <h3 class="font-semibold text-white">Dr. L.I. Mair</h3>
+                                <p class="text-sm text-gray-400">Professor Emeritus</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-12">
+                     <!-- RAS Evens -->
+                    <section class="glass-card p-6">
+                        <h2 class="text-xl font-bold text-white mb-4">RAS EVENS</h2>
+                         <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <img src="https://placehold.co/80x80/4f46e5/ffffff?text=PK" alt="Papon" class="rounded-lg w-16 h-16 object-cover">
+                                <div>
+                                    <h3 class="font-semibold text-white">Papon's Epic Live</h3>
+                                    <p class="text-sm text-gray-400">Musical Concert</p>
+                                </div>
+                            </div>
+                             <div class="flex items-center space-x-4">
+                                <img src="https://placehold.co/80x80/c026d3/ffffff?text=NK" alt="Nikhil" class="rounded-lg w-16 h-16 object-cover">
+                                <div>
+                                    <h3 class="font-semibold text-white">Nikhil's Universe</h3>
+                                    <p class="text-sm text-gray-400">Cosmological Lecture</p>
+                                </div>
+                            </div>
+                             <div class="flex items-center space-x-4">
+                                <img src="https://placehold.co/80x80/10b981/ffffff?text=PT" alt="Piyush" class="rounded-lg w-16 h-16 object-cover">
+                                <div>
+                                    <h3 class="font-semibold text-white">Piyush The Tech</h3>
+                                    <p class="text-sm text-gray-400">Tech Talk</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Our Team -->
+                     <section class="glass-card p-6">
+                        <h2 class="text-xl font-bold text-white mb-4">OUR TEAM</h2>
+                         <div class="grid grid-cols-3 gap-4 text-center">
+                             <div>
+                                <img src="https://placehold.co/100x100/4f46e5/ffffff?text=AJ" alt="Anjay" class="rounded-full w-16 h-16 mx-auto mb-2 border-2 border-indigo-400">
+                                <h3 class="font-semibold text-sm text-white">Anjay Meena</h3>
+                                <p class="text-xs text-gray-400">President</p>
+                            </div>
+                             <div>
+                                <img src="https://placehold.co/100x100/c026d3/ffffff?text=AK" alt="Anshu" class="rounded-full w-16 h-16 mx-auto mb-2 border-2 border-purple-400">
+                                <h3 class="font-semibold text-sm text-white">Anshu Kumar</h3>
+                                <p class="text-xs text-gray-400">Vice President</p>
+                            </div>
+                             <div>
+                                <img src="https://placehold.co/100x100/10b981/ffffff?text=AS" alt="Aditya" class="rounded-full w-16 h-16 mx-auto mb-2 border-2 border-emerald-400">
+                                <h3 class="font-semibold text-sm text-white">Aditya Saxena</h3>
+                                <p class="text-xs text-gray-400">Secretary</p>
+                            </div>
+                         </div>
+                    </section>
+                    
+                    <!-- Features -->
+                    <section class="glass-card p-6">
+                        <h2 class="text-xl font-bold text-white mb-4">FEATURES</h2>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg>
+                                <span class="text-gray-300">Resolutions</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 5V3m0 18v-2M8 8l2-2 2 2m0 8l2 2 2-2M8 16l2 2 2-2" /></svg>
+                                <span class="text-gray-300">Merchandise</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span class="text-gray-300">Certifications</span>
+                            </div>
+                             <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m11-12v4m2-2h-4m2 12v4m-2-2h4M9 3v4M7 5h4M9 17v4m-2-2h4" /></svg>
+                                <span class="text-gray-300">Study Groups</span>
+                            </div>
+                             <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                                <span class="text-gray-300">Community</span>
+                            </div>
+                             <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span class="text-gray-300">Lab Hours</span>
+                            </div>
+                             <div class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-lime-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222 4 2.222V20" /></svg>
+                                <span class="text-gray-300">Projects</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center py-8 mt-16">
+            <p class="text-gray-500">&copy; 2024 GNDU Physics Club. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const stars = [];
+        const numStars = 200;
+
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+                vx: Math.floor(Math.random() * 50) - 25,
+                vy: Math.floor(Math.random() * 50) - 25
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = "lighter";
+
+            for (let i = 0, x = stars.length; i < x; i++) {
+                const s = stars[i];
+
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillStyle = 'black';
+                ctx.stroke();
+            }
+
+            ctx.beginPath();
+            for (let i = 0, x = stars.length; i < x; i++) {
+                const starI = stars[i];
+                ctx.moveTo(starI.x, starI.y);
+                if (distance(mouse, starI) < 150) {
+                    for (let j = 0, x = stars.length; j < x; j++) {
+                        const starJ = stars[j];
+                        if (distance(starI, starJ) < 150) {
+                            ctx.lineTo(starJ.x, starJ.y);
+                        }
+                    }
+                }
+            }
+            ctx.lineWidth = 0.05;
+            ctx.strokeStyle = 'white';
+            ctx.stroke();
+        }
+
+        function distance(point1, point2) {
+            let xs = 0;
+            let ys = 0;
+
+            xs = point2.x - point1.x;
+            xs = xs * xs;
+
+            ys = point2.y - point1.y;
+            ys = ys * ys;
+
+            return Math.sqrt(xs + ys);
+        }
+
+        function update() {
+            for (let i = 0, x = stars.length; i < x; i++) {
+                let s = stars[i];
+
+                s.x += s.vx / 60;
+                s.y += s.vy / 60;
+
+                if (s.x < 0 || s.x > canvas.width) s.vx = -s.vx;
+                if (s.y < 0 || s.y > canvas.height) s.vy = -s.vy;
+            }
+        }
+
+        const mouse = {
+            x: 0,
+            y: 0
+        };
+        canvas.addEventListener('mousemove', function(e) {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        function tick() {
+            draw();
+            update();
+            requestAnimationFrame(tick);
+        }
+
+        tick();
+    </script>
+</body>
+</html>

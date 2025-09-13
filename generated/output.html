@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whisk & Wander | Cozy Kawaii Recipe Blog</title>
+  <meta name="description" content="A cozy, rustic recipe blog with a kawaii aesthetic, sharing heartwarming home-cooked meals and baking tips.">
+
+  <!-- FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Nunito:wght@300;600&display=swap" rel="stylesheet">
+
+  <!-- STYLES -->
+  <style>
+    :root {
+      --primary: #ff9aa2;
+      --secondary: #fcd3e1;
+      --tertiary: #ffe5ec;
+      --accent: #ffb3b3;
+      --background: #fff5f7;
+      --text: #4d2d39;
+      --text-light: #8c5e6e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 245, 247, 0.9);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s ease;
+      border-bottom: 2px dashed var(--secondary);
+    }
+
+    header:hover {
+      background-color: var(--tertiary);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 30px;
+      margin-right: 10px;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .mobile-menu {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: url('https://source.unsplash.com/1600x900/?pastel-cookies,cookies,bake,cute-desserts') no-repeat center center/cover;
+      color: white;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 154, 162, 0.6);
+      backdrop-filter: blur(2px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-button {
+      background-color: var(--tertiary);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 3rem 0 1.5rem;
+      font-size: 2rem;
+      color: var(--text);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      margin: 0.5rem auto 0;
+      background: var(--primary);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto 3rem;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .project-card img {
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+      border-bottom: 3px solid var(--secondary);
+    }
+
+    .project-info {
+      padding: 1rem;
+    }
+
+    .project-info h3 {
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .project-info p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .about {
+      padding: 3rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+
+    .testimonials {
+      background: var(--tertiary);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .testimonial {
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+
+    footer {
+      background: var(--background);
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--secondary);
+    }
+
+    footer a {
+      color: var(--text);
+      margin: 0 0.5rem;
+    }
+
+    .cursor-glow {
+      position: fixed;
+      pointer-events: none;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle, var(--accent) 20%, transparent 20%);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 99999;
+      mix-blend-mode: difference;
+      opacity: 0.4;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        background: var(--background);
+        position: absolute;
+        top: 60px;
+        right: 2rem;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      nav.open {
+        display: flex;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR GLOW -->
+  <div class="cursor-glow" style="background: radial-gradient(circle, var(--accent) 20%, transparent 20%);"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="https://i.imgur.com/6QbX6yA.png" alt="Whisk and Wander Logo">
+      Whisk & Wander
+    </div>
+    <div class="mobile-menu" onclick="toggleNav()">🍔</div>
+    <nav id="nav">
+      <a href="#projects">Recipes</a>
+      <a href="#about">About</a>
+      <a href="#testimonials">Yums</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>🍴 Hello, I'm Luna! 🧁</h1>
+      <p>Welcome to my cozy corner of the internet where I share easy, homemade recipes with a dash of kawaii and a sprinkle of joy.</p>
+      <button class="cta-button" onclick="document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });">
+        🍪 View My Yummy Recipes
+      </button>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2 class="section-title">Featured Recipes</h2>
+    <div class="project-grid">
+      <div class="project-card">
+        <img src="https://source.unsplash.com/400x200/?kawaii-cupcakes" alt="Kawaii Cupcakes">
+        <div class="project-info">
+          <h3>Mini Strawberry Cupcakes 🍓</h3>
+          <p>Fluffy vanilla cupcakes with strawberry buttercream and cute decorations for your next tea party or snack time!</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="https://source.unsplash.com/400x200/?kawaii-bento-box" alt="Kawaii Bento Box">
+        <div class="project-info">
+          <h3>Heart-Shaped Bento Box ❤️</h3>
+          <p>Adorable bento meals that are as fun to make as they are to eat! Perfect for kids or a sweet lunchtime surprise.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="https://source.unsplash.com/400x200/?kawaii-pancake" alt="Kawaii Pancakes">
+        <div class="project-info">
+          <h3>Rainbow Pancakes 🌈</h3>
+          <p>Stacked high with fruity flavors and colorful toppings — great for Sunday mornings and sleepovers!</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="https://source.unsplash.com/400x200/?kawaii-tea" alt="Kawaii Tea">
+        <div class="project-info">
+          <h3>Pastel Bubble Tea 🫧</h3>
+          <p>Learn how to make your own kawaii bubble tea at home with fun toppings and sweet surprises in every sip.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <img src="https://i.imgur.com/m1AoYwR.png" alt="Luna the Home Cook">
+    <h2 class="section-title">About Me</h2>
+    <p>Hi there! I'm Luna, a home cook with a passion for baking and creating cute, comforting meals with a kawaii twist. 🐰💕 I started this blog to share my love for pastel-colored pastries, heart-shaped bento boxes, and all things sweet and cozy. Whether you're a beginner or a curious foodie, I hope you’ll find joy in the kitchen with me!</p>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="testimonials">
+    <h2 class="section-title">Yum Yum Love</h2>
+    <div class="testimonial">
+      "I made Luna's mini cupcakes for my daughter’s birthday and they were a hit! Adorable and delicious!"
+    </div>
+    <div class="testimonial-author">— Sarah M.</div>
+    <div class="testimonial">
+      "These bento ideas made packing lunch for work so much more fun and colorful. A+ energy boost!"
+    </div>
+    <div class="testimonial-author">— Mia T.</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <p>Follow me on Instagram for more kawaii inspo:
+      <a href="#insta"><img src="https://i.imgur.com/1qO5A9I.png" alt="Instagram" style="height:20px; vertical-align: middle;" /></a>
+    </p>
+    <p>Email me at <a href="mailto:luna@whiskandwander.com">luna@whiskandwander.com</a> for custom recipe ideas or collaborations.</p>
+    <p>© 2025 Whisk & Wander | Made with 🌸 and sweet dreams</p>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    function toggleNav() {
+      document.getElementById('nav').classList.toggle('open');
+    }
+
+    // Cursor Glow
+    const cursor = document.querySelector('.cursor-glow');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.pageX + 'px';
+      cursor.style.top = e.pageY + 'px';
+    });
+  </script>
+</body>
+</html>
+```
+
+---
+
+### 💡 Suggestions for Enhancements:
+- **Add a Blog Section**: Include a section for recipe blog posts with featured images.
+- **Interactive Recipe Tags**: Filter recipes by dietary preferences (e.g., vegan, gluten-free).
+- **Recipe Cards with Print Option**: Let users print their favorite recipes with cute design templates.
+- **Recipe Search Bar**: Implement a lightweight search feature for users to find specific recipes.
+- **Newsletter Signup**: Create a small form for updates and free printable recipe cards.
+
+---
+
+Let me know if you'd like the **Projects Page** or **Blog Post Template** next! 🍰✨

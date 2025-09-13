@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chandrayaan-3 Material Science Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            background-color: #000010;
+            color: #e0e0e0;
+        }
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            width: 320px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateX(-120%);
+            opacity: 0;
+        }
+        #info-panel.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        #info-panel h2 {
+            margin-top: 0;
+            color: #fca5a5; /* A light red for titles */
+            font-size: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        #info-panel h3 {
+            color: #6ee7b7; /* A light green for sub-headings */
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        #info-panel p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        #close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #9ca3af;
+            transition: color 0.2s;
+        }
+        #close-btn:hover {
+            color: #fff;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background-color: rgba(0, 0, 20, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .control-btn {
+            background-color: #374151;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .control-btn:hover {
+            background-color: #4b5563;
+        }
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>Loading Simulation...</p>
+    </div>
+
+    <div id="info-panel">
+        <span id="close-btn">&times;</span>
+        <h2 id="info-title">Component Information</h2>
+        <h3>Material Composition</h3>
+        <p id="info-material"></p>
+        <h3>Scientific Purpose</h3>
+        <p id="info-purpose"></p>
+    </div>
+
+    <div id="controls">
+        <button id="assemble-btn" class="control-btn">Assemble</button>
+        <button id="disassemble-btn" class="control-btn">Disassemble</button>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        // --- Basic Scene Setup ---
+        let scene, camera, renderer, controls;
+        let raycaster, mouse;
+        let landerModule;
+        let originalPositions = new Map();
+        let selectedObject = null;
+        const loaderElement = document.getElementById('loader');
+
+        const componentInfo = {
+            'Lander_Body': {
+                title: 'Lander Main Body',
+                material: 'High-strength Aluminum-Lithium alloy structure with Multi-Layer Insulation (MLI) blankets.',
+                purpose: 'The Al-Li alloy provides an exceptional strength-to-weight ratio, crucial for minimizing launch mass. The gold-colored MLI blankets reflect thermal radiation, protecting sensitive electronics from the extreme temperature swings between deep space cold (-230°C) and direct sunlight (+120°C).'
+            },
+            'Landing_Leg': {
+                title: 'Landing Legs & Feet',
+                material: 'Aluminum alloy legs with crushable aluminum honeycomb shock absorbers in the feet.',
+                purpose: 'This design absorbs the immense energy of the landing impact. The honeycomb structure crumples in a controlled manner, cushioning the lander and its payload from damage during touchdown on the lunar surface.'
+            },
+            'Solar_Panel': {
+                title: 'Solar Panels',
+                material: 'Advanced Triple-Junction Gallium Arsenide (GaAs) photovoltaic cells.',
+                purpose: 'These cells are far more efficient at converting sunlight into electricity than standard silicon panels. This high efficiency is vital to power the lander\'s systems and recharge the rover\'s battery using a limited surface area.'
+            },
+            'Thruster': {
+                title: 'Attitude Control Thrusters',
+                material: 'Niobium alloy and Carbon-Carbon composite nozzles.',
+                purpose: 'These materials have extremely high melting points (over 2400°C). They can withstand the superheated gases expelled during engine firings for trajectory corrections and a controlled descent, preventing structural failure.'
+            },
+            'Antenna': {
+                title: 'High-Gain Antenna',
+                material: 'Aluminum honeycomb core with carbon fiber reinforced polymer (CFRP) face sheets.',
+                purpose: 'This composite material creates a lightweight yet incredibly rigid parabolic dish. Its shape stability is critical for focusing radio waves to maintain a reliable communication link with Earth for transmitting data and receiving commands.'
+            },
+            'Ramp': {
+                title: 'Rover Deployment Ramp',
+                material: 'Lightweight Aluminum alloy with a specialized non-stick, abrasive-resistant coating.',
+                purpose: 'The ramp needs to be lightweight to meet mass constraints, yet strong enough to support the rover. The coating is essential to prevent fine, abrasive lunar dust (regolith) from jamming the deployment mechanism.'
+            }
+        };
+
+        function init() {
+            // --- Scene, Camera, Renderer ---
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(5, 5, 8);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            document.body.appendChild(renderer.domElement);
+            
+            // --- Lighting ---
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            directionalLight.position.set(10, 15, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            // --- Controls ---
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 5;
+            controls.maxDistance = 30;
+
+            // --- Raycaster for interaction ---
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+
+            // --- Load Models and Ground ---
+            createGround();
+            createSpace();
+            createLander();
+
+            // --- Event Listeners ---
+            window.addEventListener('resize', onWindowResize);
+            window.addEventListener('click', onMouseClick);
+            document.getElementById('assemble-btn').addEventListener('click', () => animateAssembly(true));
+            document.getElementById('disassemble-btn').addEventListener('click', () => animateAssembly(false));
+            document.getElementById('close-btn').addEventListener('click', hideInfoPanel);
+        }
+
+        function createSpace() {
+            const starGeometry = new THREE.BufferGeometry();
+            const starVertices = [];
+            for (let i = 0; i < 10000; i++) {
+                const x = THREE.MathUtils.randFloatSpread(2000);
+                const y = THREE.MathUtils.randFloatSpread(2000);
+                const z = THREE.MathUtils.randFloatSpread(2000);
+                starVertices.push(x, y, z);
+            }
+            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+            const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.7 });
+            const stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+        }
+        
+        function createGround() {
+            const groundGeometry = new THREE.CircleGeometry(100, 64);
+            const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x8c8c8c, roughness: 0.9, metalness: 0.1 });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.receiveShadow = true;
+            scene.add(ground);
+        }
+
+        function createLander() {
+            landerModule = new THREE.Group();
+            scene.add(landerModule);
+
+            const materials = {
+                gold: new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.9, roughness: 0.2 }),
+                silver: new THREE.MeshStandardMaterial({ color: 0xc0c0c0, metalness: 0.8, roughness: 0.3 }),
+                dark: new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.1, roughness: 0.7 }),
+                solar: new THREE.MeshStandardMaterial({ color: 0x050530, metalness: 0.4, roughness: 0.1, emissive: 0x111155 }),
+            };
+
+            // Main Body
+            const bodyGeo = new THREE.BoxGeometry(3, 2, 3);
+            const body = new THREE.Mesh(bodyGeo, materials.gold);
+            body.position.y = 2.5;
+            body.castShadow = true;
+            body.name = 'Lander_Body';
+            landerModule.add(body);
+            
+            // Top deck
+            const topDeckGeo = new THREE.BoxGeometry(3.2, 0.2, 3.2);
+            const topDeck = new THREE.Mesh(topDeckGeo, materials.silver);
+            topDeck.position.y = 3.6;
+            topDeck.name = 'Lander_Body';
+            landerModule.add(topDeck);
+
+            // Legs
+            const legPositions = [
+                { x: 1.5, z: 1.5, ry: Math.PI / 4 },
+                { x: -1.5, z: 1.5, ry: -Math.PI / 4 },
+                { x: 1.5, z: -1.5, ry: 3 * Math.PI / 4 },
+                { x: -1.5, z: -1.5, ry: -3 * Math.PI / 4 },
+            ];
+            legPositions.forEach(pos => {
+                const legGroup = new THREE.Group();
+                const upperLegGeo = new THREE.CylinderGeometry(0.08, 0.08, 2.5, 8);
+                const upperLeg = new THREE.Mesh(upperLegGeo, materials.gold);
+                upperLeg.position.y = 1.2;
+                
+                const footGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.2, 16);
+                const foot = new THREE.Mesh(footGeo, materials.dark);
+                foot.position.y = -0.1;
+
+                legGroup.add(upperLeg);
+                legGroup.add(foot);
+                legGroup.position.set(pos.x, 1.5, pos.z);
+                legGroup.rotation.y = pos.ry;
+                legGroup.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 5));
+                legGroup.name = 'Landing_Leg';
+                landerModule.add(legGroup);
+            });
+
+            // Solar Panels
+            const panel1Geo = new THREE.BoxGeometry(2.5, 0.1, 1.5);
+            const panel1 = new THREE.Mesh(panel1Geo, materials.solar);
+            panel1.position.set(0, 2.5, -2.3);
+            panel1.rotation.x = Math.PI / 6;
+            panel1.name = 'Solar_Panel';
+            landerModule.add(panel1);
+
+            const panel2Geo = new THREE.BoxGeometry(1.5, 0.1, 2.5);
+            const panel2 = new THREE.Mesh(panel2Geo, materials.solar);
+            panel2.position.set(2.3, 2.5, 0);
+            panel2.rotation.z = -Math.PI / 6;
+            panel2.name = 'Solar_Panel';
+            landerModule.add(panel2);
+            
+            // Thrusters
+            const thrusterPositions = [
+                {x: 1.6, y: 1.6, z: 1.6}, {x: -1.6, y: 1.6, z: 1.6},
+                {x: 1.6, y: 1.6, z: -1.6}, {x: -1.6, y: 1.6, z: -1.6},
+            ];
+            thrusterPositions.forEach(pos => {
+                const thrusterGeo = new THREE.CylinderGeometry(0.1, 0.2, 0.4, 8);
+                const thruster = new THREE.Mesh(thrusterGeo, materials.dark);
+                thruster.position.set(pos.x, pos.y, pos.z);
+                thruster.rotation.x = Math.PI / 2;
+                thruster.name = 'Thruster';
+                landerModule.add(thruster);
+            });
+
+            // Antenna
+            const antennaDishGeo = new THREE.SphereGeometry(0.6, 32, 16, 0, Math.PI * 2, 0, Math.PI / 4);
+            const antenna = new THREE.Mesh(antennaDishGeo, materials.silver);
+            antenna.position.set(1, 3.8, -1);
+            antenna.name = 'Antenna';
+            landerModule.add(antenna);
+
+            // Ramp
+            const rampGeo = new THREE.BoxGeometry(1.2, 0.1, 2.5);
+            const ramp = new THREE.Mesh(rampGeo, materials.dark);
+            ramp.position.set(-2.2, 1.8, 0);
+            ramp.rotation.z = Math.PI / 4;
+            ramp.name = 'Ramp';
+            landerModule.add(ramp);
+            
+            // Store original positions for animation
+            landerModule.traverse((child) => {
+                if (child.isMesh || child.isGroup) {
+                    originalPositions.set(child, {
+                        position: child.position.clone(),
+                        quaternion: child.quaternion.clone()
+                    });
+                }
+            });
+            
+            loaderElement.style.display = 'none';
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        function onMouseClick(event) {
+            // Prevent clicks on UI elements from triggering raycasting
+            if (event.target.closest('#info-panel') || event.target.closest('#controls')) {
+                return;
+            }
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(landerModule.children, true);
+
+            if (intersects.length > 0) {
+                let clickedObject = intersects[0].object;
+                // Traverse up to find the main component group/mesh
+                while (clickedObject.parent !== landerModule && clickedObject.parent !== scene) {
+                    clickedObject = clickedObject.parent;
+                }
+                
+                const info = componentInfo[clickedObject.name];
+                if (info) {
+                    highlightObject(clickedObject);
+                    showInfoPanel(info);
+                } else {
+                    unhighlightObject();
+                    hideInfoPanel();
+                }
+            } else {
+                unhighlightObject();
+                hideInfoPanel();
+            }
+        }
+
+        function highlightObject(object) {
+            unhighlightObject(); // Clear previous selection
+            selectedObject = object;
+            selectedObject.traverse(child => {
+                if (child.isMesh) {
+                    child.material = child.material.clone();
+                    child.material.emissive.setHex(0x00ffff); // Cyan highlight
+                }
+            });
+        }
+
+        function unhighlightObject() {
+            if (selectedObject) {
+                selectedObject.traverse(child => {
+                    if (child.isMesh) {
+                        child.material.emissive.setHex(0x000000); // Remove emissive color
+                    }
+                });
+            }
+            selectedObject = null;
+        }
+
+        function showInfoPanel(info) {
+            const panel = document.getElementById('info-panel');
+            document.getElementById('info-title').innerText = info.title;
+            document.getElementById('info-material').innerText = info.material;
+            document.getElementById('info-purpose').innerText = info.purpose;
+            panel.classList.add('visible');
+        }
+
+        function hideInfoPanel() {
+            const panel = document.getElementById('info-panel');
+            panel.classList.remove('visible');
+        }
+
+        function animateAssembly(assemble) {
+            landerModule.traverse((child) => {
+                if (originalPositions.has(child)) {
+                    const targetPos = originalPositions.get(child).position;
+                    const targetQuat = originalPositions.get(child).quaternion;
+                    
+                    let startPos, startQuat;
+
+                    if (assemble) {
+                        // Start from a disassembled state
+                        startPos = new THREE.Vector3(
+                            (Math.random() - 0.5) * 20,
+                            (Math.random() * 10) + 5,
+                            (Math.random() - 0.5) * 20
+                        );
+                        startQuat = new THREE.Quaternion().random();
+                    } else {
+                        // Start from the current (assembled) state
+                        startPos = child.position.clone();
+                        startQuat = child.quaternion.clone();
+                    }
+                    
+                    // Simple animation loop using a timeout (for demonstration)
+                    // A proper implementation would use a library like GSAP or a more robust tweening engine.
+                    const duration = 1500;
+                    const startTime = Date.now();
+
+                    function step() {
+                        const elapsed = Date.now() - startTime;
+                        let t = Math.min(elapsed / duration, 1);
+                        t = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // Ease in-out
+
+                        if (assemble) {
+                            child.position.lerpVectors(startPos, targetPos, t);
+                            child.quaternion.slerpQuaternions(startQuat, targetQuat, t);
+                        } else {
+                            // Animate to disassembled state
+                            const disassembledPos = new THREE.Vector3(
+                                (Math.random() - 0.5) * 20,
+                                (Math.random() * 10) + 5,
+                                (Math.random() - 0.5) * 20
+                            );
+                            const disassembledQuat = new THREE.Quaternion().random();
+                            child.position.lerpVectors(startPos, disassembledPos, t);
+                            child.quaternion.slerpQuaternions(startQuat, disassembledQuat, t);
+                        }
+
+                        if (t < 1) {
+                            requestAnimationFrame(step);
+                        }
+                    }
+                    step();
+                }
+            });
+        }
+
+        init();
+        animate();
+    </script>
+</body>
+</html>

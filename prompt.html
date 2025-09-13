@@ -1,0 +1,3344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitee - AI Generation Canvas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.2.12/marked.min.js"></script>
+
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --background-color: #131314;
+            --surface-color: rgba(255, 255, 255, 0.04);
+            --text-color: #E8EAED;
+            --text-muted-color: #969BA1;
+            --accent-color: #89B4FA;
+            --accent-gradient: linear-gradient(90deg, #F63B3B, #FBBC05, #4285F4, #34A853);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --error-color: #F28B82;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
+        
+        /* UPDATED: Re-added background radial gradient and blobs */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 15% 15%, hsla(217, 91%, 60%, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, hsla(0, 84%, 60%, 0.1) 0%, transparent 40%);
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        #blob1 {
+            width: 400px;
+            height: 400px;
+            background: hsla(217, 91%, 60%, 0.5);
+            top: -100px;
+            left: -100px;
+        }
+
+        #blob2 {
+            width: 300px;
+            height: 300px;
+            background: hsla(0, 84%, 60%, 0.5);
+            bottom: -50px;
+            right: -50px;
+        }
+
+        #loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            z-index: 9999;
+            display: none;
+            overflow: hidden;
+        }
+        
+        /* UPDATED: Loading bar with glow effect */
+        #loading-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: var(--accent-gradient);
+            background-size: 200% 100%;
+            animation: scanEffect 4s linear infinite; /* Slower animation */
+            box-shadow: 0 0 15px 2px rgba(66, 133, 244, 0.6), 
+                        0 0 25px 4px rgba(251, 188, 5, 0.4),
+                        0 0 35px 6px rgba(246, 59, 59, 0.3);
+        }
+
+        @keyframes scanEffect {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        
+        body.generating #loading-bar {
+            display: block;
+        }
+        
+        /* UPDATED: Hide background effects when generating or in chat */
+        body.generating::before,
+        body.chat-started::before,
+        body.generating .blob,
+        body.chat-started .blob {
+            opacity: 0;
+        }
+
+
+        .glassy {
+            background-color: var(--surface-color);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 10px 50px var(--shadow-color);
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+        }
+
+        #login-modal,
+        #confirmation-modal,
+        #invite-modal,
+        #feedback-modal,
+        #download-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 11, 15, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .login-container,
+        .modal-content {
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .login-container h2,
+        .modal-content h2 {
+            margin-bottom: 1rem;
+        }
+
+        .login-container p,
+        .modal-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted-color);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        #user-id-input,
+        .modal-input,
+        .modal-select {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        #proceed-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        #proceed-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #login-error {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            height: 20px;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        #modal-confirm-btn,
+        #download-confirm-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        #modal-confirm-btn.danger {
+            background-color: var(--error-color);
+        }
+
+        #modal-cancel-btn,
+        #download-cancel-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: var(--text-muted-color);
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-modal-btn:hover {
+            color: var(--text-color);
+        }
+
+        .invite-link-container {
+            display: flex;
+            margin-top: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        #invite-link-input {
+            flex-grow: 1;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        #copy-invite-link-btn {
+            background-color: var(--accent-color);
+            border: none;
+            color: white;
+            padding: 0 1rem;
+            border-radius: 0 7px 7px 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        #copy-invite-link-btn:hover {
+            background-color: #2563eb;
+        }
+        
+        #download-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+        }
+
+        #download-form label {
+            font-size: 0.85rem;
+            color: var(--text-muted-color);
+            font-weight: 500;
+        }
+
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        body.loaded .app-container {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #sidebar {
+            width: 280px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease, opacity 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        #sidebar.collapsed {
+            margin-left: -280px;
+        }
+
+        .sidebar-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar-container {
+            position: relative;
+        }
+
+        .avatar-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            padding: 2px;
+            border: 2px solid var(--accent-color);
+            box-shadow: inset 0 0 0 2px white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #user-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .avatar-dropdown {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            width: 180px;
+            border-radius: 8px;
+            padding: 0.5rem;
+            z-index: 10;
+            display: none;
+            background-color: #0a0b0fc2;
+        }
+
+        .avatar-dropdown.show {
+            display: block;
+        }
+
+        .avatar-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .avatar-option:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar-option img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            flex-grow: 1;
+        }
+
+        .user-info h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .projects-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        #delete-all-btn {
+            background: none;
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #delete-all-btn:hover {
+            background: var(--error-color);
+            color: white;
+        }
+
+        #user-id,
+        #credit-display {
+            font-size: 0.75rem;
+            color: var(--text-muted-color);
+            word-break: break-all;
+        }
+
+        #credit-display {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-top: 4px;
+        }
+
+        #project-list {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        #project-list:empty::before {
+            content: "Your generated projects will appear here.";
+            color: var(--text-muted-color);
+            font-style: italic;
+            font-size: 0.85rem;
+            display: block;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .project-item {
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .project-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        #sidebar-toggle {
+            position: fixed;
+            top: 1.5rem;
+            left: 295px;
+            z-index: 101;
+            color: var(--text-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: left 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #sidebar.collapsed~#main-content #sidebar-toggle {
+            left: 1.5rem;
+            transform: rotate(180deg);
+        }
+
+        #main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        #invite-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 101;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s, opacity 0.3s ease;
+        }
+
+        #invite-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #invite-btn span {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        #canvas {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #canvas::before {
+            content: 'sitee.';
+            position: absolute;
+            top: 40%;
+            left: calc(50% + 140px);
+            transform: translate(-50%, -50%);
+            font-size: 25vw;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.025);
+            z-index: 0;
+            pointer-events: none;
+            transition: left 0.3s ease, opacity 0.5s ease;
+        }
+
+        #sidebar.collapsed~#main-content #canvas::before {
+            left: 50%;
+        }
+
+        #prompt-suggestions {
+            position: absolute;
+            bottom: 10rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            transition: opacity 0.5s ease, transform 0.5s ease, pointer-events 0.5s;
+            width: 100%;
+            max-width: 700px;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+
+        #prompt-suggestions.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .suggestion-card {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            min-height: 120px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .suggestion-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        }
+
+        .suggestion-card span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .site-container {
+            position: absolute;
+            width: 350px;
+            height: 250px;
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+            resize: both;
+            overflow: hidden;
+            min-width: 250px;
+            min-height: 200px;
+        }
+
+        .site-container::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background-image:
+                linear-gradient(135deg, var(--text-muted-color) 33%, transparent 33%),
+                linear-gradient(135deg, transparent 33%, var(--text-muted-color) 66%, transparent 66%);
+            background-size: 6px 6px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            cursor: move;
+        }
+
+        /* UPDATED: New style for the preview button */
+        .site-preview-tag {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .control-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted-color);
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .preview {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+        }
+
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted-color);
+            margin-top: 1rem;
+        }
+
+        .publish-info {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            color: var(--text-muted-color);
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .publish-info a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .publish-info a:hover {
+            text-decoration: underline;
+        }
+
+        .share-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted-color);
+            cursor: pointer;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .share-btn:hover {
+            color: var(--text-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .share-dropdown {
+            position: absolute;
+            bottom: 110%;
+            right: 0;
+            background-color: #1a1c23;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            z-index: 20;
+            width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+        }
+
+        .share-dropdown.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .share-dropdown-header {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted-color);
+            padding: 0.25rem 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .share-option:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .share-option svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #theme-selector-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 700px;
+            z-index: 101;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: left 0.3s ease, opacity 0.3s ease, bottom 0.2s ease-out;
+        }
+
+        #sidebar:not(.collapsed)~#main-content #theme-selector-container {
+            left: calc(50% + 140px);
+        }
+
+        #theme-selector-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            color: var(--text-muted-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        #theme-selector-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #theme-dropdown {
+            position: absolute;
+            bottom: 110%;
+            left: 0;
+            width: 250px;
+            border-radius: 12px;
+            padding: 0.5rem;
+            display: none;
+            z-index: 102;
+        }
+
+        #theme-dropdown.show {
+            display: block;
+        }
+
+        .theme-item {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .theme-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 700px;
+            z-index: 100;
+            transition: left 0.3s ease, transform 0.5s ease, opacity 0.3s ease;
+        }
+
+        body.loaded #controls {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #sidebar:not(.collapsed)~#main-content #controls {
+            left: calc(50% + 140px);
+        }
+
+        #prompt {
+            flex: 1;
+            padding: 14px 15px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            outline: none;
+            resize: none;
+            overflow-y: hidden;
+            line-height: 1.4;
+            max-height: 150px;
+        }
+
+        #prompt:disabled {
+            cursor: not-allowed;
+            color: var(--text-muted-color);
+        }
+
+        #prompt.listening::placeholder {
+            color: transparent;
+        }
+
+        .action-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+
+        #generate {
+            background-color: transparent;
+            color: var(--text-muted-color);
+            border: 2px solid var(--accent-color);
+            box-shadow: inset 0 0 0 2px white;
+        }
+
+        #generate:hover:not(:disabled) {
+            background: var(--accent-gradient);
+            border-color: white;
+            color: white;
+            box-shadow: none;
+        }
+
+        #generate:disabled {
+            border-color: #555;
+            color: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #mic-btn {
+            background-color: transparent;
+            color: var(--text-muted-color);
+            border: 2px solid var(--accent-color);
+            box-shadow: inset 0 0 0 2px white;
+        }
+
+        #mic-btn:hover {
+            border-color: #EF4444;
+        }
+
+        #mic-btn.listening {
+            background: var(--accent-gradient);
+            border-color: white;
+            color: white;
+            box-shadow: none;
+        }
+
+        #input-visualizer {
+            position: absolute;
+            top: 0;
+            left: 15px;
+            right: 118px;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        .notification.success {
+            background-color: rgba(40, 167, 69, 0.8);
+        }
+
+        .notification.error {
+            background-color: rgba(220, 53, 69, 0.8);
+        }
+
+        .fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 5000 !important;
+            border-radius: 0 !important;
+            resize: none !important;
+        }
+
+        .fullscreen::after {
+            display: none;
+        }
+
+        body.site-fullscreen-active #sidebar-toggle,
+        body.site-fullscreen-active #invite-btn,
+        body.site-fullscreen-active #controls,
+        body.site-fullscreen-active #theme-selector-container,
+        body.site-fullscreen-active #sidebar {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #code-editor-modal {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: 500px;
+            max-width: 90vw;
+            height: 100%;
+            background-color: var(--background-color);
+            backdrop-filter: none;
+            z-index: 1002;
+            transition: right 0.3s ease-out;
+            display: none;
+            flex-direction: column;
+            border-left: 1px solid var(--border-color);
+            box-shadow: -10px 0 30px var(--shadow-color);
+            border-radius: 16px 0 0 16px;
+            overflow: hidden;
+        }
+
+        #code-editor-modal.open {
+            right: 0;
+            display: flex;
+        }
+
+        .code-editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0.75rem 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        #code-editor-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .code-tab {
+            background: none;
+            border: none;
+            color: var(--text-muted-color);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .code-tab:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+        }
+        
+        .code-tab.active {
+            color: var(--text-color);
+            border-color: var(--accent-color);
+        }
+        
+        #code-editor-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #code-editor-container {
+            flex: 1;
+            overflow: auto;
+            background-color: #1E1E1E;
+            padding: 1.5rem;
+        }
+
+        #code-editor-container pre,
+        #code-editor-container code {
+            margin: 0;
+            padding: 0 !important;
+            background: none !important;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+            outline: none;
+            caret-color: var(--text-color);
+        }
+
+        .close-editor-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-editor-btn:hover {
+            color: var(--text-color);
+        }
+
+        /* --- NEW: Chat Mode Styles --- */
+        .mode-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--surface-color);
+            padding: 6px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .mode-toggle-container span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted-color);
+            padding: 0 6px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background: var(--accent-gradient);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(18px);
+        }
+
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem; /* Reduced gap for turn containers */
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        #chat-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .turn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            max-width: 100%;
+        }
+        
+        .message-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .chat-message .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .message-content {
+            padding: 1rem 1.5rem; /* More padding */
+            border-radius: 16px;
+            background-color: rgba(255, 255, 255, 0.05);
+            line-height: 1.6;
+            max-width: 100%; /* Allow content to take full width of wrapper */
+            overflow-x: hidden;
+            font-size: 1rem; 
+        }
+
+        .user-message .message-content {
+             max-width: 90%;
+        }
+
+        .message-content p:not(:last-child) {
+            margin-bottom: 1em;
+        }
+
+        .message-content pre {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(0,0,0,0.3);
+            overflow-x: auto;
+            position: relative;
+            max-width: 100%;
+            white-space: pre-wrap;       /* Fix: Allow text to wrap */
+            word-break: break-all;       /* Fix: Break long words */
+        }
+
+        .message-content code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .user-message .message-wrapper {
+            align-items: flex-end;
+        }
+
+        .user-message .message-content {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .ai-message {
+           align-self: flex-start;
+           width: 100%;
+        }
+
+        .ai-message .avatar {
+            padding: 4px;
+            background: var(--accent-gradient);
+        }
+        
+        .ai-message .message-wrapper {
+            align-items: flex-start;
+        }
+
+        .ai-message-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            margin-bottom: 0.5rem;
+            height: 28px; /* Reserve space to prevent layout shift */
+        }
+
+        .response-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted-color);
+        }
+
+        .nav-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted-color);
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .message-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            opacity: 0.7; /* Always visible */
+        }
+        
+        .feedback-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted-color);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        /* NEW: Style for edit mode buttons */
+        .edit-mode-btn {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .edit-mode-btn.save {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .edit-mode-btn.cancel {
+             background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+        
+        .feedback-btn:hover, .feedback-btn.active {
+            color: var(--text-color);
+        }
+
+        .feedback-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .copy-code-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted-color);
+            padding: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s, color 0.2s, background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .copy-code-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .message-content pre:hover .copy-code-btn {
+            opacity: 1;
+        }
+
+        .copy-code-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-color);
+        }
+        
+        #feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        #feedback-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+        
+        #submit-feedback-btn {
+             padding: 0.75rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        body.chat-active #canvas {
+            padding-top: 5rem;
+            padding-bottom: 10rem;
+        }
+
+        body.chat-active #chat-container {
+            display: flex;
+        }
+
+        body.chat-active .site-container,
+        body.chat-active #prompt-suggestions,
+        body.chat-active #canvas::before {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            #invite-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="loading-bar"></div> <!-- NEW loading bar element -->
+    <div id="cursor-dot"></div>
+    <div class="blob" id="blob1"></div>
+    <div class="blob" id="blob2"></div>
+
+    <div id="login-modal">
+        <div class="login-container glassy">
+            <h2>Welcome to Sitee</h2>
+            <p>Enter your Unique ID to load your projects and credits.</p>
+            <input type="text" id="user-id-input" placeholder="Enter your Unique ID" required>
+            <div id="login-error"></div>
+            <button id="proceed-btn" disabled>Proceed to Canvas</button>
+
+        </div>
+    </div>
+
+    <div id="confirmation-modal" style="display: none;">
+        <div class="modal-content glassy">
+            <h2 id="modal-title">Are you sure?</h2>
+            <p id="modal-message"></p>
+            <div class="modal-buttons">
+                <button id="modal-cancel-btn">Cancel</button>
+                <button id="modal-confirm-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW: Download Modal -->
+    <div id="download-modal" style="display: none;">
+        <div class="modal-content glassy">
+             <button id="close-download-modal-btn" class="close-modal-btn">&times;</button>
+            <h2>Download Code</h2>
+            <p>Choose your export format and filename.</p>
+            <form id="download-form">
+                <label for="file-format-select">Format</label>
+                <select id="file-format-select" class="modal-select">
+                    <option value="html">HTML File (.html)</option>
+                    <option value="jsx">React JSX File (.jsx)</option>
+                </select>
+                <label for="filename-input">Filename</label>
+                <input type="text" id="filename-input" class="modal-input" required>
+                <div class="modal-buttons">
+                    <button type="button" id="download-cancel-btn">Cancel</button>
+                    <button type="submit" id="download-confirm-btn">Download</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="invite-modal" style="display: none;">
+        <div class="modal-content glassy">
+            <button id="close-invite-modal-btn" class="close-modal-btn">&times;</button>
+            <h2>✦ Invite a Friend</h2>
+            <p>Share Sitee with 3 friends and get 6 extra credits!</p>
+            <div class="invite-link-container">
+                <input type="text" id="invite-link-input" readonly>
+                <button id="copy-invite-link-btn">Copy</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW: Feedback Modal -->
+    <div id="feedback-modal" style="display: none;">
+        <div class="modal-content glassy">
+            <button id="close-feedback-modal-btn" class="close-modal-btn">&times;</button>
+            <h2>Provide Feedback</h2>
+            <p>Your feedback helps us improve. What went wrong?</p>
+            <form id="feedback-form">
+                <textarea id="feedback-textarea" placeholder="Describe the issue or why you're dissatisfied..." required></textarea>
+                <button type="submit" id="submit-feedback-btn">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="app-container">
+        <div id="sidebar" class="collapsed glassy">
+            <div class="sidebar-header">
+                <div class="avatar-container">
+                    <div class="avatar-wrapper">
+                        <img id="user-avatar" src="avatar/image.png" alt="User Avatar">
+                    </div>
+                    <div id="avatar-dropdown" class="avatar-dropdown glassy"></div>
+                </div>
+                <div class="user-info">
+                    <div id="user-id"></div>
+                    <div id="credit-display"></div>
+                </div>
+            </div>
+            <div class="projects-title-bar">
+                <h2>My Projects</h2>
+                <button id="delete-all-btn" title="Delete all projects">Delete All</button>
+            </div>
+            <ul id="project-list"></ul>
+        </div>
+
+        <div id="main-content">
+            <button id="sidebar-toggle" class="glassy">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                </svg>
+            </button>
+            <a href="#" id="invite-btn" class="glassy">
+                <span>✦</span> Invite a friend
+            </a>
+            <div id="canvas">
+                <div id="chat-container"></div>
+            </div>
+            <div id="prompt-suggestions">
+                <div class="suggestion-card glassy" data-prompt="A modern, minimalist portfolio website for a professional photographer, with a vintage touch that evokes the streets of Spain. Incorporate old-fashioned SVG elements, such as vintage patches or monuments, to enhance the website’s aesthetic and authenticity." style="background-image: url('https://1.img-dpreview.com/files/p/E~C72x234S1621x1621T1200x1200~articles/0409985279/039BB7E4-E4FB-4AC4-8650-EB095B77BA30.jpeg');">
+                    <span>Portfolio Website</span>
+                </div>
+                <div class="suggestion-card glassy" data-prompt="A cozy, rustic recipe blog for a home cook" style="background-image: url('https://hotelqueensland.in/wp-content/uploads/2025/03/Food-in-Amritsar.jpg');">
+                    <span>Recipe Blog</span>
+                </div>
+                <div class="suggestion-card glassy" data-prompt="A futuristic, interactive website for a space exploration company" style="background-image: url('https://img.freepik.com/premium-vector/serene-nighttime-landscape-with-mountains-lake-sunset_1203312-3291.jpg');">
+                    <span>Space Exploration Site</span>
+                </div>
+            </div>
+
+            <div id="theme-selector-container">
+                <div style="position: relative; ">
+                    <button id="theme-selector-btn">
+                        <span id="theme-btn-text">✨ Select a Theme</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z" />
+                        </svg>
+                    </button>
+                    <div id="theme-dropdown" class="glassy">
+                    </div>
+                </div>
+                <div class="mode-toggle-container">
+                    <span>Canvas</span>
+                    <label class="switch">
+                        <input type="checkbox" id="mode-toggle-switch">
+                        <span class="slider"></span>
+                    </label>
+                    <span>Chat</span>
+                </div>
+            </div>
+
+            <div id="controls" class="glassy">
+                <textarea id="prompt" placeholder="Describe a website..." rows="1"></textarea>
+                <canvas id="input-visualizer"></canvas>
+                <button class="action-btn" id="mic-btn"></button>
+                <button class="action-btn" id="generate"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="code-editor-modal">
+        <!-- UPDATED: Code editor header with tabs and actions -->
+        <div class="code-editor-header glassy">
+            <div id="code-editor-tabs">
+                <button class="code-tab active" data-lang="html">HTML</button>
+                <button class="code-tab" data-lang="react">React</button>
+            </div>
+            <div id="code-editor-actions">
+                <button class="control-btn" id="copy-editor-code-btn" title="Copy Code"></button>
+                <button class="control-btn" id="download-code-btn" title="Download Code"></button>
+                <button class="close-editor-btn" id="close-editor-btn">&times;</button>
+            </div>
+        </div>
+        <div id="code-editor-container">
+            <pre><code id="code-editor-content" class="language-html" contenteditable="true" spellcheck="false"></code></pre>
+        </div>
+    </div>
+    
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDRyBGcSgLaH6jbqgDY9Yn8t1Rw9o-jWJw",
+          authDomain: "nspd25-996bf.firebaseapp.com",
+          databaseURL: "https://nspd25-996bf-default-rtdb.firebaseio.com",
+          projectId: "nspd25-996bf",
+          storageBucket: "nspd25-996bf.appspot.com",
+          messagingSenderId: "678844470957",
+          appId: "1:678844470957:web:04a29772c95ebf67c21824",
+          measurementId: "G-GRCBT2KMKH"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- GLOBAL STATE ---
+        let currentUser = null;
+        let selectedTheme = null;
+        let isChatMode = false;
+        let chatHistory = []; 
+        const CHAT_HISTORY_PROJECT_NAME = '__chat_history__';
+        const LOCAL_STORAGE_SYNC_KEY = 'sitee_user_sync';
+
+        // --- DOM ELEMENTS ---
+        const loginModal = document.getElementById('login-modal');
+        const proceedBtn = document.getElementById('proceed-btn');
+        const userIdInput = document.getElementById('user-id-input');
+        const loginError = document.getElementById('login-error');
+        const appContainer = document.querySelector('.app-container');
+        const userAvatar = document.getElementById('user-avatar');
+        const avatarWrapper = document.querySelector('.avatar-wrapper');
+        const avatarDropdown = document.getElementById('avatar-dropdown');
+        const canvas = document.getElementById('canvas');
+        const generateBtn = document.getElementById('generate');
+        const promptInput = document.getElementById('prompt');
+        const micBtn = document.getElementById('mic-btn');
+        const visualizerCanvas = document.getElementById('input-visualizer');
+        const visualizerCtx = visualizerCanvas.getContext('2d');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const projectList = document.getElementById('project-list');
+        const promptSuggestions = document.getElementById('prompt-suggestions');
+        const codeEditorModal = document.getElementById('code-editor-modal');
+        const codeEditorContent = document.getElementById('code-editor-content');
+        const closeEditorBtn = document.getElementById('close-editor-btn');
+        const creditDisplay = document.getElementById('credit-display');
+        const themeSelectorBtn = document.getElementById('theme-selector-btn');
+        const themeDropdown = document.getElementById('theme-dropdown');
+        const themeBtnText = document.getElementById('theme-btn-text');
+        const deleteAllBtn = document.getElementById('delete-all-btn');
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const inviteBtn = document.getElementById('invite-btn');
+        const inviteModal = document.getElementById('invite-modal');
+        const closeInviteModalBtn = document.getElementById('close-invite-modal-btn');
+        const inviteLinkInput = document.getElementById('invite-link-input');
+        const copyInviteLinkBtn = document.getElementById('copy-invite-link-btn');
+        const modeToggleSwitch = document.getElementById('mode-toggle-switch');
+        const chatContainer = document.getElementById('chat-container');
+        const feedbackModal = document.getElementById('feedback-modal');
+        const closeFeedbackModalBtn = document.getElementById('close-feedback-modal-btn');
+        const feedbackForm = document.getElementById('feedback-form');
+        const feedbackTextarea = document.getElementById('feedback-textarea');
+
+        const codeEditorTabs = document.getElementById('code-editor-tabs');
+        const copyEditorCodeBtn = document.getElementById('copy-editor-code-btn');
+        const downloadCodeBtn = document.getElementById('download-code-btn');
+        const downloadModal = document.getElementById('download-modal');
+        const downloadForm = document.getElementById('download-form');
+        const filenameInput = document.getElementById('filename-input');
+        const fileFormatSelect = document.getElementById('file-format-select');
+        const downloadCancelBtn = document.getElementById('download-cancel-btn');
+        const closeDownloadModalBtn = document.getElementById('close-download-modal-btn');
+
+
+        let currentEditingIframe = null;
+        let currentEditingProjectTimestamp = null;
+        let audioContext, analyser, source, animationFrameId;
+        let mediaStream = null;
+        let isListening = false;
+        let finalTranscript = '';
+        let currentConfirmCallback = null;
+        let currentCodeCache = { html: '', react: '' };
+
+
+        // --- CONFIG & ICONS ---
+        const backendUrl = 'http://127.0.0.1:8000';
+        const shareIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>`;
+        const publishIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>`;
+        const fullscreenIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`;
+        const exitFullscreenIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>`;
+        const deleteIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+        const copyCodeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>`;
+        const downloadIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+        const editCodeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
+        const micIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line></svg>`;
+        const stopIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1"></rect></svg>`;
+        const generateIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>`;
+        const copyIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zM-1 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"/></svg>`;
+        const checkIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>`;
+        const thumbUpIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 176h358q32 0 56 24t24 56v80q0 7-1.5 15t-4.5 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406ZM200-120h80v-520h-80v520Z"/></svg>`;
+        const thumbDownIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-176H80q-32 0-56-24t-24-56v-80q0-7 1.5-15t4.5-15l120-282q9-20 30-34t44-14Zm120 80H240L120-480v80h360l-54 220 174-174v-406ZM760-840h-80v520h80v-520Z"/></svg>`;
+        const copyChatIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h560v80H200Zm160-720v480-480Z"/></svg>`;
+        const editChatIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>`;
+        const resendIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-660v-140h80v280H520v-80h168q-32-54-87-87t-121-33q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg>`;
+        const arrowLeftIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>`;
+        const arrowRightIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>`;
+
+
+        const themes = [{
+            name: 'Neubrutalism',
+            promptHint: 'Uses stark contrasts, solid colors, and raw HTML elements.'
+        }, {
+            name: 'Cyberpunk',
+            promptHint: 'Features dark backgrounds with neon accents and glitch effects.'
+        }, {
+            name: 'Corporate',
+            promptHint: 'Clean, professional, with a structured layout and conservative colors.'
+        }, {
+            name: 'Kawaii Aesthetic',
+            promptHint: 'Cute and playful with pastel colors and rounded elements.'
+        }, {
+            name: '80s Retro',
+            promptHint: 'Vibrant neon colors, grid patterns, and retro fonts.'
+        }, {
+            name: 'Glassmorphism',
+            promptHint: 'Creates a frosted-glass effect with blurred backgrounds and semi-transparent elements.'
+        }];
+
+        const availableAvatars = [{
+            name: 'Jashan',
+            path: 'avatar/image.png'
+        }, {
+            name: 'Harneez',
+            path: 'avatar/image_.png'
+        }, ];
+
+        // --- AUTH & INITIALIZATION ---
+        async function handleLogin() {
+            const enteredId = userIdInput.value.trim();
+            if (!enteredId) return;
+
+            loginError.textContent = 'Verifying...';
+            proceedBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${backendUrl}/users/${enteredId}`);
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        loginError.textContent = 'This ID does not exist.';
+                        proceedBtn.disabled = false;
+                        return;
+                    }
+                    throw new Error('Could not connect to the server.');
+                }
+
+                currentUser = await response.json();
+                localStorage.setItem(LOCAL_STORAGE_SYNC_KEY, JSON.stringify(currentUser));
+                initializeAppUI();
+
+            } catch (error) {
+                console.error("Login failed:", error);
+                loginError.textContent = 'Cannot connect to server. Check backend.';
+                proceedBtn.disabled = false;
+            }
+        }
+
+        function initializeAppUI() {
+            document.getElementById('user-id').textContent = `ID: ${currentUser.id}`;
+            updateCreditDisplay();
+
+            userAvatar.src = availableAvatars[0].path;
+            populateAvatarDropdown();
+
+            loginModal.style.display = 'none';
+            document.body.classList.add('loaded');
+
+            checkCreditStatus();
+            renderProjects();
+            loadChatHistory(); 
+            populateThemes();
+            updateThemeSelectorPosition();
+        }
+
+        // --- CREDIT MANAGEMENT ---
+        function updateCreditDisplay() {
+            if (currentUser) {
+                creditDisplay.textContent = `Credits: ${currentUser.credits}`;
+            }
+        }
+
+        function checkCreditStatus() {
+            const hasCredits = currentUser && currentUser.credits > 0;
+            promptInput.disabled = !hasCredits;
+            generateBtn.disabled = !hasCredits;
+            if (isChatMode) {
+                promptInput.placeholder = hasCredits ? "Message Sitee..." : "No credits remaining.";
+            } else {
+                promptInput.placeholder = hasCredits ? "Describe a website..." : "No credits remaining.";
+            }
+            if (currentUser && currentUser.credits <= 0) {
+                showNotification("You have run out of credits.", "error");
+            }
+        }
+
+        // --- CORE APP LOGIC ---
+        async function generateWebsite(prompt, container, iframe) {
+            const preview = container.querySelector('.preview');
+            const loading = container.querySelector('.loading');
+            const stats = container.querySelector('.stats');
+            const startTime = Date.now();
+
+            document.body.classList.add('generating');
+
+            let timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                stats.innerHTML = `<span>Time: ${elapsed}s</span><span>Credit Used: 1 </span>`;
+            }, 1000);
+
+            try {
+                const response = await fetch(`${backendUrl}/generate/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        prompt: prompt, 
+                        is_chat_mode: false, 
+                        user_id: currentUser.id 
+                    })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const result = await response.json();
+                const htmlCode = result.html;
+                const reactCode = result.react;
+
+                iframe.onload = () => {
+                    if (loading) loading.style.display = 'none';
+                    document.body.classList.remove('generating');
+                    handleIframeLinks(iframe);
+                };
+
+                iframe.srcdoc = htmlCode;
+                
+                const savedProject = await saveProject(prompt, htmlCode, false, null, reactCode);
+                if (savedProject) {
+                    container.dataset.timestamp = savedProject.timestamp;
+                }
+                
+                if (result.credits_remaining !== undefined) {
+                    currentUser.credits = result.credits_remaining;
+                    updateCreditDisplay();
+                }
+
+                checkCreditStatus();
+
+            } catch (error) {
+                console.error("Error generating website:", error);
+                preview.innerHTML = `<div style="color: var(--error-color); padding: 1rem;">Error: Could not generate. Check server.</div>`;
+                promptInput.value = prompt;
+                 document.body.classList.remove('generating');
+            } finally {
+                clearInterval(timerInterval);
+                const finalTime = Math.floor((Date.now() - startTime) / 1000);
+                stats.innerHTML = `<span>Time: ${finalTime}s</span><span>Credit Used: 1 </span>`;
+            }
+        }
+
+        // --- CHAT REFACTOR START ---
+
+        function convertOldHistory(oldHistory) {
+            const newHistory = [];
+            let currentTurn = null;
+
+            oldHistory.forEach(msg => {
+                if (msg.role === 'user') {
+                    if (currentTurn) {
+                        newHistory.push(currentTurn);
+                    }
+                    currentTurn = {
+                        id: Date.now() + Math.random(),
+                        prompt: msg.content,
+                        responses: [],
+                        displayIndex: 0
+                    };
+                } else if (msg.role === 'ai' && currentTurn) {
+                    currentTurn.responses.push({ content: msg.content });
+                    currentTurn.displayIndex = currentTurn.responses.length - 1;
+                }
+            });
+            if (currentTurn) {
+                newHistory.push(currentTurn);
+            }
+            return newHistory;
+        }
+
+
+        function updateTurnUI(turnContainer, turn, isLoading = false) {
+            if (!turnContainer || !turn) return;
+
+            const aiMessageWrapper = turnContainer.querySelector('.ai-message .message-wrapper');
+            if (!aiMessageWrapper) return;
+
+            aiMessageWrapper.innerHTML = '';
+
+            const aiMessageHeader = document.createElement('div');
+            aiMessageHeader.className = 'ai-message-header';
+
+            if (turn.responses.length > 1) {
+                const nav = document.createElement('div');
+                nav.className = 'response-nav';
+
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'nav-btn';
+                prevBtn.innerHTML = arrowLeftIcon;
+                prevBtn.disabled = turn.displayIndex === 0;
+                prevBtn.onclick = () => {
+                    if (turn.displayIndex > 0) {
+                        turn.displayIndex--;
+                        updateTurnUI(turnContainer, turn);
+                        saveChatHistory();
+                    }
+                };
+
+                const counter = document.createElement('span');
+                counter.textContent = `${turn.displayIndex + 1} / ${turn.responses.length}`;
+
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'nav-btn';
+                nextBtn.innerHTML = arrowRightIcon;
+                nextBtn.disabled = turn.displayIndex >= turn.responses.length - 1;
+                 nextBtn.onclick = () => {
+                    if (turn.displayIndex < turn.responses.length - 1) {
+                        turn.displayIndex++;
+                        updateTurnUI(turnContainer, turn);
+                        saveChatHistory();
+                    }
+                };
+                
+                nav.append(prevBtn, counter, nextBtn);
+                aiMessageHeader.appendChild(nav);
+            }
+            aiMessageWrapper.appendChild(aiMessageHeader);
+
+            const aiContentDiv = document.createElement('div');
+            aiContentDiv.className = 'message-content';
+
+            if (isLoading) {
+                aiContentDiv.innerHTML = '<div class="spinner" style="width:20px; height:20px; border-width:2px;"></div>';
+            } else {
+                const response = turn.responses[turn.displayIndex];
+                if (response) {
+                    aiContentDiv.innerHTML = marked.parse(response.content);
+                    if (window.MathJax) {
+                        MathJax.typesetPromise([aiContentDiv]).catch((err) => console.error('MathJax typesetting error:', err));
+                    }
+                    aiContentDiv.querySelectorAll('pre').forEach(addCopyButton);
+                    aiContentDiv.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+                } else {
+                    aiContentDiv.innerHTML = "No response yet.";
+                }
+            }
+            aiMessageWrapper.appendChild(aiContentDiv);
+
+            if (!isLoading && turn.responses.length > 0) {
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'message-actions';
+                
+                const thumbUpBtn = document.createElement('button');
+                thumbUpBtn.className = 'feedback-btn thumb-up';
+                thumbUpBtn.innerHTML = thumbUpIcon;
+                thumbUpBtn.title = 'Good response';
+                
+                const thumbDownBtn = document.createElement('button');
+                thumbDownBtn.className = 'feedback-btn thumb-down';
+                thumbDownBtn.innerHTML = thumbDownIcon;
+                thumbDownBtn.title = 'Bad response';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'feedback-btn copy-chat';
+                copyBtn.innerHTML = copyChatIcon;
+                copyBtn.title = 'Copy';
+
+                actionsDiv.append(thumbUpBtn, thumbDownBtn, copyBtn);
+                aiMessageWrapper.appendChild(actionsDiv);
+
+                const currentResponseContent = turn.responses[turn.displayIndex].content;
+
+                thumbUpBtn.addEventListener('click', (e) => {
+                    e.currentTarget.parentElement.querySelectorAll('.feedback-btn').forEach(btn => btn.disabled = true);
+                    e.currentTarget.classList.add('active');
+                    showNotification('Thanks for your feedback!', 'success');
+                });
+                
+                thumbDownBtn.addEventListener('click', () => {
+                    feedbackModal.style.display = 'flex';
+                    feedbackModal.dataset.messageContent = currentResponseContent;
+                });
+                
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(currentResponseContent).then(() => {
+                        showNotification('Copied to clipboard!', 'success');
+                    }).catch(err => console.error('Failed to copy text: ', err));
+                });
+            }
+        }
+
+
+        function appendTurn(turn, isLoading = false) {
+            const turnContainer = document.createElement('div');
+            turnContainer.className = 'turn-container';
+            turnContainer.dataset.id = turn.id;
+
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'chat-message user-message';
+            userMessageDiv.dataset.content = turn.prompt;
+
+            const userAvatarImg = document.createElement('img');
+            userAvatarImg.className = 'avatar';
+            userAvatarImg.src = userAvatar.src || 'avatar/image.png';
+
+            const userMessageWrapper = document.createElement('div');
+            userMessageWrapper.className = 'message-wrapper';
+
+            const userContentDiv = document.createElement('div');
+            userContentDiv.className = 'message-content';
+            userContentDiv.innerHTML = marked.parse(turn.prompt);
+
+            const userActionsDiv = document.createElement('div');
+            userActionsDiv.className = 'message-actions';
+
+            const resendBtn = document.createElement('button');
+            resendBtn.className = 'feedback-btn resend-chat';
+            resendBtn.innerHTML = resendIcon;
+            resendBtn.title = 'Resend';
+            resendBtn.addEventListener('click', () => sendChatMessage(turn.prompt, turn));
+
+            const editBtn = document.createElement('button');
+            editBtn.className = 'feedback-btn edit-chat';
+            editBtn.innerHTML = editChatIcon;
+            editBtn.title = 'Edit';
+            
+            userActionsDiv.append(editBtn, resendBtn);
+            userMessageWrapper.append(userContentDiv, userActionsDiv);
+            userMessageDiv.append(userAvatarImg, userMessageWrapper);
+
+            editBtn.addEventListener('click', () => {
+                userContentDiv.contentEditable = "true";
+                userContentDiv.style.border = "1px solid var(--accent-color)";
+                userContentDiv.focus();
+                userActionsDiv.style.display = 'none';
+
+                const editActionsDiv = document.createElement('div');
+                editActionsDiv.className = 'message-actions';
+                editActionsDiv.style.opacity = 1;
+
+                const saveBtn = document.createElement('button');
+                saveBtn.textContent = 'Save & Regenerate';
+                saveBtn.className = 'feedback-btn edit-mode-btn save';
+                
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = 'Cancel';
+                cancelBtn.className = 'feedback-btn edit-mode-btn cancel';
+
+                editActionsDiv.append(saveBtn, cancelBtn);
+                userMessageWrapper.appendChild(editActionsDiv);
+
+                const restoreUI = () => {
+                    userContentDiv.contentEditable = "false";
+                    userContentDiv.style.border = "none";
+                    editActionsDiv.remove();
+                    userActionsDiv.style.display = 'flex';
+                };
+
+                cancelBtn.addEventListener('click', () => {
+                    userContentDiv.innerHTML = marked.parse(turn.prompt);
+                    restoreUI();
+                });
+
+                saveBtn.addEventListener('click', async () => {
+                    const newContent = userContentDiv.textContent.trim();
+                    if (newContent && newContent !== turn.prompt) {
+                        turn.prompt = newContent;
+                        userMessageDiv.dataset.content = newContent;
+                        userContentDiv.innerHTML = marked.parse(newContent);
+                        restoreUI();
+                        await sendChatMessage(newContent, turn);
+                    } else {
+                        restoreUI();
+                    }
+                });
+            });
+            
+            const aiMessageDiv = document.createElement('div');
+            aiMessageDiv.className = 'chat-message ai-message';
+
+            const aiAvatarImg = document.createElement('img');
+            aiAvatarImg.className = 'avatar';
+            aiAvatarImg.src = 'avatar/site.png';
+
+            const aiMessageWrapper = document.createElement('div');
+            aiMessageWrapper.className = 'message-wrapper';
+
+            aiMessageDiv.append(aiAvatarImg, aiMessageWrapper);
+
+            turnContainer.append(userMessageDiv, aiMessageDiv);
+            chatContainer.appendChild(turnContainer);
+
+            updateTurnUI(turnContainer, turn, isLoading);
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function sendChatMessage(prompt, turnToUpdate = null) {
+            if (!document.body.classList.contains('chat-started')) {
+                document.body.classList.add('chat-started');
+            }
+
+            let turn;
+            const isResend = !!turnToUpdate;
+
+            if (isResend) {
+                turn = turnToUpdate;
+            } else {
+                turn = {
+                    id: Date.now(),
+                    prompt: prompt,
+                    responses: [],
+                    displayIndex: 0
+                };
+                chatHistory.push(turn);
+                appendTurn(turn, true);
+            }
+
+            const turnContainer = document.querySelector(`.turn-container[data-id='${turn.id}']`);
+            if (!turnContainer) {
+                console.error("Could not find turn container for ID:", turn.id);
+                return;
+            }
+            
+            updateTurnUI(turnContainer, turn, true);
+
+            try {
+                const response = await fetch(`${backendUrl}/generate/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        prompt: prompt, 
+                        is_chat_mode: true, 
+                        user_id: currentUser.id 
+                    })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const result = await response.json();
+                const aiResponse = result.html;
+
+                turn.responses.push({ content: aiResponse });
+                turn.displayIndex = turn.responses.length - 1;
+
+                updateTurnUI(turnContainer, turn);
+                await saveChatHistory();
+
+                if (result.credits_remaining !== undefined) {
+                    currentUser.credits = result.credits_remaining;
+                    updateCreditDisplay();
+                }
+                checkCreditStatus();
+
+            } catch (error) {
+                console.error("Error in chat:", error);
+                const errorContent = "Sorry, I couldn't get a response. Please check the server connection and try again.";
+                
+                if (isResend) {
+                    turn.responses.push({ content: errorContent });
+                    turn.displayIndex = turn.responses.length - 1;
+                } else {
+                    turn.responses[0] = { content: errorContent };
+                }
+                
+                updateTurnUI(turnContainer, turn);
+            }
+        }
+
+        // --- CHAT REFACTOR END ---
+
+        function addCopyButton(preElement) {
+            const copyButton = document.createElement('button');
+            copyButton.className = 'copy-code-btn';
+            copyButton.innerHTML = copyIconSVG;
+            copyButton.title = 'Copy code';
+            preElement.appendChild(copyButton);
+
+            copyButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const code = preElement.querySelector('code').textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    copyButton.innerHTML = checkIconSVG;
+                    setTimeout(() => {
+                       copyButton.innerHTML = copyIconSVG;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            });
+        }
+
+
+        function createSiteContainer(prompt, projectData = null) {
+            const container = document.createElement('div');
+            container.className = 'site-container glassy';
+            container.style.top = `${Math.random() * 20 + 5}%`;
+            container.style.left = `${Math.random() * 50 + 5}%`;
+
+            const header = document.createElement('div');
+            header.className = 'site-header';
+            const reviewTag = document.createElement('div');
+            reviewTag.className = 'site-preview-tag'; // UPDATED Class name
+            reviewTag.textContent = 'Preview';
+            header.appendChild(reviewTag);
+
+            const windowControls = document.createElement('div');
+            windowControls.className = 'window-controls';
+
+            const publishBtn = document.createElement('button');
+            publishBtn.className = 'control-btn publish-btn';
+            publishBtn.innerHTML = publishIcon;
+            publishBtn.title = 'Publish and get link';
+            windowControls.appendChild(publishBtn);
+
+            const editBtn = document.createElement('button');
+            editBtn.className = 'control-btn edit-btn';
+            editBtn.innerHTML = editCodeIcon;
+            editBtn.title = 'Edit Code';
+            windowControls.appendChild(editBtn);
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'control-btn copy-btn';
+            copyBtn.innerHTML = copyCodeIcon;
+            copyBtn.title = 'Copy Code';
+            windowControls.appendChild(copyBtn);
+
+            const fullBtn = document.createElement('button');
+            fullBtn.className = 'control-btn';
+            fullBtn.innerHTML = fullscreenIcon;
+            fullBtn.title = 'Fullscreen';
+            windowControls.appendChild(fullBtn);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'control-btn';
+            deleteBtn.innerHTML = deleteIcon;
+            deleteBtn.title = 'Delete';
+            windowControls.appendChild(deleteBtn);
+
+            header.appendChild(windowControls);
+            container.appendChild(header);
+
+            const preview = document.createElement('div');
+            preview.className = 'preview';
+            container.appendChild(preview);
+
+            const stats = document.createElement('div');
+            stats.className = 'stats';
+            container.appendChild(stats);
+
+            const publishInfo = document.createElement('div');
+            publishInfo.className = 'publish-info';
+            container.appendChild(publishInfo);
+
+            makeDraggable(container);
+            canvas.appendChild(container);
+
+            const iframe = document.createElement('iframe');
+            iframe.sandbox = "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox";
+            preview.appendChild(iframe);
+
+            const handlePublish = async () => {
+                const timestamp = container.dataset.timestamp;
+                if (!timestamp) {
+                    showNotification('Cannot publish a project that has not been saved.', 'error');
+                    return;
+                }
+                if (!iframe.srcdoc) {
+                    showNotification('No code available to publish.', 'error');
+                    return;
+                }
+
+                publishBtn.innerHTML = `<div class="spinner" style="width:16px; height:16px; border-width:2px;"></div>`;
+                publishBtn.disabled = true;
+
+                try {
+                    const response = await fetch(`${backendUrl}/users/${currentUser.id}/projects/${timestamp}/publish`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            html_content: iframe.srcdoc
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const err = await response.json();
+                        throw new Error(err.detail || 'Failed to publish the website.');
+                    }
+
+                    const result = await response.json();
+                    const siteUrl = result.url;
+
+                    const projectIndex = currentUser.projects.findIndex(p => p.timestamp == timestamp);
+                    if (projectIndex !== -1) {
+                        currentUser.projects[projectIndex].published_url = siteUrl;
+                    }
+
+                    displayPublishInfo(publishInfo, siteUrl);
+
+                    navigator.clipboard.writeText(siteUrl).then(() => {
+                        showNotification('Published! Link copied to clipboard.', 'success');
+                    });
+
+                } catch (error) {
+                    console.error("Publishing error:", error);
+                    showNotification(error.message, 'error');
+                } finally {
+                    publishBtn.innerHTML = publishIcon;
+                    publishBtn.disabled = false;
+                }
+            };
+
+            publishBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showConfirmationModal(
+                    'Publish Project',
+                    'This will make your website publicly accessible via a shareable link. Are you sure you want to proceed?',
+                    handlePublish,
+                    'publish'
+                );
+            });
+
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const project = currentUser.projects.find(p => p.timestamp == container.dataset.timestamp);
+
+                if (project && project.html) {
+                    currentCodeCache.html = project.html;
+                    currentCodeCache.react = project.react || `// React code not yet available.`;
+                    
+                    openCodeEditor();
+                    
+                    currentEditingIframe = iframe;
+                    currentEditingProjectTimestamp = parseInt(container.dataset.timestamp);
+                } else {
+                    showNotification('No code available to edit.', 'error');
+                }
+            });
+
+            copyBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (iframe.srcdoc) {
+                    navigator.clipboard.writeText(iframe.srcdoc).then(() => {
+                        showNotification('Code copied to clipboard!', 'success');
+                    }).catch(err => {
+                        showNotification('Failed to copy code.', 'error');
+                    });
+                }
+            });
+
+            fullBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isFullscreen = container.classList.toggle('fullscreen');
+                fullBtn.innerHTML = isFullscreen ? exitFullscreenIcon : fullscreenIcon;
+                document.body.classList.toggle('site-fullscreen-active', isFullscreen);
+            });
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const timestamp = parseInt(container.dataset.timestamp);
+                if (!timestamp) return;
+                showConfirmationModal('Delete Project', 'Are you sure you want to delete this project? This action cannot be undone.', async () => {
+                    const success = await deleteProject(timestamp);
+                    if (success) {
+                        if (container.classList.contains('fullscreen')) {
+                            document.body.classList.remove('site-fullscreen-active');
+                        }
+                        container.remove();
+                    }
+                }, 'danger');
+            });
+
+            if (projectData) {
+                container.dataset.timestamp = projectData.timestamp;
+                iframe.onload = () => handleIframeLinks(iframe);
+                iframe.srcdoc = projectData.html;
+                stats.textContent = 'Loaded from history';
+                if (projectData.published_url) {
+                    displayPublishInfo(publishInfo, projectData.published_url);
+                }
+            } else {
+                const loading = document.createElement('div');
+                loading.className = 'loading';
+                loading.innerHTML = `<div class="spinner"></div>`;
+                preview.appendChild(loading);
+                generateWebsite(prompt, container, iframe);
+            }
+        }
+
+        function displayPublishInfo(container, url) {
+            container.innerHTML = '';
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.textContent = url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+
+            const shareContainer = document.createElement('div');
+            shareContainer.style.position = 'relative';
+
+            const shareBtn = document.createElement('button');
+            shareBtn.className = 'share-btn';
+            shareBtn.innerHTML = shareIcon;
+            shareBtn.title = 'Share website';
+
+            const shareDropdown = document.createElement('div');
+            shareDropdown.className = 'share-dropdown';
+
+            const shareText = `Hey check out this website I created with sitee. ${url}`;
+            const linkedInShareText = `Hey check out this website I created with sitee.`;
+
+            const dropdownHeader = document.createElement('div');
+            dropdownHeader.className = 'share-dropdown-header';
+            dropdownHeader.textContent = 'Share this site';
+
+            const linkedIn = document.createElement('a');
+            linkedIn.href = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=Website%20created%20with%20Sitee&summary=${encodeURIComponent(linkedInShareText)}`;
+            linkedIn.target = '_blank';
+            linkedIn.className = 'share-option';
+            linkedIn.innerHTML = `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg><span>LinkedIn</span>`;
+
+            const whatsApp = document.createElement('a');
+            whatsApp.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+            whatsApp.target = '_blank';
+            whatsApp.className = 'share-option';
+            whatsApp.innerHTML = `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.267.651 4.383 1.803 6.166l-1.225 4.485 4.574-1.196z"/></svg><span>WhatsApp</span>`;
+
+            const copyLink = document.createElement('a');
+            copyLink.href = '#';
+            copyLink.className = 'share-option';
+            copyLink.innerHTML = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg><span>Copy Link</span>`;
+            copyLink.onclick = (e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('Share message copied!', 'success');
+                    shareDropdown.classList.remove('show');
+                });
+            };
+
+            shareDropdown.append(dropdownHeader, linkedIn, whatsApp, copyLink);
+            shareContainer.append(shareBtn, shareDropdown);
+            container.append(link, shareContainer);
+
+            shareBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.share-dropdown.show').forEach(d => d.classList.remove('show'));
+                shareDropdown.classList.toggle('show');
+            });
+        }
+
+
+        function handleGenerateClick() {
+            if (!currentUser || currentUser.credits <= 0) {
+                checkCreditStatus();
+                return;
+            }
+            let userPrompt = promptInput.value.trim();
+            if (!userPrompt) return;
+
+            if (isChatMode) {
+                sendChatMessage(userPrompt);
+            } else {
+                let finalPrompt = userPrompt;
+                if (selectedTheme) {
+                    finalPrompt = `${userPrompt} in a ${selectedTheme.name} style.`;
+                }
+                createSiteContainer(finalPrompt);
+                promptSuggestions.classList.add('hidden');
+            }
+
+            promptInput.value = '';
+            autoResizePrompt.call(promptInput);
+        }
+
+        // --- EVENT LISTENERS ---
+        document.addEventListener("DOMContentLoaded", () => {
+            micBtn.innerHTML = micIcon;
+            generateBtn.innerHTML = generateIcon;
+            copyEditorCodeBtn.innerHTML = copyCodeIcon;
+            downloadCodeBtn.innerHTML = downloadIcon;
+
+
+            window.addEventListener('storage', (e) => {
+                if (e.key === LOCAL_STORAGE_SYNC_KEY) {
+                    if (e.newValue && currentUser) {
+                        try {
+                            const updatedUser = JSON.parse(e.newValue);
+                            if (updatedUser.id === currentUser.id) {
+                                console.log('User data updated from another tab. Syncing state.');
+                                currentUser = updatedUser;
+                                updateCreditDisplay();
+                                checkCreditStatus();
+                            }
+                        } catch (err) {
+                            console.error('Error parsing synced user data:', err);
+                        }
+                    }
+                }
+            });
+        });
+
+        userIdInput.addEventListener('input', () => {
+            proceedBtn.disabled = userIdInput.value.trim() === '';
+            loginError.textContent = '';
+        });
+
+        proceedBtn.addEventListener('click', handleLogin);
+        userIdInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !proceedBtn.disabled) handleLogin();
+        });
+
+        generateBtn.addEventListener('click', handleGenerateClick);
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleGenerateClick();
+            }
+        });
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            setTimeout(updateThemeSelectorPosition, 300);
+        });
+
+        promptInput.addEventListener('input', () => {
+            if (promptInput.value.trim() !== '' || isChatMode) {
+                promptSuggestions.classList.add('hidden');
+            } else {
+                promptSuggestions.classList.remove('hidden');
+            }
+        });
+
+        document.querySelectorAll('.suggestion-card').forEach(card => {
+            card.addEventListener('click', () => {
+                promptInput.value = card.dataset.prompt;
+                handleGenerateClick();
+            });
+        });
+
+        codeEditorContent.addEventListener('input', () => {
+            const activeTab = document.querySelector('.code-tab.active');
+            if (activeTab && activeTab.dataset.lang === 'html') {
+                const newContent = codeEditorContent.textContent;
+                currentCodeCache.html = newContent; 
+                if (currentEditingIframe) {
+                    currentEditingIframe.srcdoc = newContent;
+                }
+            }
+        });
+        
+        function openCodeEditor() {
+            updateCodeEditorView('html');
+            codeEditorModal.classList.add('open');
+        }
+        
+        function updateCodeEditorView(lang, isLoading = false) {
+            document.querySelectorAll('.code-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.lang === lang);
+            });
+            
+            const content = lang === 'react' ? currentCodeCache.react : currentCodeCache.html;
+            codeEditorContent.setAttribute('contenteditable', lang === 'html');
+            codeEditorContent.className = lang === 'react' ? 'language-jsx' : 'language-html';
+
+            if (isLoading) {
+                 codeEditorContent.innerHTML = `<div class="spinner" style="margin: auto; width:24px; height:24px; border-width: 3px;"></div>`;
+            } else {
+                 codeEditorContent.textContent = content;
+                 hljs.highlightElement(codeEditorContent);
+            }
+        }
+        
+        codeEditorTabs.addEventListener('click', (e) => {
+            if (e.target.classList.contains('code-tab')) {
+                const lang = e.target.dataset.lang;
+                updateCodeEditorView(lang);
+            }
+        });
+        
+        copyEditorCodeBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(codeEditorContent.textContent).then(() => {
+                showNotification('Code copied!', 'success');
+            }).catch(err => {
+                showNotification('Failed to copy code.', 'error');
+            });
+        });
+
+        downloadCodeBtn.addEventListener('click', () => {
+            const activeTab = document.querySelector('.code-tab.active');
+            const lang = activeTab ? activeTab.dataset.lang : 'html';
+            const project = currentUser.projects.find(p => p.timestamp == currentEditingProjectTimestamp);
+            const projectName = project ? project.name.toLowerCase().replace(/\s+/g, '-').substring(0, 20) : 'untitled';
+            const extension = lang === 'react' ? 'jsx' : 'html';
+            
+            filenameInput.value = `site-${projectName}.${extension}`;
+            fileFormatSelect.value = lang;
+            downloadModal.style.display = 'flex';
+        });
+
+        downloadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const filename = filenameInput.value;
+            const content = codeEditorContent.textContent;
+            
+            const mimeType = fileFormatSelect.value === 'jsx' ? 'text/javascript' : 'text/html';
+            
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            downloadModal.style.display = 'none';
+        });
+
+        downloadCancelBtn.addEventListener('click', () => {
+            downloadModal.style.display = 'none';
+        });
+        closeDownloadModalBtn.addEventListener('click', () => {
+            downloadModal.style.display = 'none';
+        });
+
+
+        closeEditorBtn.addEventListener('click', async () => {
+            if (currentEditingProjectTimestamp) {
+                const project = currentUser.projects.find(p => p.timestamp === currentEditingProjectTimestamp);
+                if(project) {
+                    project.html = currentCodeCache.html;
+                    project.react = currentCodeCache.react;
+                    await saveProject(project.name, project.html, true, project.timestamp, project.react);
+                }
+            }
+            codeEditorModal.classList.remove('open');
+            currentEditingIframe = null;
+            currentEditingProjectTimestamp = null;
+        });
+
+        themeSelectorBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeDropdown.classList.toggle('show');
+        });
+
+        avatarWrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            avatarDropdown.classList.toggle('show');
+        });
+
+        modeToggleSwitch.addEventListener('change', (e) => {
+            isChatMode = e.target.checked;
+            document.body.classList.toggle('chat-active', isChatMode);
+
+            if (isChatMode) {
+                promptInput.placeholder = "Message Sitee...";
+                promptSuggestions.classList.add('hidden');
+                themeSelectorBtn.style.display = 'none';
+                if (chatHistory.length > 0) {
+                    document.body.classList.add('chat-started');
+                }
+            } else {
+                promptInput.placeholder = "Describe a website...";
+                if (promptInput.value.trim() === '') {
+                    promptSuggestions.classList.remove('hidden');
+                }
+                themeSelectorBtn.style.display = 'flex';
+                document.body.classList.remove('chat-started');
+            }
+            checkCreditStatus();
+        });
+
+
+        document.addEventListener('click', (e) => {
+            document.querySelectorAll('.share-dropdown.show').forEach(dropdown => {
+                if (!dropdown.parentElement.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+            if (!themeSelectorBtn.contains(e.target) && !themeDropdown.contains(e.target)) {
+                themeDropdown.classList.remove('show');
+            }
+            if (!avatarWrapper.contains(e.target) && !avatarDropdown.contains(e.target)) {
+                avatarDropdown.classList.remove('show');
+            }
+        });
+
+        deleteAllBtn.addEventListener('click', () => {
+            showConfirmationModal('Delete All Projects', 'Are you sure you want to delete all projects? This action cannot be undone.', handleDeleteAllProjects, 'danger');
+        });
+
+        modalConfirmBtn.addEventListener('click', () => {
+            if (currentConfirmCallback) {
+                currentConfirmCallback();
+            }
+            hideConfirmationModal();
+        });
+
+        modalCancelBtn.addEventListener('click', hideConfirmationModal);
+
+        inviteBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const shareUrl = window.location.origin + window.location.pathname;
+            inviteLinkInput.value = shareUrl;
+            inviteModal.style.display = 'flex';
+        });
+
+        closeInviteModalBtn.addEventListener('click', () => {
+            inviteModal.style.display = 'none';
+        });
+
+        copyInviteLinkBtn.addEventListener('click', () => {
+            inviteLinkInput.select();
+            try {
+                document.execCommand('copy');
+                showNotification('Invite link copied!', 'success');
+            } catch (err) {
+                showNotification('Failed to copy link.', 'error');
+            }
+        });
+
+        inviteModal.addEventListener('click', (e) => {
+            if (e.target === inviteModal) {
+                inviteModal.style.display = 'none';
+            }
+        });
+        
+        closeFeedbackModalBtn.addEventListener('click', () => {
+            feedbackModal.style.display = 'none';
+        });
+        
+        feedbackModal.addEventListener('click', (e) => {
+            if (e.target === feedbackModal) {
+                 feedbackModal.style.display = 'none';
+            }
+        });
+        
+        feedbackForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const feedback = feedbackTextarea.value.trim();
+            const originalMessage = feedbackModal.dataset.messageContent;
+            
+            if (feedback && originalMessage) {
+                await saveFeedbackToFirebase(feedback, originalMessage);
+                feedbackTextarea.value = '';
+                feedbackModal.style.display = 'none';
+                delete feedbackModal.dataset.messageContent;
+            }
+        });
+
+
+        function autoResizePrompt() {
+            this.style.height = 'auto';
+            const maxHeight = 150;
+            const newHeight = Math.min(this.scrollHeight, maxHeight);
+            this.style.height = newHeight + 'px';
+            this.style.overflowY = (this.scrollHeight > maxHeight) ? 'auto' : 'hidden';
+            setTimeout(updateThemeSelectorPosition, 0);
+        }
+        promptInput.addEventListener('input', autoResizePrompt, false);
+
+
+        // --- UTILITY FUNCTIONS ---
+        function updateThemeSelectorPosition() {
+            const controls = document.getElementById('controls');
+            const themeSelector = document.getElementById('theme-selector-container');
+            if (!controls || !themeSelector) return;
+
+            const controlsHeight = controls.offsetHeight;
+            const baseRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+            const controlsBottomMargin = 1.5 * baseRem;
+            const desiredGap = 0.5 * baseRem;
+
+            const newThemeSelectorBottom = controlsBottomMargin + controlsHeight + desiredGap;
+            themeSelector.style.bottom = `${newThemeSelectorBottom}px`;
+        }
+
+        function showConfirmationModal(title, message, onConfirm, type = 'normal') {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            currentConfirmCallback = onConfirm;
+
+            modalConfirmBtn.classList.remove('danger');
+            if (type === 'danger') {
+                modalConfirmBtn.classList.add('danger');
+                modalConfirmBtn.textContent = 'Delete';
+            } else if (type === 'publish') {
+                modalConfirmBtn.textContent = 'Publish';
+            } else {
+                modalConfirmBtn.textContent = 'Confirm';
+            }
+
+            confirmationModal.style.display = 'flex';
+        }
+
+        function hideConfirmationModal() {
+            confirmationModal.style.display = 'none';
+            currentConfirmCallback = null;
+        }
+
+        function handleIframeLinks(iframe) {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                if (iframeDoc.documentElement) {
+                    iframeDoc.documentElement.style.scrollBehavior = 'smooth';
+                }
+                iframeDoc.addEventListener('click', (e) => {
+                    const target = e.target.closest('a');
+                    if (!target) return;
+                    const href = target.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetElement = iframeDoc.getElementById(href.substring(1));
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    } else if (target.href && !target.href.startsWith('about:srcdoc')) {
+                        e.preventDefault();
+                        window.open(target.href, '_blank', 'noopener,noreferrer');
+                    }
+                }, true);
+            } catch (error) {
+                console.warn("Could not attach link handler to iframe:", error);
+            }
+        }
+
+        function showNotification(message, type = 'error') {
+            const notification = document.createElement('div');
+            notification.className = `notification glassy ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            requestAnimationFrame(() => notification.classList.add('show'));
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.addEventListener('transitionend', () => notification.remove(), {
+                    once: true
+                });
+            }, 4000);
+        }
+
+        function makeDraggable(element) {
+            let isDragging = false,
+                offset = {
+                    x: 0,
+                    y: 0
+                };
+            const header = element.querySelector('.site-header');
+            header.addEventListener('mousedown', (e) => {
+                if (element.classList.contains('fullscreen')) return;
+                if (e.target.closest('.control-btn') || e.target.closest('.share-btn')) return;
+                isDragging = true;
+                offset = {
+                    x: e.clientX - element.offsetLeft,
+                    y: e.clientY - element.offsetTop
+                };
+                element.style.zIndex = getMaxZIndex() + 1;
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    element.style.left = `${e.clientX - offset.x}px`;
+                    element.style.top = `${e.clientY - offset.y}px`;
+                }
+            });
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+
+        function getMaxZIndex() {
+            return Math.max(1, ...Array.from(document.querySelectorAll(".site-container"), el => parseInt(window.getComputedStyle(el).zIndex) || 1));
+        }
+
+        function populateAvatarDropdown() {
+            avatarDropdown.innerHTML = '';
+            availableAvatars.forEach(avatar => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'avatar-option';
+                const img = document.createElement('img');
+                img.src = avatar.path;
+                img.alt = avatar.name;
+                const span = document.createElement('span');
+                span.textContent = avatar.name;
+                optionDiv.appendChild(img);
+                optionDiv.appendChild(span);
+                optionDiv.addEventListener('click', () => {
+                    userAvatar.src = avatar.path;
+                    avatarDropdown.classList.remove('show');
+                });
+                avatarDropdown.appendChild(optionDiv);
+            });
+        }
+
+        function populateThemes() {
+            themeDropdown.innerHTML = '';
+            const defaultOption = document.createElement('div');
+            defaultOption.className = 'theme-item';
+            defaultOption.textContent = 'No Theme';
+            defaultOption.addEventListener('click', () => {
+                selectedTheme = null;
+                themeBtnText.textContent = '✨ Select a Theme';
+                themeDropdown.classList.remove('show');
+            });
+            themeDropdown.appendChild(defaultOption);
+
+            themes.forEach(theme => {
+                const item = document.createElement('div');
+                item.className = 'theme-item';
+                item.textContent = theme.name;
+                item.addEventListener('click', () => {
+                    selectedTheme = theme;
+                    themeBtnText.textContent = `Theme: ${theme.name}`;
+                    themeDropdown.classList.remove('show');
+                });
+                themeDropdown.appendChild(item);
+            });
+        }
+
+        // --- SERVER-BASED PROJECT & CHAT MANAGEMENT ---
+        async function saveProject(name, htmlCode, isUpdate = false, timestampToUpdate = null, reactCode = '') {
+            const project = {
+                name,
+                html: htmlCode,
+                react: reactCode,
+                timestamp: isUpdate ? timestampToUpdate : Date.now()
+            };
+
+            const url = isUpdate ?
+                `${backendUrl}/users/${currentUser.id}/projects/${timestampToUpdate}` :
+                `${backendUrl}/users/${currentUser.id}/projects`;
+
+            const method = isUpdate ? 'PUT' : 'POST';
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(project)
+                });
+
+                if (!response.ok) throw new Error(`Failed to ${isUpdate ? 'update' : 'save'} project.`);
+                
+                const savedProject = await response.json();
+
+                if (isUpdate) {
+                    const projectIndex = currentUser.projects.findIndex(p => p.timestamp === timestampToUpdate);
+                    if (projectIndex > -1) currentUser.projects[projectIndex] = savedProject;
+                } else {
+                    currentUser.projects.push(savedProject);
+                }
+
+                localStorage.setItem(LOCAL_STORAGE_SYNC_KEY, JSON.stringify(currentUser));
+                
+                if (name !== CHAT_HISTORY_PROJECT_NAME) {
+                    if (!isUpdate) addProjectToSidebar(savedProject);
+                    showNotification(`Project ${isUpdate ? 'updated' : 'saved'}!`, 'success');
+                }
+                
+                return savedProject;
+
+            } catch (error) {
+                console.error(`Error ${isUpdate ? 'updating' : 'saving'} project:`, error);
+                showNotification(`Could not ${isUpdate ? 'update' : 'save'} project.`, 'error');
+                return null;
+            }
+        }
+        
+        function loadChatHistory() {
+            const historyProject = currentUser.projects.find(p => p.name === CHAT_HISTORY_PROJECT_NAME);
+            chatContainer.innerHTML = '';
+            if (historyProject && historyProject.html) {
+                try {
+                    chatHistory = JSON.parse(historyProject.html);
+                    if (chatHistory.length > 0 && chatHistory[0].role) {
+                        console.log("Converting old chat history format...");
+                        chatHistory = convertOldHistory(chatHistory);
+                        saveChatHistory();
+                    }
+                    chatHistory.forEach(turn => appendTurn(turn));
+                } catch (e) {
+                    console.error("Could not parse chat history:", e);
+                    chatHistory = [];
+                }
+            }
+        }
+
+
+        async function saveChatHistory() {
+            const historyProject = currentUser.projects.find(p => p.name === CHAT_HISTORY_PROJECT_NAME);
+            const historyJSON = JSON.stringify(chatHistory);
+
+            if (historyProject) {
+                await saveProject(CHAT_HISTORY_PROJECT_NAME, historyJSON, true, historyProject.timestamp);
+            } else {
+                await saveProject(CHAT_HISTORY_PROJECT_NAME, historyJSON);
+            }
+        }
+        
+        async function saveFeedbackToFirebase(feedbackText, originalMessage) {
+            if (!currentUser) {
+                showNotification('You must be logged in to provide feedback.', 'error');
+                return;
+            }
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            
+            try {
+                const feedbackCollectionPath = `artifacts/${appId}/public/data/feedback`;
+                const docRef = await addDoc(collection(db, feedbackCollectionPath), {
+                    userId: currentUser.id,
+                    feedback: feedbackText,
+                    originalMessage: originalMessage,
+                    timestamp: serverTimestamp(),
+                    userAgent: navigator.userAgent,
+                });
+                console.log("Feedback submitted with ID: ", docRef.id);
+                showNotification('Feedback submitted successfully. Thank you!', 'success');
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                showNotification('Could not submit feedback. Please try again.', 'error');
+            }
+        }
+
+
+        async function updateProjectCode(timestamp, newHtml, newReact) {
+            const project = currentUser.projects.find(p => p.timestamp === timestamp);
+            if (project) {
+                project.html = newHtml;
+                project.react = newReact;
+                await saveProject(project.name, project.html, true, timestamp, project.react);
+            }
+        }
+
+        async function deleteProject(timestamp) {
+            try {
+                const response = await fetch(`${backendUrl}/users/${currentUser.id}/projects/${timestamp}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) throw new Error('Failed to delete project.');
+                currentUser.projects = currentUser.projects.filter(p => p.timestamp !== timestamp);
+                renderProjects();
+                showNotification('Project deleted.', 'success');
+                return true;
+            } catch (error) {
+                console.error("Error deleting project:", error);
+                showNotification('Could not delete project.', 'error');
+                return false;
+            }
+        }
+
+        async function handleDeleteAllProjects() {
+            try {
+                const response = await fetch(`${backendUrl}/users/${currentUser.id}/projects`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) throw new Error('Failed to delete all projects.');
+                currentUser.projects = currentUser.projects.filter(p => p.name === CHAT_HISTORY_PROJECT_NAME);
+                renderProjects();
+                document.querySelectorAll('#canvas .site-container').forEach(c => c.remove());
+                showNotification('All projects deleted.', 'success');
+            } catch (error) {
+                console.error("Error deleting all projects:", error);
+                showNotification('Could not delete all projects.', 'error');
+            }
+        }
+
+        function renderProjects() {
+            const savedProjects = currentUser.projects || [];
+            projectList.innerHTML = '';
+            savedProjects
+                .filter(p => p.name !== CHAT_HISTORY_PROJECT_NAME)
+                .sort((a, b) => b.timestamp - a.timestamp)
+                .forEach(addProjectToSidebar);
+        }
+
+        function addProjectToSidebar(project) {
+            if (project.name === CHAT_HISTORY_PROJECT_NAME) return;
+            const li = document.createElement("li");
+            li.className = "project-item";
+            li.textContent = project.name;
+            li.dataset.timestamp = project.timestamp;
+            li.addEventListener("click", () => {
+                if (isChatMode) {
+                    modeToggleSwitch.click(); 
+                }
+                createSiteContainer(null, project)
+            });
+            projectList.append(li);
+        }
+
+        // --- SPEECH RECOGNITION & VISUALIZER ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.lang = 'en-US';
+            recognition.interimResults = true;
+            micBtn.addEventListener('click', () => {
+                if (isListening) {
+                    recognition.stop();
+                    return;
+                }
+                promptSuggestions.classList.add('hidden');
+                if (!mediaStream) {
+                    navigator.mediaDevices.getUserMedia({
+                        audio: true
+                    }).then(stream => {
+                        mediaStream = stream;
+                        setupVisualizer(mediaStream);
+                        recognition.start();
+                    }).catch(err => {
+                        console.error("Microphone access denied:", err);
+                        showNotification('Microphone access denied. Check browser permissions.');
+                    });
+                } else {
+                    setupVisualizer(mediaStream);
+                    recognition.start();
+                }
+            });
+            recognition.onstart = () => {
+                isListening = true;
+                finalTranscript = promptInput.value ? promptInput.value + ' ' : '';
+                micBtn.classList.add('listening');
+                micBtn.innerHTML = stopIcon;
+            };
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript.trim() + ' ';
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+                promptInput.value = finalTranscript + interimTranscript;
+                autoResizePrompt.call(promptInput);
+            };
+            recognition.onend = () => {
+                isListening = false;
+                micBtn.classList.remove('listening');
+                micBtn.innerHTML = micIcon;
+                stopVisualizer();
+                if (promptInput.value.trim() === '' && !isChatMode) {
+                    promptSuggestions.classList.remove('hidden');
+                }
+            };
+            recognition.onerror = (event) => {
+                showNotification(`Error: ${event.error}.`, 'error');
+                isListening = false;
+                micBtn.classList.remove('listening');
+                micBtn.innerHTML = micIcon;
+                stopVisualizer();
+            };
+        } else {
+            micBtn.style.display = 'none';
+        }
+
+        function setupVisualizer(stream) {
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (!source || source.mediaStream !== stream) source = audioContext.createMediaStreamSource(stream);
+            analyser = audioContext.createAnalyser();
+            analyser.smoothingTimeConstant = 0.8;
+            analyser.fftSize = 2048;
+            source.connect(analyser);
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            visualizerCanvas.width = visualizerCanvas.clientWidth;
+            visualizerCanvas.height = visualizerCanvas.clientHeight;
+            visualizerCanvas.style.display = 'block';
+            promptInput.classList.add('listening');
+
+            function draw() {
+                animationFrameId = requestAnimationFrame(draw);
+                analyser.getByteTimeDomainData(dataArray);
+                visualizerCtx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
+                visualizerCtx.lineWidth = 2.5;
+                visualizerCtx.strokeStyle = '#3B82F6';
+                visualizerCtx.beginPath();
+                let x = 0;
+                for (let i = 0; i < bufferLength; i++) {
+                    const v = dataArray[i] / 128.0;
+                    const y = v * visualizerCanvas.height / 2;
+                    if (i === 0) {
+                        visualizerCtx.moveTo(x, y);
+                    } else {
+                        visualizerCtx.lineTo(x, y);
+                    }
+                    x += visualizerCanvas.width / bufferLength;
+                }
+                visualizerCtx.lineTo(visualizerCanvas.width, visualizerCanvas.height / 2);
+                visualizerCtx.stroke();
+            }
+            draw();
+        }
+
+        function stopVisualizer() {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            if (source && analyser) {
+                source.disconnect(analyser);
+            }
+            visualizerCtx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
+            visualizerCanvas.style.display = 'none';
+            promptInput.classList.remove('listening');
+        }
+    </script>
+</body>
+
+</html>
+

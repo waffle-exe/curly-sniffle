@@ -1,0 +1,2152 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>sitee. &#8211; your helping hand for hackathons</title>
+    <meta name='robots' content='max-image-preview:large'/>
+    <style>
+    img:is([sizes="auto" i], [sizes^="auto," i]) {
+        contain-intrinsic-size: 3000px 1500px
+    }
+    </style>
+    <link rel='dns-prefetch' href='//fonts.googleapis.com'/>
+    <link rel="alternate" type="application/rss+xml" title="Nextmind &raquo; Feed" href="https://demo.awaikenthemes.com/nextmind/neural-networks/feed/"/>
+    <link rel="alternate" type="application/rss+xml" title="Nextmind &raquo; Comments Feed" href="https://demo.awaikenthemes.com/nextmind/neural-networks/comments/feed/"/>
+    <script>
+    window._wpemojiSettings = {
+        "baseUrl": "https:\/\/s.w.org\/images\/core\/emoji\/16.0.1\/72x72\/",
+        "ext": ".png",
+        "svgUrl": "https:\/\/s.w.org\/images\/core\/emoji\/16.0.1\/svg\/",
+        "svgExt": ".svg",
+        "source": {
+            "concatemoji": "https:\/\/demo.awaikenthemes.com\/nextmind\/neural-networks\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.8.2"
+        }
+    };
+    /*! This file is auto-generated */
+    !function(s, n) {
+        var o,
+            i,
+            e;
+        function c(e) {
+            try {
+                var t = {
+                    supportTests: e,
+                    timestamp: (new Date).valueOf()
+                };
+                sessionStorage.setItem(o, JSON.stringify(t))
+            } catch (e) {}
+        }
+        function p(e, t, n) {
+            e.clearRect(0, 0, e.canvas.width, e.canvas.height),
+            e.fillText(t, 0, 0);
+            var t = new Uint32Array(e.getImageData(0, 0, e.canvas.width, e.canvas.height).data),
+                a = (e.clearRect(0, 0, e.canvas.width, e.canvas.height), e.fillText(n, 0, 0), new Uint32Array(e.getImageData(0, 0, e.canvas.width, e.canvas.height).data));
+            return t.every(function(e, t) {
+                return e === a[t]
+            })
+        }
+        function u(e, t) {
+            e.clearRect(0, 0, e.canvas.width, e.canvas.height),
+            e.fillText(t, 0, 0);
+            for (var n = e.getImageData(16, 16, 1, 1), a = 0; a < n.data.length; a++)
+                if (0 !== n.data[a])
+                    return !1;
+            return !0
+        }
+        function f(e, t, n, a) {
+            switch (t) {
+            case "flag":
+                return n(e, "\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f", "\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f") ? !1 : !n(e, "\ud83c\udde8\ud83c\uddf6", "\ud83c\udde8\u200b\ud83c\uddf6") && !n(e, "\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f", "\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");
+            case "emoji":
+                return !a(e, "\ud83e\udedf")
+            }
+            return !1
+        }
+        function g(e, t, n, a) {
+            var r = "undefined" != typeof WorkerGlobalScope && self instanceof WorkerGlobalScope ? new OffscreenCanvas(300, 150) : s.createElement("canvas"),
+                o = r.getContext("2d", {
+                    willReadFrequently: !0
+                }),
+                i = (o.textBaseline = "top", o.font = "600 32px Arial", {});
+            return e.forEach(function(e) {
+                i[e] = t(o, e, n, a)
+            }), i
+        }
+        function t(e) {
+            var t = s.createElement("script");
+            t.src = e,
+            t.defer = !0,
+            s.head.appendChild(t)
+        }
+        "undefined" != typeof Promise && (o = "wpEmojiSettingsSupports", i = ["flag", "emoji"], n.supports = {
+            everything: !0,
+            everythingExceptFlag: !0
+        }, e = new Promise(function(e) {
+            s.addEventListener("DOMContentLoaded", e, {
+                once: !0
+            })
+        }), new Promise(function(t) {
+            var n = function() {
+                try {
+                    var e = JSON.parse(sessionStorage.getItem(o));
+                    if ("object" == typeof e && "number" == typeof e.timestamp && (new Date).valueOf() < e.timestamp + 604800 && "object" == typeof e.supportTests)
+                        return e.supportTests
+                } catch (e) {}
+                return null
+            }();
+            if (!n) {
+                if ("undefined" != typeof Worker && "undefined" != typeof OffscreenCanvas && "undefined" != typeof URL && URL.createObjectURL && "undefined" != typeof Blob)
+                    try {
+                        var e = "postMessage(" + g.toString() + "(" + [JSON.stringify(i), f.toString(), p.toString(), u.toString()].join(",") + "));",
+                            a = new Blob([e], {
+                                type: "text/javascript"
+                            }),
+                            r = new Worker(URL.createObjectURL(a), {
+                                name: "wpTestEmojiSupports"
+                            });
+                        return void (r.onmessage = function(e) {
+                            c(n = e.data),
+                            r.terminate(),
+                            t(n)
+                        })
+                    } catch (e) {}
+                c(n = g(i, f, p, u))
+            }
+            t(n)
+        }).then(function(e) {
+            for (var t in e)
+                n.supports[t] = e[t],
+                n.supports.everything = n.supports.everything && n.supports[t],
+                "flag" !== t && (n.supports.everythingExceptFlag = n.supports.everythingExceptFlag && n.supports[t]);
+            n.supports.everythingExceptFlag = n.supports.everythingExceptFlag && !n.supports.flag,
+            n.DOMReady = !1,
+            n.readyCallback = function() {
+                n.DOMReady = !0
+            }
+        }).then(function() {
+            return e
+        }).then(function() {
+            var e;
+            n.supports.everything || (n.readyCallback(), (e = n.source || {}).concatemoji ? t(e.concatemoji) : e.wpemoji && e.twemoji && (t(e.twemoji), t(e.wpemoji)))
+        }))
+    }((window, document), window._wpemojiSettings);
+    </script>
+    <link rel='stylesheet' id='elementor-frontend-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/frontend.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='elementor-post-52-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/elementor/css/post-52.css?ver=1752615733' media='all'/>
+    <link rel='stylesheet' id='elementor-post-3027-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/elementor/css/post-3027.css?ver=1752615733' media='all'/>
+    <style id='wp-emoji-styles-inline-css'>
+    img.wp-smiley, img.emoji {
+        display: inline !important;
+        border: none !important;
+        box-shadow: none !important;
+        height: 1em !important;
+        width: 1em !important;
+        margin: 0 0.07em !important;
+        vertical-align: -0.1em !important;
+        background: none !important;
+        padding: 0 !important;
+    }
+    </style>
+    <style id='classic-theme-styles-inline-css'>
+    /*! This file is auto-generated */
+    .wp-block-button__link {
+        color: #fff;
+        background-color: #32373c;
+        border-radius: 9999px;
+        box-shadow: none;
+        text-decoration: none;
+        padding: calc(.667em + 2px) calc(1.333em + 2px);
+        font-size:1.125em
+    }
+
+    .wp-block-file__button {
+        background: #32373c;
+        color: #fff;
+        text-decoration: none
+    }
+    </style>
+    <style id='global-styles-inline-css'>
+    :root {
+        --wp--preset--aspect-ratio--square: 1;
+        --wp--preset--aspect-ratio--4-3: 4/3;
+        --wp--preset--aspect-ratio--3-4: 3/4;
+        --wp--preset--aspect-ratio--3-2: 3/2;
+        --wp--preset--aspect-ratio--2-3: 2/3;
+        --wp--preset--aspect-ratio--16-9: 16/9;
+        --wp--preset--aspect-ratio--9-16: 9/16;
+        --wp--preset--color--black: #000000;
+        --wp--preset--color--cyan-bluish-gray: #abb8c3;
+        --wp--preset--color--white: #ffffff;
+        --wp--preset--color--pale-pink: #f78da7;
+        --wp--preset--color--vivid-red: #cf2e2e;
+        --wp--preset--color--luminous-vivid-orange: #ff6900;
+        --wp--preset--color--luminous-vivid-amber: #fcb900;
+        --wp--preset--color--light-green-cyan: #7bdcb5;
+        --wp--preset--color--vivid-green-cyan: #00d084;
+        --wp--preset--color--pale-cyan-blue: #8ed1fc;
+        --wp--preset--color--vivid-cyan-blue: #0693e3;
+        --wp--preset--color--vivid-purple: #9b51e0;
+        --wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg, rgba(6, 147, 227, 1) 0%, rgb(155, 81, 224) 100%);
+        --wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg, rgb(122, 220, 180) 0%, rgb(0, 208, 130) 100%);
+        --wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg, rgba(252, 185, 0, 1) 0%, rgba(255, 105, 0, 1) 100%);
+        --wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg, rgba(255, 105, 0, 1) 0%, rgb(207, 46, 46) 100%);
+        --wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg, rgb(238, 238, 238) 0%, rgb(169, 184, 195) 100%);
+        --wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg, rgb(74, 234, 220) 0%, rgb(151, 120, 209) 20%, rgb(207, 42, 186) 40%, rgb(238, 44, 130) 60%, rgb(251, 105, 98) 80%, rgb(254, 248, 76) 100%);
+        --wp--preset--gradient--blush-light-purple: linear-gradient(135deg, rgb(255, 206, 236) 0%, rgb(152, 150, 240) 100%);
+        --wp--preset--gradient--blush-bordeaux: linear-gradient(135deg, rgb(254, 205, 165) 0%, rgb(254, 45, 45) 50%, rgb(107, 0, 62) 100%);
+        --wp--preset--gradient--luminous-dusk: linear-gradient(135deg, rgb(255, 203, 112) 0%, rgb(199, 81, 192) 50%, rgb(65, 88, 208) 100%);
+        --wp--preset--gradient--pale-ocean: linear-gradient(135deg, rgb(255, 245, 203) 0%, rgb(182, 227, 212) 50%, rgb(51, 167, 181) 100%);
+        --wp--preset--gradient--electric-grass: linear-gradient(135deg, rgb(202, 248, 128) 0%, rgb(113, 206, 126) 100%);
+        --wp--preset--gradient--midnight: linear-gradient(135deg, rgb(2, 3, 129) 0%, rgb(40, 116, 252) 100%);
+        --wp--preset--font-size--small: 13px;
+        --wp--preset--font-size--medium: 20px;
+        --wp--preset--font-size--large: 36px;
+        --wp--preset--font-size--x-large: 42px;
+        --wp--preset--spacing--20: 0.44rem;
+        --wp--preset--spacing--30: 0.67rem;
+        --wp--preset--spacing--40: 1rem;
+        --wp--preset--spacing--50: 1.5rem;
+        --wp--preset--spacing--60: 2.25rem;
+        --wp--preset--spacing--70: 3.38rem;
+        --wp--preset--spacing--80: 5.06rem;
+        --wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);
+        --wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);
+        --wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);
+        --wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);
+        --wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);
+    }
+
+    :where(.is-layout-flex) {
+        gap: 0.5em;
+    }
+
+    :where(.is-layout-grid) {
+        gap: 0.5em;
+    }
+
+    body .is-layout-flex {
+        display: flex;
+    }
+
+    .is-layout-flex {
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .is-layout-flex > :is( *, div) {
+        margin: 0;
+    }
+
+    body .is-layout-grid {
+        display: grid;
+    }
+
+    .is-layout-grid > :is( *, div) {
+        margin: 0;
+    }
+
+    :where(.wp-block-columns.is-layout-flex) {
+        gap: 2em;
+    }
+
+    :where(.wp-block-columns.is-layout-grid) {
+        gap: 2em;
+    }
+
+    :where(.wp-block-post-template.is-layout-flex) {
+        gap: 1.25em;
+    }
+
+    :where(.wp-block-post-template.is-layout-grid) {
+        gap: 1.25em;
+    }
+
+    .has-black-color {
+        color: var(--wp--preset--color--black) !important;
+    }
+
+    .has-cyan-bluish-gray-color {
+        color: var(--wp--preset--color--cyan-bluish-gray) !important;
+    }
+
+    .has-white-color {
+        color: var(--wp--preset--color--white) !important;
+    }
+
+    .has-pale-pink-color {
+        color: var(--wp--preset--color--pale-pink) !important;
+    }
+
+    .has-vivid-red-color {
+        color: var(--wp--preset--color--vivid-red) !important;
+    }
+
+    .has-luminous-vivid-orange-color {
+        color: var(--wp--preset--color--luminous-vivid-orange) !important;
+    }
+
+    .has-luminous-vivid-amber-color {
+        color: var(--wp--preset--color--luminous-vivid-amber) !important;
+    }
+
+    .has-light-green-cyan-color {
+        color: var(--wp--preset--color--light-green-cyan) !important;
+    }
+
+    .has-vivid-green-cyan-color {
+        color: var(--wp--preset--color--vivid-green-cyan) !important;
+    }
+
+    .has-pale-cyan-blue-color {
+        color: var(--wp--preset--color--pale-cyan-blue) !important;
+    }
+
+    .has-vivid-cyan-blue-color {
+        color: var(--wp--preset--color--vivid-cyan-blue) !important;
+    }
+
+    .has-vivid-purple-color {
+        color: var(--wp--preset--color--vivid-purple) !important;
+    }
+
+    .has-black-background-color {
+        background-color: var(--wp--preset--color--black) !important;
+    }
+
+    .has-cyan-bluish-gray-background-color {
+        background-color: var(--wp--preset--color--cyan-bluish-gray) !important;
+    }
+
+    .has-white-background-color {
+        background-color: var(--wp--preset--color--white) !important;
+    }
+
+    .has-pale-pink-background-color {
+        background-color: var(--wp--preset--color--pale-pink) !important;
+    }
+
+    .has-vivid-red-background-color {
+        background-color: var(--wp--preset--color--vivid-red) !important;
+    }
+
+    .has-luminous-vivid-orange-background-color {
+        background-color: var(--wp--preset--color--luminous-vivid-orange) !important;
+    }
+
+    .has-luminous-vivid-amber-background-color {
+        background-color: var(--wp--preset--color--luminous-vivid-amber) !important;
+    }
+
+    .has-light-green-cyan-background-color {
+        background-color: var(--wp--preset--color--light-green-cyan) !important;
+    }
+
+    .has-vivid-green-cyan-background-color {
+        background-color: var(--wp--preset--color--vivid-green-cyan) !important;
+    }
+
+    .has-pale-cyan-blue-background-color {
+        background-color: var(--wp--preset--color--pale-cyan-blue) !important;
+    }
+
+    .has-vivid-cyan-blue-background-color {
+        background-color: var(--wp--preset--color--vivid-cyan-blue) !important;
+    }
+
+    .has-vivid-purple-background-color {
+        background-color: var(--wp--preset--color--vivid-purple) !important;
+    }
+
+    .has-black-border-color {
+        border-color: var(--wp--preset--color--black) !important;
+    }
+
+    .has-cyan-bluish-gray-border-color {
+        border-color: var(--wp--preset--color--cyan-bluish-gray) !important;
+    }
+
+    .has-white-border-color {
+        border-color: var(--wp--preset--color--white) !important;
+    }
+
+    .has-pale-pink-border-color {
+        border-color: var(--wp--preset--color--pale-pink) !important;
+    }
+
+    .has-vivid-red-border-color {
+        border-color: var(--wp--preset--color--vivid-red) !important;
+    }
+
+    .has-luminous-vivid-orange-border-color {
+        border-color: var(--wp--preset--color--luminous-vivid-orange) !important;
+    }
+
+    .has-luminous-vivid-amber-border-color {
+        border-color: var(--wp--preset--color--luminous-vivid-amber) !important;
+    }
+
+    .has-light-green-cyan-border-color {
+        border-color: var(--wp--preset--color--light-green-cyan) !important;
+    }
+
+    .has-vivid-green-cyan-border-color {
+        border-color: var(--wp--preset--color--vivid-green-cyan) !important;
+    }
+
+    .has-pale-cyan-blue-border-color {
+        border-color: var(--wp--preset--color--pale-cyan-blue) !important;
+    }
+
+    .has-vivid-cyan-blue-border-color {
+        border-color: var(--wp--preset--color--vivid-cyan-blue) !important;
+    }
+
+    .has-vivid-purple-border-color {
+        border-color: var(--wp--preset--color--vivid-purple) !important;
+    }
+
+    .has-vivid-cyan-blue-to-vivid-purple-gradient-background {
+        background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;
+    }
+
+    .has-light-green-cyan-to-vivid-green-cyan-gradient-background {
+        background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;
+    }
+
+    .has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background {
+        background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;
+    }
+
+    .has-luminous-vivid-orange-to-vivid-red-gradient-background {
+        background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;
+    }
+
+    .has-very-light-gray-to-cyan-bluish-gray-gradient-background {
+        background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;
+    }
+
+    .has-cool-to-warm-spectrum-gradient-background {
+        background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;
+    }
+
+    .has-blush-light-purple-gradient-background {
+        background: var(--wp--preset--gradient--blush-light-purple) !important;
+    }
+
+    .has-blush-bordeaux-gradient-background {
+        background: var(--wp--preset--gradient--blush-bordeaux) !important;
+    }
+
+    .has-luminous-dusk-gradient-background {
+        background: var(--wp--preset--gradient--luminous-dusk) !important;
+    }
+
+    .has-pale-ocean-gradient-background {
+        background: var(--wp--preset--gradient--pale-ocean) !important;
+    }
+
+    .has-electric-grass-gradient-background {
+        background: var(--wp--preset--gradient--electric-grass) !important;
+    }
+
+    .has-midnight-gradient-background {
+        background: var(--wp--preset--gradient--midnight) !important;
+    }
+
+    .has-small-font-size {
+        font-size: var(--wp--preset--font-size--small) !important;
+    }
+
+    .has-medium-font-size {
+        font-size: var(--wp--preset--font-size--medium) !important;
+    }
+
+    .has-large-font-size {
+        font-size: var(--wp--preset--font-size--large) !important;
+    }
+
+    .has-x-large-font-size {
+        font-size: var(--wp--preset--font-size--x-large) !important;
+    }
+
+    :where(.wp-block-post-template.is-layout-flex) {
+        gap: 1.25em;
+    }
+
+    :where(.wp-block-post-template.is-layout-grid) {
+        gap: 1.25em;
+    }
+
+    :where(.wp-block-columns.is-layout-flex) {
+        gap: 2em;
+    }
+
+    :where(.wp-block-columns.is-layout-grid) {
+        gap: 2em;
+    }
+
+    :root :where(.wp-block-pullquote) {
+        font-size: 1.5em;
+        line-height: 1.6;
+    }
+    </style>
+    <link rel='stylesheet' id='contact-form-7-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=6.1' media='all'/>
+    <link rel='stylesheet' id='elementor-icons-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.43.0' media='all'/>
+    <link rel='stylesheet' id='elementor-post-18-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/elementor/css/post-18.css?ver=1752615733' media='all'/>
+    <link rel='stylesheet' id='e-animation-fadeInUp-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInUp.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='widget-heading-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/widget-heading.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='widget-image-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/widget-image.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='widget-counter-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/widget-counter.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='widget-text-path-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/widget-text-path.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='widget-icon-list-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='mediaelement-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css?ver=4.2.17' media='all'/>
+    <link rel='stylesheet' id='wp-mediaelement-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/mediaelement/wp-mediaelement.min.css?ver=6.8.2' media='all'/>
+    <link rel='stylesheet' id='widget-rating-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/widget-rating.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='swiper-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5' media='all'/>
+    <link rel='stylesheet' id='widget-divider-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/widget-divider.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='e-swiper-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/conditionals/e-swiper.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='widget-image-carousel-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/css/widget-image-carousel.min.css?ver=3.30.2' media='all'/>
+    <link rel='stylesheet' id='elementor-post-9-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/elementor/css/post-9.css?ver=1752615734' media='all'/>
+    <link rel='stylesheet' id='ekit-widget-styles-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/widgets/init/assets/css/widget-styles.css?ver=3.5.5' media='all'/>
+    <link rel='stylesheet' id='ekit-widget-styles-pro-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit/widgets/init/assets/css/widget-styles-pro.css?ver=3.8.9' media='all'/>
+    <link rel='stylesheet' id='ekit-responsive-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/widgets/init/assets/css/responsive.css?ver=3.5.5' media='all'/>
+    <link rel='stylesheet' id='odometer-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/widgets/init/assets/css/odometer-theme-default.css?ver=3.5.5' media='all'/>
+    <link rel='stylesheet' id='nextmind-font-css' href='https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&#038;display=swap' media='all'/>
+    <link rel='stylesheet' id='nextmind-css-variable-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/css/css-variable.css?ver=1.0.2' media='all'/>
+    <link rel='stylesheet' id='fontawesome-6.4.0-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/css/all.min.css?ver=1.0.2' media='all'/>
+    <link rel='stylesheet' id='bootstrap-5.3.2-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/css/bootstrap.min.css?ver=1.0.2' media='all'/>
+    <link rel='stylesheet' id='nextmind-style-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/style.css?ver=1.0.2' media='all'/>
+    <link rel='stylesheet' id='elementor-gf-local-manrope-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/elementor/google-fonts/css/manrope.css?ver=1752615735' media='all'/>
+    <link rel='stylesheet' id='elementor-gf-local-sora-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/elementor/google-fonts/css/sora.css?ver=1752615735' media='all'/>
+    <link rel='stylesheet' id='elementor-icons-ekiticons-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/modules/elementskit-icon-pack/assets/css/ekiticons.css?ver=3.5.5' media='all'/>
+    <link rel='stylesheet' id='elementor-icons-shared-0-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/lib/font-awesome/css/fontawesome.min.css?ver=5.15.3' media='all'/>
+    <link rel='stylesheet' id='elementor-icons-fa-solid-css' href='https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/lib/font-awesome/css/solid.min.css?ver=5.15.3' media='all'/>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+    <link rel="https://api.w.org/" href="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-json/"/>
+    <link rel="alternate" title="JSON" type="application/json" href="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-json/wp/v2/pages/9"/>
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://demo.awaikenthemes.com/nextmind/neural-networks/xmlrpc.php?rsd"/>
+
+    <link rel="canonical" href="https://demo.awaikenthemes.com/nextmind/neural-networks/"/>
+    <link rel='shortlink' href='https://demo.awaikenthemes.com/nextmind/neural-networks/'/>
+    <link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdemo.awaikenthemes.com%2Fnextmind%2Fneural-networks%2F"/>
+    <link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdemo.awaikenthemes.com%2Fnextmind%2Fneural-networks%2F&#038;format=xml"/>
+    <meta name="generator" content="Elementor 3.30.2; settings: css_print_method-external, google_font-enabled, font_display-swap">
+    <script type="text/javascript">
+    var elementskit_module_parallax_url = "https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit/modules/parallax/";
+    </script>
+    <style>
+    .e-con.e-parent:nth-of-type(n + 4):not(.e-lazyloaded):not(.e-no-lazyload), .e-con.e-parent:nth-of-type(n + 4):not(.e-lazyloaded):not(.e-no-lazyload) * {
+        background-image: none !important;
+    }
+
+    @media screen and (max-height: 1024px) {
+        .e-con.e-parent:nth-of-type(n + 3):not(.e-lazyloaded):not(.e-no-lazyload), .e-con.e-parent:nth-of-type(n + 3):not(.e-lazyloaded):not(.e-no-lazyload) * {
+            background-image: none !important;
+        }
+    }
+
+    @media screen and (max-height: 640px) {
+        .e-con.e-parent:nth-of-type(n + 2):not(.e-lazyloaded):not(.e-no-lazyload), .e-con.e-parent:nth-of-type(n + 2):not(.e-lazyloaded):not(.e-no-lazyload) * {
+            background-image: none !important;
+        }
+    }
+    </style>
+    <link rel="icon" href="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/05/favicon.png" sizes="32x32"/>
+    <link rel="icon" href="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/05/favicon.png" sizes="192x192"/>
+    <link rel="apple-touch-icon" href="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/05/favicon.png"/>
+    <meta name="msapplication-TileImage" content="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/05/favicon.png"/>
+</head>
+
+<body class="home wp-singular page-template page-template-elementor_header_footer page page-id-9 wp-custom-logo wp-theme-nextmind tt-magic-cursor fancy-scrollbar neural-networks elementor-default elementor-template-full-width elementor-kit-18 elementor-page elementor-page-9">
+
+    <div class="preloader">
+        <div class="loading-container">
+            <div class="loading"></div>
+            <div id="loading-icon">
+                <img src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/images/loader.svg" alt="">
+            </div>
+        </div>
+    </div>
+    <div id="magic-cursor">
+        <div id="ball"></div>
+    </div>
+
+    <a class="skip-link screen-reader-text" href="#content">
+    			Skip to content		</a>
+
+    <div class="ekit-template-content-markup ekit-template-content-header ekit-template-content-theme-support">
+        <div data-elementor-type="wp-post" data-elementor-id="52" class="elementor elementor-52">
+            <div class="elementor-element elementor-element-55bb6ab e-flex e-con-boxed e-con e-parent" data-id="55bb6ab" data-element_type="container">
+                <div class="e-con-inner">
+                    <div class="elementor-element elementor-element-5c8a3cf e-con-full e-flex e-con e-child" data-id="5c8a3cf" data-element_type="container">
+                        <div class="elementor-element elementor-element-85ec291 elementor-widget elementor-widget-nextmind-site-logo" data-id="85ec291" data-element_type="widget" data-settings="{&quot;align&quot;:&quot;left&quot;,&quot;width&quot;:{&quot;unit&quot;:&quot;%&quot;,&quot;size&quot;:100,&quot;sizes&quot;:[]},&quot;space&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:202,&quot;sizes&quot;:[]},&quot;space_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;space_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;width_tablet&quot;:{&quot;unit&quot;:&quot;%&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;width_mobile&quot;:{&quot;unit&quot;:&quot;%&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;max_height&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;max_height_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;max_height_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;image_border_radius&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;top&quot;:&quot;&quot;,&quot;right&quot;:&quot;&quot;,&quot;bottom&quot;:&quot;&quot;,&quot;left&quot;:&quot;&quot;,&quot;isLinked&quot;:true},&quot;image_border_radius_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;top&quot;:&quot;&quot;,&quot;right&quot;:&quot;&quot;,&quot;bottom&quot;:&quot;&quot;,&quot;left&quot;:&quot;&quot;,&quot;isLinked&quot;:true},&quot;image_border_radius_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;top&quot;:&quot;&quot;,&quot;right&quot;:&quot;&quot;,&quot;bottom&quot;:&quot;&quot;,&quot;left&quot;:&quot;&quot;,&quot;isLinked&quot;:true},&quot;caption_padding&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;top&quot;:&quot;&quot;,&quot;right&quot;:&quot;&quot;,&quot;bottom&quot;:&quot;&quot;,&quot;left&quot;:&quot;&quot;,&quot;isLinked&quot;:true},&quot;caption_padding_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;top&quot;:&quot;&quot;,&quot;right&quot;:&quot;&quot;,&quot;bottom&quot;:&quot;&quot;,&quot;left&quot;:&quot;&quot;,&quot;isLinked&quot;:true},&quot;caption_padding_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;top&quot;:&quot;&quot;,&quot;right&quot;:&quot;&quot;,&quot;bottom&quot;:&quot;&quot;,&quot;left&quot;:&quot;&quot;,&quot;isLinked&quot;:true},&quot;caption_space&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:0,&quot;sizes&quot;:[]},&quot;caption_space_tablet&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;caption_space_mobile&quot;:{&quot;unit&quot;:&quot;px&quot;,&quot;size&quot;:&quot;&quot;,&quot;sizes&quot;:[]},&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="nextmind-site-logo.default">
+                            <div class="elementor-widget-container">
+                                <div class="ata-site-logo">
+                                    <a data-elementor-open-lightbox="" class='elementor-clickable' href="https://demo.awaikenthemes.com/nextmind/neural-networks">
+                                        <div class="ata-site-logo-set">
+                                            <div class="ata-site-logo-container">
+                                                <img class="ata-site-logo-img elementor-animation-" style="filter: invert(); height: 40px;" src="website/assets/img/logo.svg" alt="default-logo"/>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="elementor-element elementor-element-eae9486 e-con-full e-flex e-con e-child" data-id="eae9486" data-element_type="container">
+                        <div class="elementor-element elementor-element-3e6584a main-header-menu elementor-widget elementor-widget-ekit-nav-menu" data-id="3e6584a" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="ekit-nav-menu.default">
+                            <div class="elementor-widget-container">
+                                <nav class="ekit-wid-con ekit_menu_responsive_tablet" data-hamburger-icon="icon icon-menu-11" data-hamburger-icon-type="icon" data-responsive-breakpoint="1024">
+                                    <button class="elementskit-menu-hamburger elementskit-menu-toggler" type="button" aria-label="hamburger-icon">
+                                        <i aria-hidden="true" class="ekit-menu-icon icon icon-menu-11"></i>
+                                    </button>
+                                    <div id="ekit-megamenu-header-menu" class="elementskit-menu-container elementskit-menu-offcanvas-elements elementskit-navbar-nav-default ekit-nav-menu-one-page-no ekit-nav-dropdown-hover">
+                                        <ul id="menu-header-menu" class="elementskit-navbar-nav elementskit-menu-po-center submenu-click-on-icon">
+                                           
+                                            <li id="menu-item-2328" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2328 nav-item elementskit-mobile-builder-content" data-vertical-menu=750px>
+                                                <a href="#about-us" class="ekit-menu-nav-link">About Us</a>
+                                            </li>
+                                            <li id="menu-item-5826" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5826 nav-item elementskit-mobile-builder-content" data-vertical-menu=750px>
+                                                <a href="#plans" class="ekit-menu-nav-link">Services</a>
+                                            </li>
+                                            <li id="menu-item-2329" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2329 nav-item elementskit-mobile-builder-content" data-vertical-menu=750px>
+                                                <a href="#contact-us" class="ekit-menu-nav-link">Contact Us</a>
+                                            </li>
+                                        </ul>
+                                        <div class="elementskit-nav-identity-panel">
+                                            <button class="elementskit-menu-close elementskit-menu-toggler" type="button">X</button>
+                                        </div>
+                                    </div>
+                                    <div class="elementskit-menu-overlay elementskit-menu-offcanvas-elements elementskit-menu-toggler ekit-nav-menu--overlay"></div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="elementor-element elementor-element-e342d66 e-con-full elementor-hidden-tablet elementor-hidden-mobile e-flex e-con e-child" data-id="e342d66" data-element_type="container">
+                        <div class="elementor-element elementor-element-0951dda elementor-widget elementor-widget-button" data-id="0951dda" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="button.default">
+                            <a class="elementor-button elementor-button-link elementor-size-sm" href="#">
+                                <span class="elementor-button-content-wrapper">
+                                    <span class="elementor-button-text">Get Started</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div data-elementor-type="wp-page" data-elementor-id="9" class="elementor elementor-9">
+        <div class="elementor-element elementor-element-8c285a3 e-flex e-con-boxed e-con e-parent" data-id="8c285a3" data-element_type="container">
+            <div class="e-con-inner">
+                <div class="elementor-element elementor-element-fd4bd7c e-con-full e-flex e-con e-child" data-id="fd4bd7c" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+                    <div class="elementor-element elementor-element-3db5ebd e-con-full e-flex e-con e-child" data-id="3db5ebd" data-element_type="container">
+                        <div class="elementor-element elementor-element-e84d7e5 section-title at-heading-animation at-animation-heading-none elementor-invisible elementor-widget elementor-widget-heading" data-id="e84d7e5" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                            <h3 class="elementor-heading-title elementor-size-default">BETA VERSION</h3>
+                        </div>
+                        
+                        <div class="elementor-element elementor-element-86d97ca elementor-invisible elementor-widget elementor-widget-heading" data-id="86d97ca" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:100,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                            <h1 class="elementor-heading-title elementor-size-default">
+                                Advanced neural networks built for real 
+                                <span>world impact</span>
+                            </h1>
+                        </div>
+                        <div class="elementor-element elementor-element-11a41cf elementor-invisible elementor-widget elementor-widget-text-editor" data-id="11a41cf" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:200,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                             <p>Sitee — built for vibe coders who eat bugs for breakfast and crack hackathons like they're Kurkure packets. Price? Just 25-rupee turture-level cheap. Made for programmers, by a fellow code junkie.
+</p>
+                        </div>
+                        <div class="elementor-element elementor-element-b60bba4 e-con-full e-flex elementor-invisible e-con e-child" data-id="b60bba4" data-element_type="container" data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:300}">
+                            <div class="elementor-element elementor-element-1f31ab7 elementor-widget elementor-widget-button" data-id="1f31ab7" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="button.default">
+                                <a class="elementor-button elementor-button-link elementor-size-sm" href="https://demo.awaikenthemes.com/nextmind/neural-networks/contact-us/">
+                                    <span class="elementor-button-content-wrapper">
+                                        <span class="elementor-button-text">Give Your Ideas Wings</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="elementor-element elementor-element-34d660f e-con-full e-flex elementor-invisible e-con e-child" data-id="34d660f" data-element_type="container" data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:300}">
+                           
+                            <div class="elementor-element elementor-element-23019f0 elementor-widget__width-initial elementor-widget-mobile__width-inherit elementor-widget elementor-widget-text-editor" data-id="23019f0" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                
+                                <p>your helping hand for hackathons :)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="elementor-element elementor-element-f93df65 e-con-full e-flex e-con e-child" data-id="f93df65" data-element_type="container">
+                    <div class="elementor-element elementor-element-0450482 at-shiny-glass-effect hero-img-platinum at-image-animation at-animation-image-none elementor-widget elementor-widget-image" data-id="0450482" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="image.default">
+                        <img loading="lazy" decoding="async" width="880" height="900" src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/hero-image.jpg" class="attachment-full size-full wp-image-330" alt="" srcset="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/hero-image.jpg 880w, https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/hero-image-293x300.jpg 293w, https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/hero-image-768x785.jpg 768w" sizes="(max-width: 880px) 100vw, 880px"/>
+                    </div>
+                    <div class="elementor-element elementor-element-75f5303 e-con-full hero-counter-box-platinum saturate-filter e-flex e-con e-child" data-id="75f5303" data-element_type="container" data-settings="{&quot;position&quot;:&quot;absolute&quot;}">
+                        <div class="elementor-element elementor-element-248c7b5 at-shiny-glass-effect elementor-widget__width-initial hero-counter-image-platinum at-image-animation at-animation-image-none elementor-widget elementor-widget-image" data-id="248c7b5" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="image.default">
+                            <img loading="lazy" decoding="async" width="160" height="190" src="https://avatars.githubusercontent.com/u/125212173?v=4" class="attachment-full size-full wp-image-540" alt=""/>
+                        </div>
+                        <div class="elementor-element elementor-element-955494b e-con-full e-flex e-con e-child" data-id="955494b" data-element_type="container">
+                            <div class="elementor-element elementor-element-2c4ab0b hero-counter-content-platinum elementor-widget elementor-widget-counter" data-id="2c4ab0b" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="counter.default">
+                                <div class="elementor-counter">
+                                    <div class="elementor-counter-title">Brainrot Ideas</div>
+                                    <div class="elementor-counter-number-wrapper">
+                                        <span class="elementor-counter-number-prefix"></span>
+                                        <span class="elementor-counter-number" data-duration="2000" data-to-value="1000" data-from-value="0" data-delimiter=",">0</span>
+                                        <span class="elementor-counter-number-suffix">+</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="elementor-element elementor-element-bcec5e7 elementor-widget elementor-widget-text-editor" data-id="bcec5e7" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                <p>crafting projects for myself and my gang, sitee. is one of those which can give your idea a push and maybe a hackathon trophy!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div  class="elementor-element elementor-element-39a2e0c e-flex e-con-boxed e-con e-parent" data-id="39a2e0c" data-element_type="container">
+            <div id="about-us" class="e-con-inner">
+                <div  class="elementor-element elementor-element-830dcb5 e-con-full e-flex e-con e-child" data-id="830dcb5" data-element_type="container">
+                    <div class="elementor-element elementor-element-6a6477a section-title at-heading-animation at-animation-heading-none elementor-invisible elementor-widget elementor-widget-heading" data-id="6a6477a" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                        <h3 class="elementor-heading-title elementor-size-default">ABOUT US</h3>
+                    </div>
+                    <div class="elementor-element elementor-element-7aeb8f2 about-heading-platinum at-heading-animation at-animation-heading-none elementor-invisible elementor-widget elementor-widget-heading" data-id="7aeb8f2" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:100,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                        <h2 class="elementor-heading-title elementor-size-default">
+                            From ideation to implementation building 
+                            <img decoding="async" src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/about-title-img.jpg">
+                             ethical, scalable, and intelligent AI systems that drive your
+                            <span>idea forward</span>
+                        </h2>
+                    </div>
+                    <div class="elementor-element elementor-element-6d2830f e-con-full e-flex e-con e-child" data-id="6d2830f" data-element_type="container">
+                        <div class="elementor-element elementor-element-7c7dfcd e-con-full e-flex elementor-invisible e-con e-child" data-id="7c7dfcd" data-element_type="container" data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:200}">
+                            <div class="elementor-element elementor-element-c39d55a ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="c39d55a" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                <div class="ekit-wid-con">
+                                    <!-- link opening -->
+                                    <!-- end link opening -->
+
+                                    <div class="elementskit-infobox text- text-left icon-lef-right-aligin elementor-animation- media  ">
+                                        <div class="elementskit-box-header elementor-animation-">
+                                            <div class="elementskit-info-box-icon  text-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="currentColor">
+                                                    <path d="M47.2148 12.5029C47.2146 7.13807 42.8649 2.78906 37.5 2.78906H12.5C7.13528 2.78929 2.78636 7.13821 2.78613 12.5029V37.5029C2.78613 42.8678 7.13514 47.2175 12.5 47.2178H37.5C42.8651 47.2178 47.2148 42.868 47.2148 37.5029V12.5029ZM49.2148 37.5029C49.2148 43.9726 43.9696 49.2178 37.5 49.2178H12.5C6.03057 49.2175 0.786133 43.9724 0.786133 37.5029V12.5029C0.786359 6.03364 6.03071 0.789289 12.5 0.789062H37.5C43.9695 0.789062 49.2146 6.0335 49.2148 12.5029V37.5029Z"></path>
+                                                    <path d="M21.5645 15.1186C21.9617 15.1731 22.2881 15.4604 22.3936 15.8471L27.1738 33.3735L33.0977 24.518L33.1729 24.4194C33.3614 24.2017 33.6366 24.0737 33.9287 24.0737H41.0713C41.6234 24.0737 42.0711 24.5216 42.0713 25.0737C42.0713 25.626 41.6236 26.0737 41.0713 26.0737H34.4629L27.6172 36.3091C27.3994 36.6345 27.0115 36.8027 26.625 36.7397C26.2385 36.6767 25.9244 36.3938 25.8213 36.0161L21.0811 18.6382L16.9297 25.5874C16.7491 25.8892 16.4231 26.0737 16.0713 26.0737H8.92871C8.37643 26.0737 7.92871 25.626 7.92871 25.0737C7.92894 24.5216 8.37657 24.0737 8.92871 24.0737H15.5039L20.5703 15.5971C20.776 15.253 21.1673 15.0642 21.5645 15.1186Z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <h3 class="elementskit-info-box-title">
+                                                                Industry-Focused Innovation                </h3>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="elementor-element elementor-element-144aa95 elementor-widget elementor-widget-text-editor" data-id="144aa95" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                <p>We develop AI solutions tailored to the unique needs of industries.</p>
+                            </div>
+                        </div>
+                        <div class="elementor-element elementor-element-23868be e-con-full e-flex elementor-invisible e-con e-child" data-id="23868be" data-element_type="container" data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:300}">
+                            <div class="elementor-element elementor-element-887fbf7 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="887fbf7" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                <div class="ekit-wid-con">
+                                    <!-- link opening -->
+                                    <!-- end link opening -->
+
+                                    <div class="elementskit-infobox text- text-left icon-lef-right-aligin elementor-animation- media  ">
+                                        <div class="elementskit-box-header elementor-animation-">
+                                            <div class="elementskit-info-box-icon  text-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="currentColor">
+                                                    <path d="M47.1357 13.3604C47.1357 13.1754 47.0842 12.9935 46.9873 12.8359C46.8917 12.6806 46.7549 12.5541 46.5928 12.4707L26.2803 3.0625C25.8763 2.88716 25.4403 2.79688 25 2.79688C24.5632 2.79691 24.1306 2.88502 23.7295 3.05762L3.40723 12.542C3.24525 12.6254 3.10924 12.752 3.01367 12.9072C2.91667 13.0648 2.86523 13.2466 2.86523 13.4316C2.8653 13.6165 2.91682 13.7976 3.01367 13.9551C3.1096 14.1109 3.24641 14.2379 3.40918 14.3213L23.7295 23.7324C24.1308 23.9051 24.5631 23.9941 25 23.9941C25.4366 23.9941 25.8685 23.9048 26.2695 23.7324L46.5928 14.248C46.7547 14.1646 46.8917 14.039 46.9873 13.8838C47.0841 13.7264 47.1357 13.5451 47.1357 13.3604ZM49.1357 13.3604C49.1357 13.9155 48.9814 14.4599 48.6904 14.9326C48.3993 15.4055 47.9821 15.788 47.4863 16.0381C47.4773 16.0427 47.4682 16.0475 47.459 16.0518L27.1016 25.5518C27.0935 25.5555 27.0853 25.559 27.0771 25.5625C26.4217 25.8471 25.7145 25.9941 25 25.9941C24.2856 25.9941 23.5791 25.847 22.9238 25.5625C22.9165 25.5593 22.9086 25.5561 22.9014 25.5527L2.54395 16.124C2.53417 16.1195 2.52427 16.1152 2.51465 16.1104C2.0188 15.8603 1.60169 15.4768 1.31055 15.0039C1.0195 14.5311 0.865296 13.9868 0.865234 13.4316C0.865234 12.8763 1.01941 12.3313 1.31055 11.8584C1.60168 11.3855 2.01885 11.003 2.51465 10.7529L2.54199 10.7393L22.8984 1.23926L22.9238 1.22852C23.5791 0.944032 24.2857 0.796912 25 0.796875C25.6252 0.796875 26.2449 0.909154 26.8291 1.12793L27.0771 1.22852L27.0986 1.23828L47.4561 10.667L47.4863 10.6816C47.9821 10.9317 48.3993 11.3142 48.6904 11.7871C48.9815 12.26 49.1357 12.8051 49.1357 13.3604Z"></path>
+                                                    <path d="M47.7959 25.3419C48.2975 25.1108 48.892 25.3305 49.123 25.8321C49.3538 26.3337 49.1343 26.9273 48.6328 27.1583L26.8476 37.1945L26.8437 37.1954C26.2483 37.467 25.6017 37.6075 24.9472 37.6075C24.2926 37.6075 23.6454 37.4671 23.0498 37.1954L23.0449 37.1935L1.36619 27.1573C0.865025 26.9253 0.646913 26.3314 0.878889 25.8302C1.1109 25.329 1.70486 25.1109 2.20604 25.3429L23.8838 35.3771C24.2177 35.5287 24.5804 35.6075 24.9472 35.6075C25.2233 35.6075 25.4969 35.5634 25.7578 35.4767L26.0137 35.3761L47.7959 25.3419Z"></path>
+                                                    <path d="M47.7959 36.9513C48.2975 36.7202 48.892 36.9399 49.123 37.4415C49.3538 37.9431 49.1343 38.5367 48.6328 38.7677L26.8476 48.8038L26.8437 48.8048C26.2483 49.0764 25.6017 49.2169 24.9472 49.2169C24.2926 49.2169 23.6454 49.0765 23.0498 48.8048L23.0449 48.8028L1.36619 38.7667C0.865025 38.5347 0.646913 37.9407 0.878889 37.4396C1.1109 36.9384 1.70486 36.7203 2.20604 36.9523L23.8838 46.9864C24.2177 47.1381 24.5804 47.2169 24.9472 47.2169C25.2233 47.2169 25.4969 47.1727 25.7578 47.0861L26.0137 46.9855L47.7959 36.9513Z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <h3 class="elementskit-info-box-title">
+                                                                Human-Centered AI Approach                </h3>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="elementor-element elementor-element-b89cde2 elementor-widget elementor-widget-text-editor" data-id="b89cde2" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                <p>Our solutions are built with transparency and usability in mind.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="elementor-element elementor-element-378a1a0 elementor-invisible elementor-widget elementor-widget-button" data-id="378a1a0" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:400,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="button.default">
+                        <a class="elementor-button elementor-button-link elementor-size-sm" href="#plans">
+                            <span class="elementor-button-content-wrapper">
+                                <span class="elementor-button-text">Get Started Today!</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="elementor-element elementor-element-1c59f72 e-con-full e-flex e-con e-child" data-id="1c59f72" data-element_type="container">
+                    <div class="elementor-element elementor-element-2e4fa00 e-con-full e-flex e-con e-child" data-id="2e4fa00" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+                        <div class="elementor-element elementor-element-a4a51d2 e-con-full saturate-filter e-flex e-con e-child" data-id="a4a51d2" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+                            <div class="elementor-element elementor-element-c2a1ce9 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="c2a1ce9" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h3 class="elementor-heading-title elementor-size-default">Advanced AI solutions built on deep learning &amp; neural networks.</h3>
+                            </div>
+                            <div class="elementor-element elementor-element-d8f29f7 at-image-animation at-animation-image-none at-none elementor-widget elementor-widget-image" data-id="d8f29f7" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="image.default">
+                                <img loading="lazy" decoding="async" width="102" height="31" src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/about-simplified-icon.svg" class="attachment-full size-full wp-image-281" alt=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="elementor-element elementor-element-a3d1394 e-flex e-con-boxed e-con e-parent" data-id="a3d1394" data-element_type="container">
+            <div class="e-con-inner">
+                <div class="elementor-element elementor-element-fc6e2eb e-con-full e-flex e-con e-child" data-id="fc6e2eb" data-element_type="container">
+                    <div class="elementor-element elementor-element-b6e6049 section-title at-heading-animation at-animation-heading-none elementor-invisible elementor-widget elementor-widget-heading" data-id="b6e6049" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                        <h3 class="elementor-heading-title elementor-size-default">OUR SERVICES</h3>
+                    </div>
+                    <div class="elementor-element elementor-element-b8ed1fe elementor-invisible elementor-widget elementor-widget-heading" data-id="b8ed1fe" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:100,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                        <h2 class="elementor-heading-title elementor-size-default">
+                            Empowering organizations with intelligent 
+                            <span>neural systems</span>
+                        </h2>
+                    </div>
+                </div>
+<style>
+  /* --- Fonts & Icons --- */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+  /* --- Theme Vars (keep yours if already defined) --- */
+  :root{
+    --surface-color:#1a1a1e;
+    --text-color:#fff;
+    --text-muted:#b7b7c2;
+    --accent:#3B82F6;
+    --button-gradient:linear-gradient(90deg,#E87A5D,#3B82F6);
+    --border:rgba(255,255,255,0.08);
+    --border-strong:rgba(255,255,255,0.14);
+    --shadow:0 12px 40px rgba(0,0,0,.45);
+    --radius:22px;
+  }
+
+  /* --- Section --- */
+  #pricing-section{
+    font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--text-color);
+    padding:4rem 1rem;
+  }
+
+  /* --- Layout: two big cards side-by-side --- */
+  .pricing-container{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(280px,1fr));
+    gap:2rem;
+    align-items:stretch;
+    max-width:1100px;
+    margin:0 auto;
+  }
+
+  /* --- Main Plan Cards --- */
+  .plan-card{
+    background:var(--surface-color);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:2rem;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .plan-card h3{
+    font-size:2rem;
+    font-weight:700;
+    margin:0 0 1rem 0;
+    letter-spacing:.2px;
+  }
+
+  .plan-features{
+    list-style:none;
+    padding:0;
+    margin:0 0 1.25rem 0;
+  }
+  .plan-features li{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    color:var(--text-muted);
+    margin:.55rem 0;
+  }
+  .plan-features i{ color:var(--accent); font-size:.85rem; }
+
+  .choose-plan-btn{
+    margin-top:1rem;
+    padding:1rem 1.1rem;
+    border:none;
+    border-radius:14px;
+    background:var(--button-gradient);
+    color:#fff;
+    font-weight:700;
+    cursor:pointer;
+    transition:transform .18s ease;
+  }
+  .choose-plan-btn:hover{ transform:translateY(-1px); }
+
+  /* --- Coming Soon (blurred bg) --- */
+  .plan-card.coming-soon{ position:relative; overflow:hidden; }
+  .plan-card.coming-soon::before{
+    content:"";
+    position:absolute; inset:0;
+    background:url('https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/service-1.jpg') center/cover no-repeat;
+    filter:blur(10px) brightness(.7);
+    z-index:0;
+  }
+  .plan-card.coming-soon > *{ position:relative; z-index:1; }
+  .badge{
+    display:inline-block; font-size:.75rem; font-weight:700;
+    background:var(--accent); padding:.25rem .6rem; border-radius:999px;
+    vertical-align:middle; margin-left:.5rem;
+  }
+  .plan-card.coming-soon .choose-plan-btn{
+    background:#3a3a3f; color:#cfcfd8; cursor:not-allowed;
+  }
+
+  /* --- Sub-plans PANEL (inside the first card) --- */
+  .sub-plans-panel{
+    overflow:hidden;
+    height:0;              /* JS animates this to content height */
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .28s ease, height .32s ease;
+    margin-top:.9rem;
+  }
+  .sub-plans-panel.open{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  /* Rail = the row that slides from the left */
+  .sub-plans-rail{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(200px,1fr));
+    gap:1rem;
+    transform:translateX(-24px);
+    transition:transform .32s ease;
+  }
+  .sub-plans-panel.in .sub-plans-rail{ transform:translateX(0); }
+
+  /* Individual sub-plan cards */
+  .sub-plan{
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--border-strong);
+    border-radius:16px;
+    padding:1.25rem 1rem;
+    text-align:center;
+    box-shadow:0 6px 20px rgba(0,0,0,.25);
+    transform:translateX(-40px);
+    opacity:0;
+  }
+  .sub-plan h4{
+    margin:.2rem 0 .5rem 0;
+    font-size:1.15rem;
+    line-height:1.2;
+  }
+  .sub-plan p{
+    margin:0;
+    color:var(--text-muted);
+    font-size:.95rem;
+  }
+
+  /* Stagger when opening */
+  .sub-plans-panel.in .sub-plan{
+    transform:translateX(0);
+    opacity:1;
+    transition:transform .35s ease, opacity .35s ease;
+  }
+  .sub-plan:nth-child(1){ transition-delay:.08s; }
+  .sub-plan:nth-child(2){ transition-delay:.18s; }
+  .sub-plan:nth-child(3){ transition-delay:.28s; }
+
+  /* Stagger when closing (slightly faster) */
+  .sub-plans-panel.closing .sub-plan{
+    transform:translateX(-30px);
+    opacity:0;
+    transition:transform .22s ease, opacity .22s ease;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 980px){
+    .pricing-container{ grid-template-columns:1fr; }
+  }
+  @media (max-width: 620px){
+    .sub-plans-rail{ grid-template-columns:1fr; }
+  }
+</style>
+
+<section id="pricing-section">
+  <div class="pricing-container">
+    <!-- Primary plan -->
+    <article class="plan-card" id="primaryPlan">
+      <h3>sitee</h3>
+      <ul class="plan-features">
+        <li><i class="fas fa-check-circle"></i> AI-powered website generation</li>
+        <li><i class="fas fa-check-circle"></i> Real-time canvas editing</li>
+        <li><i class="fas fa-check-circle"></i> Voice command input</li>
+        <li><i class="fas fa-check-circle"></i> Project history sidebar</li>
+      </ul>
+
+      <button class="choose-plan-btn" id="getStartedBtn">Get Started</button>
+
+      <!-- Slide-in horizontal sub-plans -->
+      <div class="sub-plans-panel" id="subPlans">
+        <div class="sub-plans-rail">
+          <div class="sub-plan">
+            <h4>₹25 / 10 Credits</h4>
+            <p>Perfect for trying things out.</p>
+          </div>
+          <div class="sub-plan">
+            <h4>₹220 / 100 Credits</h4>
+            <p>Ideal for growing businesses.</p>
+          </div>
+          <div class="sub-plan">
+            <h4>₹1100 / 500 Credits</h4>
+            <p>For power users and agencies.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Coming soon plan -->
+    <article class="plan-card coming-soon">
+      <h3>sitee ✦ <span class="badge">Coming Soon</span></h3>
+      <ul class="plan-features">
+        <li><i class="fas fa-check-circle"></i> All features from the standard plan</li>
+        <li><i class="fas fa-check-circle"></i> Advanced collaboration tools</li>
+        <li><i class="fas fa-check-circle"></i> Custom domain hosting</li>
+        <li><i class="fas fa-check-circle"></i> Priority support & analytics</li>
+      </ul>
+      <button class="choose-plan-btn">Notify Me</button>
+    </article>
+  </div>
+</section>
+
+<script>
+  const btn = document.getElementById('getStartedBtn');
+  const panel = document.getElementById('subPlans');
+
+  const openPanel = () => {
+    // measure content height for smooth expand
+    panel.classList.add('open');
+    const full = panel.scrollHeight;
+    panel.style.height = full + 'px';
+    // let height apply, then slide content
+    requestAnimationFrame(() => panel.classList.add('in'));
+  };
+
+  const closePanel = () => {
+    // play closing motion first
+    panel.classList.add('closing');
+    panel.classList.remove('in');
+    // after stagger, collapse height
+    setTimeout(() => {
+      panel.style.height = '0px';
+      // after height transition, fully reset
+      panel.addEventListener('transitionend', function te(e){
+        if (e.propertyName !== 'height') return;
+        panel.classList.remove('open','closing');
+        panel.removeEventListener('transitionend', te);
+      });
+    }, 60);
+  };
+
+  let isOpen = false;
+  btn.addEventListener('click', () => {
+    if (!isOpen) { openPanel(); }
+    else { closePanel(); }
+    isOpen = !isOpen;
+  });
+</script>
+
+
+                
+            </div>
+        </div>
+        <div class="elementor-element elementor-element-6c7aa21 e-flex e-con-boxed e-con e-parent" data-id="6c7aa21" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;video&quot;,&quot;background_video_link&quot;:&quot;https:\/\/demo.awaikenthemes.com\/assets\/videos\/nextmind-v5-video.mp4&quot;,&quot;background_play_on_mobile&quot;:&quot;yes&quot;}">
+            <div class="e-con-inner">
+                <div class="elementor-background-video-container">
+                    <video class="elementor-background-video-hosted" autoplay muted playsinline loop></video>
+                </div>
+                <div class="elementor-element elementor-element-e06ebc1 e-con-full e-flex e-con e-child" data-id="e06ebc1" data-element_type="container">
+                    <div class="elementor-element elementor-element-5336f91 e-con-full intro-info-body-platinum saturate-filter e-flex e-con e-child" data-id="5336f91" data-element_type="container">
+                        <div class="elementor-element elementor-element-9dad04f e-con-full e-flex e-con e-child" data-id="9dad04f" data-element_type="container">
+                            <div class="elementor-element elementor-element-73c55f3 elementor-widget elementor-widget-elementskit-video" data-id="73c55f3" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-video.default">
+                                <div class="elementor-widget-container">
+                                    <div class="ekit-wid-con">
+                                        <div class="video-content" data-video-player="[]" data-video-setting="{&quot;videoVolume&quot;:&quot;horizontal&quot;,&quot;startVolume&quot;:0.8000000000000000444089209850062616169452667236328125,&quot;videoType&quot;:&quot;iframe&quot;,&quot;videoClass&quot;:&quot;mfp-fade&quot;}">
+
+                                            <a class="ekit_icon_button glow-btn ekit-video-popup ekit-video-popup-btn" href="https://www.youtube.com/embed/Y-x0efG1seA?feature=oembed?playlist=Y-x0efG1seA&amp;mute=0&amp;autoplay=0&amp;loop=1&amp;controls=0&amp;start=0&amp;end=" aria-label="video-popup">
+                                                <i aria-hidden="true" class="fas fa-play"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="elementor-element elementor-element-7d4cd93 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="7d4cd93" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h3 class="elementor-heading-title elementor-size-default">Watch Video</h3>
+                            </div>
+                        </div>
+                        <div class="elementor-element elementor-element-95f0dac at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="95f0dac" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                            <h3 class="elementor-heading-title elementor-size-default">Watch how neural networks learn, adapt, and perform in real-time</h3>
+                        </div>
+                    </div>
+                    <div class="elementor-element elementor-element-f5ee0bd elementor-align-left elementor-widget elementor-widget-elementskit-button" data-id="f5ee0bd" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-button.default">
+                        <div class="ekit-wid-con">
+                            <div class="ekit-btn-wraper">
+                                <a href="https://demo.awaikenthemes.com/nextmind/neural-networks/contact-us/" class="elementskit-btn  whitespace--normal" id="">
+                                					Contact Us Today!				</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="elementor-element elementor-element-283211c e-flex e-con-boxed e-con e-parent" data-id="283211c" data-element_type="container">
+            <div class="e-con-inner">
+                <div class="elementor-element elementor-element-4b9ad5f e-con-full e-flex e-con e-child" data-id="4b9ad5f" data-element_type="container">
+                    <div class="elementor-element elementor-element-b21340a e-con-full sticky-column e-flex e-con e-child" data-id="b21340a" data-element_type="container">
+                        <div class="elementor-element elementor-element-fc8e273 e-con-full e-flex e-con e-child" data-id="fc8e273" data-element_type="container">
+                            <div class="elementor-element elementor-element-77b1469 section-title at-heading-animation at-animation-heading-none elementor-invisible elementor-widget elementor-widget-heading" data-id="77b1469" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h3 class="elementor-heading-title elementor-size-default">HOW IT WORK</h3>
+                            </div>
+                            <div class="elementor-element elementor-element-feb798e elementor-invisible elementor-widget elementor-widget-heading" data-id="feb798e" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:100,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">
+                                    Behind every prediction is a 
+                                    <span>smarter process</span>
+                                </h2>
+                            </div>
+                            <div class="elementor-element elementor-element-1bb431f elementor-invisible elementor-widget elementor-widget-text-editor" data-id="1bb431f" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:200,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                <p>Our neural systems follow a structured path of data ingestion, training, validation, and optimization to produce high-performing.</p>
+                            </div>
+                            <div class="elementor-element elementor-element-6bbce03 elementor-invisible elementor-widget elementor-widget-button" data-id="6bbce03" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:300,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="button.default">
+                                <a class="elementor-button elementor-button-link elementor-size-sm" href="https://demo.awaikenthemes.com/nextmind/neural-networks/contact-us/">
+                                    <span class="elementor-button-content-wrapper">
+                                        <span class="elementor-button-text">Contact Us Today!</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="elementor-element elementor-element-ebd2e88 e-con-full backdrop-filter-platinum e-flex e-con e-child" data-id="ebd2e88" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+                            <div class="elementor-element elementor-element-ea4b2a1 at-heading-animation at-animation-heading-style-4 elementor-widget elementor-widget-heading" data-id="ea4b2a1" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h3 class="elementor-heading-title elementor-size-default">We fuse AI and creativity to deliver intelligent, personalized, and future-ready design experiences that inspire.</h3>
+                            </div>
+                            <div class="elementor-element elementor-element-98dce3e at-image-animation at-animation-image-none at-none elementor-invisible elementor-widget elementor-widget-image" data-id="98dce3e" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:100,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="image.default">
+                                <img loading="lazy" decoding="async" width="507" height="250" src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/how-work-img.png" class="attachment-full size-full wp-image-2126" alt="" srcset="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/how-work-img.png 507w, https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/how-work-img-300x148.png 300w" sizes="(max-width: 507px) 100vw, 507px"/>
+                            </div>
+                            <div class="elementor-element elementor-element-f928402 e-con-full e-flex elementor-invisible e-con e-child" data-id="f928402" data-element_type="container" data-settings="{&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:200}">
+                                <div class="elementor-element elementor-element-a218b0a ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="a218b0a" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text-left icon-lef-right-aligin elementor-animation- media  ">
+                                            <div class="elementskit-box-header elementor-animation-">
+                                                <div class="elementskit-info-box-icon  text-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+                                                        <path d="M17.6142 9.72078L15.3426 9.07162C14.3196 8.78321 13.3877 8.23709 12.6362 7.48553C11.8846 6.73397 11.3385 5.80211 11.0501 4.77912L10.4009 2.50745C10.3683 2.42797 10.3127 2.35999 10.2413 2.31215C10.17 2.26431 10.086 2.23877 10.0001 2.23877C9.91415 2.23877 9.83016 2.26431 9.75879 2.31215C9.68742 2.35999 9.63188 2.42797 9.59924 2.50745L8.95007 4.77912C8.66166 5.80211 8.11555 6.73397 7.36398 7.48553C6.61242 8.23709 5.68056 8.78321 4.65757 9.07162L2.3859 9.72078C2.29868 9.74554 2.22191 9.79807 2.16725 9.87041C2.11258 9.94275 2.08301 10.0309 2.08301 10.1216C2.08301 10.2123 2.11258 10.3005 2.16725 10.3728C2.22191 10.4452 2.29868 10.4977 2.3859 10.5225L4.65757 11.1716C5.68056 11.46 6.61242 12.0061 7.36398 12.7577C8.11555 13.5093 8.66166 14.4411 8.95007 15.4641L9.59924 17.7358C9.62399 17.823 9.67653 17.8998 9.74887 17.9544C9.8212 18.0091 9.9094 18.0387 10.0001 18.0387C10.0907 18.0387 10.1789 18.0091 10.2513 17.9544C10.3236 17.8998 10.3761 17.823 10.4009 17.7358L11.0501 15.4641C11.3385 14.4411 11.8846 13.5093 12.6362 12.7577C13.3877 12.0061 14.3196 11.46 15.3426 11.1716L17.6142 10.5225C17.7015 10.4977 17.7782 10.4452 17.8329 10.3728C17.8876 10.3005 17.9171 10.2123 17.9171 10.1216C17.9171 10.0309 17.8876 9.94275 17.8329 9.87041C17.7782 9.79807 17.7015 9.74554 17.6142 9.72078Z" fill="url(#paint0_linear_117_647)"></path>
+                                                        <defs>
+                                                            <linearGradient id="paint0_linear_117_647" x1="2.12324" y1="10.1281" x2="17.9171" y2="10.13" gradientUnits="userSpaceOnUse">
+                                                                <stop stop-color="#A93E17"></stop>
+                                                                <stop offset="1" stop-color="#15399A"></stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Strategy                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-8f73178 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="8f73178" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text-left icon-lef-right-aligin elementor-animation- media  ">
+                                            <div class="elementskit-box-header elementor-animation-">
+                                                <div class="elementskit-info-box-icon  text-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+                                                        <path d="M17.6142 9.72078L15.3426 9.07162C14.3196 8.78321 13.3877 8.23709 12.6362 7.48553C11.8846 6.73397 11.3385 5.80211 11.0501 4.77912L10.4009 2.50745C10.3683 2.42797 10.3127 2.35999 10.2413 2.31215C10.17 2.26431 10.086 2.23877 10.0001 2.23877C9.91415 2.23877 9.83016 2.26431 9.75879 2.31215C9.68742 2.35999 9.63188 2.42797 9.59924 2.50745L8.95007 4.77912C8.66166 5.80211 8.11555 6.73397 7.36398 7.48553C6.61242 8.23709 5.68056 8.78321 4.65757 9.07162L2.3859 9.72078C2.29868 9.74554 2.22191 9.79807 2.16725 9.87041C2.11258 9.94275 2.08301 10.0309 2.08301 10.1216C2.08301 10.2123 2.11258 10.3005 2.16725 10.3728C2.22191 10.4452 2.29868 10.4977 2.3859 10.5225L4.65757 11.1716C5.68056 11.46 6.61242 12.0061 7.36398 12.7577C8.11555 13.5093 8.66166 14.4411 8.95007 15.4641L9.59924 17.7358C9.62399 17.823 9.67653 17.8998 9.74887 17.9544C9.8212 18.0091 9.9094 18.0387 10.0001 18.0387C10.0907 18.0387 10.1789 18.0091 10.2513 17.9544C10.3236 17.8998 10.3761 17.823 10.4009 17.7358L11.0501 15.4641C11.3385 14.4411 11.8846 13.5093 12.6362 12.7577C13.3877 12.0061 14.3196 11.46 15.3426 11.1716L17.6142 10.5225C17.7015 10.4977 17.7782 10.4452 17.8329 10.3728C17.8876 10.3005 17.9171 10.2123 17.9171 10.1216C17.9171 10.0309 17.8876 9.94275 17.8329 9.87041C17.7782 9.79807 17.7015 9.74554 17.6142 9.72078Z" fill="url(#paint0_linear_117_647)"></path>
+                                                        <defs>
+                                                            <linearGradient id="paint0_linear_117_647" x1="2.12324" y1="10.1281" x2="17.9171" y2="10.13" gradientUnits="userSpaceOnUse">
+                                                                <stop stop-color="#A93E17"></stop>
+                                                                <stop offset="1" stop-color="#15399A"></stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Data Science                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-72e9977 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="72e9977" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text-left icon-lef-right-aligin elementor-animation- media  ">
+                                            <div class="elementskit-box-header elementor-animation-">
+                                                <div class="elementskit-info-box-icon  text-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+                                                        <path d="M17.6142 9.72078L15.3426 9.07162C14.3196 8.78321 13.3877 8.23709 12.6362 7.48553C11.8846 6.73397 11.3385 5.80211 11.0501 4.77912L10.4009 2.50745C10.3683 2.42797 10.3127 2.35999 10.2413 2.31215C10.17 2.26431 10.086 2.23877 10.0001 2.23877C9.91415 2.23877 9.83016 2.26431 9.75879 2.31215C9.68742 2.35999 9.63188 2.42797 9.59924 2.50745L8.95007 4.77912C8.66166 5.80211 8.11555 6.73397 7.36398 7.48553C6.61242 8.23709 5.68056 8.78321 4.65757 9.07162L2.3859 9.72078C2.29868 9.74554 2.22191 9.79807 2.16725 9.87041C2.11258 9.94275 2.08301 10.0309 2.08301 10.1216C2.08301 10.2123 2.11258 10.3005 2.16725 10.3728C2.22191 10.4452 2.29868 10.4977 2.3859 10.5225L4.65757 11.1716C5.68056 11.46 6.61242 12.0061 7.36398 12.7577C8.11555 13.5093 8.66166 14.4411 8.95007 15.4641L9.59924 17.7358C9.62399 17.823 9.67653 17.8998 9.74887 17.9544C9.8212 18.0091 9.9094 18.0387 10.0001 18.0387C10.0907 18.0387 10.1789 18.0091 10.2513 17.9544C10.3236 17.8998 10.3761 17.823 10.4009 17.7358L11.0501 15.4641C11.3385 14.4411 11.8846 13.5093 12.6362 12.7577C13.3877 12.0061 14.3196 11.46 15.3426 11.1716L17.6142 10.5225C17.7015 10.4977 17.7782 10.4452 17.8329 10.3728C17.8876 10.3005 17.9171 10.2123 17.9171 10.1216C17.9171 10.0309 17.8876 9.94275 17.8329 9.87041C17.7782 9.79807 17.7015 9.74554 17.6142 9.72078Z" fill="url(#paint0_linear_117_647)"></path>
+                                                        <defs>
+                                                            <linearGradient id="paint0_linear_117_647" x1="2.12324" y1="10.1281" x2="17.9171" y2="10.13" gradientUnits="userSpaceOnUse">
+                                                                <stop stop-color="#A93E17"></stop>
+                                                                <stop offset="1" stop-color="#15399A"></stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Learning                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="elementor-element elementor-element-1968a6f e-con-full e-flex e-con e-child" data-id="1968a6f" data-element_type="container">
+                    <div class="elementor-element elementor-element-f58d310 e-con-full e-flex elementor-invisible e-con e-child" data-id="f58d310" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;}">
+                        <div class="elementor-element elementor-element-8a90903 e-con-full e-flex e-con e-child" data-id="8a90903" data-element_type="container">
+                            <div class="elementor-element elementor-element-2b5ba5b at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="2b5ba5b" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">01</h2>
+                            </div>
+                            <div class="elementor-element elementor-element-1cf4ac2 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="1cf4ac2" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">Understand Define Problem</h2>
+                            </div>
+                        </div>
+                        <div class="elementor-element elementor-element-a76b40a e-con-full e-flex e-con e-child" data-id="a76b40a" data-element_type="container">
+                            <div class="elementor-element elementor-element-9db01aa elementor-widget elementor-widget-text-editor" data-id="9db01aa" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                <p>
+                                    We begin by analyzing your business challenges
+                                    <br/>
+                                    and goals, identifying.
+                                </p>
+                            </div>
+                            <div class="elementor-element elementor-element-9fb6487 e-con-full e-flex e-con e-child" data-id="9fb6487" data-element_type="container">
+                                <div class="elementor-element elementor-element-24895e5 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="24895e5" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Set Clear Goals                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-310604f ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="310604f" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Intelligence                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-8e89d22 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="8e89d22" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Real Goals                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="elementor-element elementor-element-af46b69 e-con-full e-flex elementor-invisible e-con e-child" data-id="af46b69" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:100}">
+                        <div class="elementor-element elementor-element-a2c5817 e-con-full e-flex e-con e-child" data-id="a2c5817" data-element_type="container">
+                            <div class="elementor-element elementor-element-1a19e62 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="1a19e62" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">02</h2>
+                            </div>
+                            <div class="elementor-element elementor-element-881d326 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="881d326" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">Prepare High Quality Data</h2>
+                            </div>
+                        </div>
+                        <div class="elementor-element elementor-element-e2973ee e-con-full e-flex e-con e-child" data-id="e2973ee" data-element_type="container">
+                            <div class="elementor-element elementor-element-b1cacbb elementor-widget elementor-widget-text-editor" data-id="b1cacbb" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                <p>
+                                    We begin by analyzing your business challenges
+                                    <br/>
+                                    and goals, identifying.
+                                </p>
+                            </div>
+                            <div class="elementor-element elementor-element-c7c5e12 e-con-full e-flex e-con e-child" data-id="c7c5e12" data-element_type="container">
+                                <div class="elementor-element elementor-element-52b5884 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="52b5884" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Set Clear Goals                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-66f985e ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="66f985e" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Intelligence                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-7d05fc9 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="7d05fc9" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Real Goals                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="elementor-element elementor-element-e5ac281 e-con-full e-flex elementor-invisible e-con e-child" data-id="e5ac281" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:200}">
+                        <div class="elementor-element elementor-element-e3b4a92 e-con-full e-flex e-con e-child" data-id="e3b4a92" data-element_type="container">
+                            <div class="elementor-element elementor-element-51f5cca at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="51f5cca" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">03</h2>
+                            </div>
+                            <div class="elementor-element elementor-element-f3d6fe8 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="f3d6fe8" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">Train &amp; Validate the Modelz</h2>
+                            </div>
+                        </div>
+                        <div class="elementor-element elementor-element-b67c302 e-con-full e-flex e-con e-child" data-id="b67c302" data-element_type="container">
+                            <div class="elementor-element elementor-element-8c81af9 elementor-widget elementor-widget-text-editor" data-id="8c81af9" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                <p>
+                                    We begin by analyzing your business challenges
+                                    <br/>
+                                    and goals, identifying.
+                                </p>
+                            </div>
+                            <div class="elementor-element elementor-element-256bde3 e-con-full e-flex e-con e-child" data-id="256bde3" data-element_type="container">
+                                <div class="elementor-element elementor-element-4e69ecf ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="4e69ecf" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Set Clear Goals                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-4105e93 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="4105e93" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Intelligence                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-d8dadfa ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="d8dadfa" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Real Goals                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="elementor-element elementor-element-f6e4eda e-con-full e-flex elementor-invisible e-con e-child" data-id="f6e4eda" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:300}">
+                        <div class="elementor-element elementor-element-09a31e0 e-con-full e-flex e-con e-child" data-id="09a31e0" data-element_type="container">
+                            <div class="elementor-element elementor-element-292439a at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="292439a" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">04</h2>
+                            </div>
+                            <div class="elementor-element elementor-element-fc44b7b at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="fc44b7b" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                <h2 class="elementor-heading-title elementor-size-default">Deploy, Monitor &amp; Optimize</h2>
+                            </div>
+                        </div>
+                        <div class="elementor-element elementor-element-5b67a11 e-con-full e-flex e-con e-child" data-id="5b67a11" data-element_type="container">
+                            <div class="elementor-element elementor-element-91f0bc6 elementor-widget elementor-widget-text-editor" data-id="91f0bc6" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                <p>
+                                    We begin by analyzing your business challenges
+                                    <br/>
+                                    and goals, identifying.
+                                </p>
+                            </div>
+                            <div class="elementor-element elementor-element-aaeed4c e-con-full e-flex e-con e-child" data-id="aaeed4c" data-element_type="container">
+                                <div class="elementor-element elementor-element-212f783 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="212f783" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Set Clear Goals                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-f24460f ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="f24460f" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Intelligence                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-daa42a1 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="daa42a1" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                    <div class="ekit-wid-con">
+                                        <!-- link opening -->
+                                        <!-- end link opening -->
+
+                                        <div class="elementskit-infobox text-left text- icon-lef-right-aligin elementor-animation-   ">
+                                            <div class="box-body">
+                                                <h3 class="elementskit-info-box-title">
+                                                                    Real Goals                </h3>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="elementor-element elementor-element-feded2a e-flex e-con-boxed e-con e-parent" data-id="feded2a" data-element_type="container">
+            <div class="e-con-inner">
+                <div class="elementor-element elementor-element-fe8ac8f e-con-full e-flex e-con e-child" data-id="fe8ac8f" data-element_type="container">
+                    <div class="elementor-element elementor-element-e66511b at-shiny-glass-effect faq-image-platinum at-image-animation at-animation-image-none elementor-widget elementor-widget-image" data-id="e66511b" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="image.default">
+                        <img loading="lazy" decoding="async" width="494" height="700" src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/faq-img.jpg" class="attachment-full size-full wp-image-2736" alt="" srcset="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/faq-img.jpg 494w, https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/faq-img-212x300.jpg 212w" sizes="(max-width: 494px) 100vw, 494px"/>
+                    </div>
+                    
+                </div>
+               <div class="elementor-element elementor-element-0a8d001 e-con-full e-flex e-con e-child" data-id="0a8d001" data-element_type="container">
+                    <div class="elementor-element elementor-element-4b357fe section-title at-heading-animation at-animation-heading-none elementor-invisible elementor-widget elementor-widget-heading" data-id="4b357fe" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                        <h3 class="elementor-heading-title elementor-size-default">FAQ</h3>
+                    </div>
+                    <div class="elementor-element elementor-element-f34e520 elementor-invisible elementor-widget elementor-widget-heading" data-id="f34e520" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:100,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                        <h2 class="elementor-heading-title elementor-size-default">
+                            Everything you need to know about 
+                            <span>neural intelligence</span>
+                        </h2>
+                    </div>
+                    <div class="elementor-element elementor-element-b750f6f faq-accordion-platinum elementor-invisible elementor-widget elementor-widget-elementskit-accordion" data-id="b750f6f" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:200,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-accordion.default">
+                        <div class="ekit-wid-con">
+                            <div class="elementskit-accordion accoedion-primary" id="accordion-689c9c6aaac4b">
+
+                                <div class="elementskit-card ">
+                                    <div class="elementskit-card-header" id="primaryHeading-0-b750f6f">
+                                        <a href="#collapse-d59b831689c9c6aaac4b" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-d59b831689c9c6aaac4b" aria-expanded="false" aria-controls="Collapse-d59b831689c9c6aaac4b">
+
+                                            <span class="number"></span>
+
+                                            <span class="ekit-accordion-title">What are the types of neural networks?</span>
+
+                                            <div class="ekit_accordion_icon_group">
+                                                <div class="ekit_accordion_normal_icon">
+                                                  
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+                                                        <circle cx="20" cy="20.4297" r="19.5" stroke="white" stroke-opacity="0.06"></circle>
+                                                        <path d="M23.3362 18.2697L16.1763 25.4297L15 24.2534L22.1591 17.0934H15.8493V15.4297H25V24.5803H23.3362V18.2697Z" fill="#A93E17"></path>
+                                                    </svg>
+                                                </div>
+
+                                                <div class="ekit_accordion_active_icon">
+                                      
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+                                                        <circle cx="20" cy="20.4297" r="19.5" stroke="white" stroke-opacity="0.06"></circle>
+                                                        <path d="M24.3532 21.3852L14.2275 21.3852L14.2275 19.7217L24.3526 19.7211L19.8909 15.2595L21.0674 14.083L27.5379 20.5535L21.0674 27.024L19.8909 25.8475L24.3532 21.3852Z" fill="#A93E17"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                        </a>
+                                    </div>
+
+                                    <div id="Collapse-d59b831689c9c6aaac4b" class=" collapse" aria-labelledby="primaryHeading-0-b750f6f" data-parent="#accordion-689c9c6aaac4b">
+
+                                        <div class="elementskit-card-body ekit-accordion--content">
+                                            <p>Our neural systems follow a structured path of data ingestion, training, validation, and optimization to produce high-performing.</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="elementskit-card active">
+                                    <div class="elementskit-card-header" id="primaryHeading-1-b750f6f">
+                                        <a href="#collapse-9a66a4a689c9c6aaac4b" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-9a66a4a689c9c6aaac4b" aria-expanded="true" aria-controls="Collapse-9a66a4a689c9c6aaac4b">
+
+                                            <span class="number"></span>
+
+                                            <span class="ekit-accordion-title">How much data do I need to train a neural network?</span>
+
+                                            <div class="ekit_accordion_icon_group">
+                                                <div class="ekit_accordion_normal_icon">
+         
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+                                                        <circle cx="20" cy="20.4297" r="19.5" stroke="white" stroke-opacity="0.06"></circle>
+                                                        <path d="M23.3362 18.2697L16.1763 25.4297L15 24.2534L22.1591 17.0934H15.8493V15.4297H25V24.5803H23.3362V18.2697Z" fill="#A93E17"></path>
+                                                    </svg>
+                                                </div>
+
+                                                <div class="ekit_accordion_active_icon">
+                                   
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+                                                        <circle cx="20" cy="20.4297" r="19.5" stroke="white" stroke-opacity="0.06"></circle>
+                                                        <path d="M24.3532 21.3852L14.2275 21.3852L14.2275 19.7217L24.3526 19.7211L19.8909 15.2595L21.0674 14.083L27.5379 20.5535L21.0674 27.024L19.8909 25.8475L24.3532 21.3852Z" fill="#A93E17"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                        </a>
+                                    </div>
+
+                                    <div id="Collapse-9a66a4a689c9c6aaac4b" class=" show collapse" aria-labelledby="primaryHeading-1-b750f6f" data-parent="#accordion-689c9c6aaac4b">
+
+                                        <div class="elementskit-card-body ekit-accordion--content">
+                                            <p>Our neural systems follow a structured path of data ingestion, training, validation, and optimization to produce high-performing.</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="elementskit-card ">
+                                    <div class="elementskit-card-header" id="primaryHeading-2-b750f6f">
+                                        <a href="#collapse-75f6bc0689c9c6aaac4b" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-75f6bc0689c9c6aaac4b" aria-expanded="false" aria-controls="Collapse-75f6bc0689c9c6aaac4b">
+
+                                            <span class="number"></span>
+
+                                            <span class="ekit-accordion-title">Do neural networks always give accurate results?</span>
+
+                                            <div class="ekit_accordion_icon_group">
+                                                <div class="ekit_accordion_normal_icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+                                                        <circle cx="20" cy="20.4297" r="19.5" stroke="white" stroke-opacity="0.06"></circle>
+                                                        <path d="M23.3362 18.2697L16.1763 25.4297L15 24.2534L22.1591 17.0934H15.8493V15.4297H25V24.5803H23.3362V18.2697Z" fill="#A93E17"></path>
+                                                    </svg>
+                                                </div>
+
+                                                <div class="ekit_accordion_active_icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+                                                        <circle cx="20" cy="20.4297" r="19.5" stroke="white" stroke-opacity="0.06"></circle>
+                                                        <path d="M24.3532 21.3852L14.2275 21.3852L14.2275 19.7217L24.3526 19.7211L19.8909 15.2595L21.0674 14.083L27.5379 20.5535L21.0674 27.024L19.8909 25.8475L24.3532 21.3852Z" fill="#A93E17"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                        </a>
+                                    </div>
+
+                                    <div id="Collapse-75f6bc0689c9c6aaac4b" class=" collapse" aria-labelledby="primaryHeading-2-b750f6f" data-parent="#accordion-689c9c6aaac4b">
+
+                                        <div class="elementskit-card-body ekit-accordion--content">
+                                            <p>Our neural systems follow a structured path of data ingestion, training, validation, and optimization to produce high-performing.</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="elementskit-card ">
+                                    <div class="elementskit-card-header" id="primaryHeading-3-b750f6f">
+                                        <a href="#collapse-44ed05c689c9c6aaac4b" class="ekit-accordion--toggler elementskit-btn-link collapsed" data-ekit-toggle="collapse" data-target="#Collapse-44ed05c689c9c6aaac4b" aria-expanded="false" aria-controls="Collapse-44ed05c689c9c6aaac4b">
+
+                                            <span class="number"></span>
+
+                                            <span class="ekit-accordion-title">Can I build a neural network without coding?</span>
+
+                                            <div class="ekit_accordion_icon_group">
+                                                <div class="ekit_accordion_normal_icon">
+                                                    
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+                                                        <circle cx="20" cy="20.4297" r="19.5" stroke="white" stroke-opacity="0.06"></circle>
+                                                        <path d="M23.3362 18.2697L16.1763 25.4297L15 24.2534L22.1591 17.0934H15.8493V15.4297H25V24.5803H23.3362V18.2697Z" fill="#A93E17"></path>
+                                                    </svg>
+                                                </div>
+
+                                                <div class="ekit_accordion_active_icon">
+                                                    
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+                                                        <circle cx="20" cy="20.4297" r="19.5" stroke="white" stroke-opacity="0.06"></circle>
+                                                        <path d="M24.3532 21.3852L14.2275 21.3852L14.2275 19.7217L24.3526 19.7211L19.8909 15.2595L21.0674 14.083L27.5379 20.5535L21.0674 27.024L19.8909 25.8475L24.3532 21.3852Z" fill="#A93E17"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                        </a>
+                                    </div>
+
+                                    <div id="Collapse-44ed05c689c9c6aaac4b" class=" collapse" aria-labelledby="primaryHeading-3-b750f6f" data-parent="#accordion-689c9c6aaac4b">
+
+                                        <div class="elementskit-card-body ekit-accordion--content">
+                                            <p>Our neural systems follow a structured path of data ingestion, training, validation, and optimization to produce high-performing.</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                               
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    <div id="contact-us" class="ekit-template-content-markup ekit-template-content-footer ekit-template-content-theme-support">
+        <div data-elementor-type="wp-post" data-elementor-id="3027" class="elementor elementor-3027">
+            <div class="elementor-element elementor-element-197976a e-flex e-con-boxed e-con e-parent" data-id="197976a" data-element_type="container">
+                <div class="e-con-inner">
+                    <div class="elementor-element elementor-element-9c7b9bd footer-platinum e-flex e-con-boxed e-con e-child" data-id="9c7b9bd" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+                        <div class="e-con-inner">
+                            <div class="elementor-element elementor-element-3273894 e-con-full e-flex e-con e-child" data-id="3273894" data-element_type="container">
+                                <div class="elementor-element elementor-element-a0a450f e-con-full e-flex e-con e-child" data-id="a0a450f" data-element_type="container">
+                                    <div class="elementor-element elementor-element-091d7c7 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="091d7c7" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                        <h2 class="elementor-heading-title elementor-size-default">
+                                            Start your journey into smart 
+                                            <span>innovation today.</span>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-3bff7b9 e-con-full e-flex e-con e-child" data-id="3bff7b9" data-element_type="container">
+                                    <div class="elementor-element elementor-element-5efe62e our-solutions-circle-platinum elementor-widget elementor-widget-text-path" data-id="5efe62e" data-element_type="widget" data-settings="{&quot;text&quot;:&quot;Explore Our Solutions * Explore Our Solutions * &quot;,&quot;link&quot;:{&quot;url&quot;:&quot;&quot;,&quot;is_external&quot;:&quot;&quot;,&quot;nofollow&quot;:&quot;&quot;,&quot;custom_attributes&quot;:&quot;&quot;},&quot;start_point&quot;:{&quot;unit&quot;:&quot;%&quot;,&quot;size&quot;:0,&quot;sizes&quot;:[]},&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-path.default">
+                                        <div class="e-text-path" data-text="Explore Our Solutions * Explore Our Solutions * " data-url="//demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/svg-paths/circle.svg" data-link-url=""></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="elementor-element elementor-element-297b982 e-con-full e-flex e-con e-child" data-id="297b982" data-element_type="container">
+                                <div class="elementor-element elementor-element-543453c e-con-full e-flex e-con e-child" data-id="543453c" data-element_type="container">
+                                    <div class="elementor-element elementor-element-39005a2 at-image-animation at-animation-image-none at-none elementor-widget elementor-widget-image" data-id="39005a2" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="image.default">
+                                        <img width="183" height="50" style="filter: invert();" src="assets/img/logo.svg" class="attachment-full size-full wp-image-4629" alt=""/>
+                                    </div>
+                                    <div class="elementor-element elementor-element-f79955b elementor-widget elementor-widget-text-editor" data-id="f79955b" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                        <p>Neural networks powering innovation. Shaping the future with smart learning.</p>
+                                    </div>
+                                    <div class="elementor-element elementor-element-334ed56 category-social-link elementor-widget elementor-widget-elementskit-social-media" data-id="334ed56" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-social-media.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="ekit-wid-con">
+                                                <!--<ul class="ekit_social_media">
+                                                    <li class="elementor-repeater-item-3e22ea7">
+                                                        <a href="#" aria-label="Instagram" class="">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                                                <path d="M9.00402 4.38503C6.44952 4.38503 4.38904 6.4455 4.38904 9C4.38904 11.5545 6.44952 13.615 9.00402 13.615C11.5585 13.615 13.619 11.5545 13.619 9C13.619 6.4455 11.5585 4.38503 9.00402 4.38503ZM9.00402 12.0003C7.35323 12.0003 6.00368 10.6548 6.00368 9C6.00368 7.3452 7.34921 5.99967 9.00402 5.99967C10.6588 5.99967 12.0044 7.3452 12.0044 9C12.0044 10.6548 10.6548 12.0003 9.00402 12.0003ZM14.8842 4.19625C14.8842 4.79471 14.4022 5.27268 13.8078 5.27268C13.2093 5.27268 12.7313 4.7907 12.7313 4.19625C12.7313 3.60181 13.2133 3.11983 13.8078 3.11983C14.4022 3.11983 14.8842 3.60181 14.8842 4.19625ZM17.9408 5.28874C17.8725 3.84681 17.5431 2.56956 16.4868 1.51724C15.4345 0.464911 14.1572 0.135557 12.7153 0.0632601C11.2292 -0.0210867 6.77485 -0.0210867 5.28874 0.0632601C3.85083 0.131541 2.57358 0.460895 1.51724 1.51322C0.460895 2.56555 0.135557 3.8428 0.0632601 5.28473C-0.0210867 6.77084 -0.0210867 11.2251 0.0632601 12.7113C0.131541 14.1532 0.460895 15.4304 1.51724 16.4828C2.57358 17.5351 3.84681 17.8644 5.28874 17.9367C6.77485 18.0211 11.2292 18.0211 12.7153 17.9367C14.1572 17.8685 15.4345 17.5391 16.4868 16.4828C17.5391 15.4304 17.8685 14.1532 17.9408 12.7113C18.0251 11.2251 18.0251 6.77485 17.9408 5.28874ZM16.0209 14.3058C15.7076 15.0931 15.1011 15.6995 14.3098 16.0168C13.125 16.4868 10.3134 16.3783 9.00402 16.3783C7.69463 16.3783 4.87906 16.4828 3.6982 16.0168C2.91097 15.7036 2.30447 15.0971 1.98717 14.3058C1.51724 13.1209 1.62568 10.3094 1.62568 9C1.62568 7.69062 1.52125 4.87504 1.98717 3.69419C2.30046 2.90695 2.90695 2.30046 3.6982 1.98315C4.88307 1.51322 7.69463 1.62167 9.00402 1.62167C10.3134 1.62167 13.129 1.51724 14.3098 1.98315C15.0971 2.29644 15.7036 2.90293 16.0209 3.69419C16.4908 4.87906 16.3823 7.69062 16.3823 9C16.3823 10.3094 16.4908 13.125 16.0209 14.3058Z" fill="url(#paint0_linear_783_20)"></path>
+                                                                <defs>
+                                                                    <linearGradient id="paint0_linear_783_20" x1="0.0457431" y1="8.98791" x2="18.004" y2="8.99009" gradientUnits="userSpaceOnUse">
+                                                                        <stop stop-color="#A93E17"></stop>
+                                                                        <stop offset="1" stop-color="#15399A"></stop>
+                                                                    </linearGradient>
+                                                                </defs>
+                                                            </svg>
+                                                        </a>
+                                                    </li>
+                                                    <li class="elementor-repeater-item-d5eac14">
+                                                        <a href="#" aria-label="Facebook" class="">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="18" viewBox="0 0 11 18" fill="none">
+                                                                <path d="M2.32031 10.5223V18H6.39844V10.5223H9.43945L10.0723 7.08398H6.39844V5.86758C6.39844 4.05 7.11211 3.35391 8.9543 3.35391C9.52734 3.35391 9.98789 3.36797 10.2551 3.39609V0.277734C9.75234 0.140625 8.52187 0 7.81172 0C4.05352 0 2.32031 1.77539 2.32031 5.60391V7.08398H0V10.5223H2.32031Z" fill="url(#paint0_linear_783_25)"></path>
+                                                                <defs>
+                                                                    <linearGradient id="paint0_linear_783_25" x1="0.0260553" y1="8.98791" x2="10.2551" y2="8.98862" gradientUnits="userSpaceOnUse">
+                                                                        <stop stop-color="#A93E17"></stop>
+                                                                        <stop offset="1" stop-color="#15399A"></stop>
+                                                                    </linearGradient>
+                                                                </defs>
+                                                            </svg>
+                                                        </a>
+                                                    </li>
+                                                    <li class="elementor-repeater-item-202d9f1">
+                                                        <a href="#" aria-label="x-twitter" class="">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="17" viewBox="0 0 18 17" fill="none">
+                                                                <path d="M14.1563 0H16.9141L10.8906 6.88281L17.9766 16.25H12.4297L8.08203 10.5703L3.11328 16.25H0.351562L6.79297 8.88672L0 0H5.6875L9.61328 5.19141L14.1563 0ZM13.1875 14.6016H14.7148L4.85547 1.5625H3.21484L13.1875 14.6016Z" fill="url(#paint0_linear_783_32)"></path>
+                                                                <defs>
+                                                                    <linearGradient id="paint0_linear_783_32" x1="0.0456734" y1="8.11409" x2="17.9766" y2="8.11649" gradientUnits="userSpaceOnUse">
+                                                                        <stop stop-color="#A93E17"></stop>
+                                                                        <stop offset="1" stop-color="#15399A"></stop>
+                                                                    </linearGradient>
+                                                                </defs>
+                                                            </svg>
+                                                        </a>
+                                                    </li>
+                                                    <li class="elementor-repeater-item-7f75d7d">
+                                                        <a href="#" aria-label="Dribble" class="">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18" fill="none">
+                                                                <path d="M5.75625 11.9054C5.28375 14.3832 4.70649 16.7591 2.99649 18.0001C2.46879 14.2545 3.77168 11.4417 4.37637 8.45552C3.34488 6.7188 4.50047 3.22427 6.67629 4.0856C9.35344 5.1445 4.35809 10.5413 7.71164 11.2153C11.2132 11.9188 12.6423 5.13993 10.4714 2.93564C7.33406 -0.247763 1.33922 2.86286 2.07645 7.42052C2.25574 8.53462 3.40711 8.87282 2.53664 10.4102C0.528517 9.96513 -0.0705455 8.38169 0.00644673 6.27056C0.130548 2.8147 3.11145 0.395245 6.10149 0.0605575C9.88254 -0.362724 13.4312 1.44853 13.9213 5.00564C14.4732 9.02013 12.2145 13.3679 8.17149 13.0554C7.07531 12.9703 6.61547 12.4271 5.75625 11.9054Z" fill="url(#paint0_linear_784_44)"></path>
+                                                                <defs>
+                                                                    <linearGradient id="paint0_linear_784_44" x1="0.0355791" y1="8.98796" x2="14.0036" y2="8.98927" gradientUnits="userSpaceOnUse">
+                                                                        <stop stop-color="#A93E17"></stop>
+                                                                        <stop offset="1" stop-color="#15399A"></stop>
+                                                                    </linearGradient>
+                                                                </defs>
+                                                            </svg>
+                                                        </a>
+                                                    </li>
+                                                </ul>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-209680c e-con-full e-flex e-con e-child" data-id="209680c" data-element_type="container">
+                                    <div class="elementor-element elementor-element-bfb8ec8 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="bfb8ec8" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                        <h2 class="elementor-heading-title elementor-size-default">Contact Information</h2>
+                                    </div>
+                                    <div class="elementor-element elementor-element-530f5fa elementor-widget elementor-widget-text-editor" data-id="530f5fa" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                        <p>Amritsar, Punjab || Patiala, Punjab</p>
+                                    </div>
+                                    <div class="elementor-element elementor-element-ac309b2 ekit-equal-height-disable elementor-widget elementor-widget-elementskit-icon-box" data-id="ac309b2" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-icon-box.default">
+                                        <div class="ekit-wid-con">
+                                            <!-- link opening -->
+                                            <a href="tel:+918847242013" class="ekit_global_links">
+                                                <!-- end link opening -->
+
+                                                <div class="elementskit-infobox text- text- icon-lef-right-aligin elementor-animation-   ">
+                                                    <div class="box-body">
+                                                        <h3 class="elementskit-info-box-title">
+                                                                            Need Any Help?                </h3>
+                                                        <p>(+91) - 88472-42013</p>
+                                                    </div>
+
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="elementor-element elementor-element-d82f418 e-con-full e-flex e-con e-child" data-id="d82f418" data-element_type="container">
+                                    <div class="elementor-element elementor-element-748f0c3 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="748f0c3" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                        <h2 class="elementor-heading-title elementor-size-default">Subscribe To Newsletter</h2>
+                                    </div>
+                                    <div class="elementor-element elementor-element-000227e elementor-widget elementor-widget-text-editor" data-id="000227e" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                        <p>Subscribe to our newsletter for the latest updates, exclusive content.</p>
+                                    </div>
+                                    <div class="elementor-element elementor-element-5bbcbdc footer-form-platinum elementor-widget elementor-widget-elementskit-contact-form7" data-id="5bbcbdc" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="elementskit-contact-form7.default">
+                                        <div class="ekit-wid-con">
+                                            <div class="ekit-form">
+                                                <div class="wpcf7 no-js" id="wpcf7-f4735-o2" lang="en-US" dir="ltr" data-wpcf7-id="4735">
+                                                    <div class="screen-reader-response">
+                                                        <p role="status" aria-live="polite" aria-atomic="true"></p>
+                                                        <ul></ul>
+                                                    </div>
+                                                    <form action="/nextmind/neural-networks/#wpcf7-f4735-o2" method="post" class="wpcf7-form init" aria-label="Contact form" novalidate="novalidate" data-status="init">
+                                                        <fieldset class="hidden-fields-container">
+                                                            <input type="hidden" name="_wpcf7" value="4735"/>
+                                                            <input type="hidden" name="_wpcf7_version" value="6.1"/>
+                                                            <input type="hidden" name="_wpcf7_locale" value="en_US"/>
+                                                            <input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f4735-o2"/>
+                                                            <input type="hidden" name="_wpcf7_container_post" value="0"/>
+                                                            <input type="hidden" name="_wpcf7_posted_data_hash" value=""/>
+                                                        </fieldset>
+                                                        <div class="form-group">
+                                                            <div class="email-field email-box">
+                                                                <p>
+                                                                    <span class="wpcf7-form-control-wrap" data-name="email">
+                                                                        <input size="40" maxlength="400" class="wpcf7-form-control wpcf7-email wpcf7-validates-as-required wpcf7-text wpcf7-validates-as-email form-control" aria-required="true" aria-invalid="false" placeholder="Email Address" value="" type="email" name="email"/>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                            <div class="newsletter-btn">
+                                                                <p>
+                                                                    <input class="wpcf7-form-control wpcf7-submit has-spinner" type="submit" value="send"/>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="wpcf7-response-output" aria-hidden="true"></div>
+                                                    </form>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="elementor-element elementor-element-c37de2e elementor-absolute cta-box-icon-platinum at-image-animation at-animation-image-none at-none elementor-widget elementor-widget-image" data-id="c37de2e" data-element_type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;,&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="image.default">
+                        <img loading="lazy" decoding="async" width="82" height="110" src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/uploads/2025/06/section-bg-shape-2.png" class="attachment-full size-full wp-image-1803" alt=""/>
+                    </div>
+                            </div>
+
+                            <div class="elementor-element elementor-element-18cffc7 e-con-full e-flex e-con e-child" data-id="18cffc7" data-element_type="container">
+                                <div class="elementor-element elementor-element-c4205e0 elementor-widget elementor-widget-text-editor" data-id="c4205e0" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="text-editor.default">
+                                    <p>Copyright © 2025 All Rights Reserved.</p>
+                                </div>
+                                <div class="elementor-element elementor-element-c2a33d3 at-heading-animation at-animation-heading-none elementor-widget elementor-widget-heading" data-id="c2a33d3" data-element_type="widget" data-settings="{&quot;ekit_we_effect_on&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                    <h2 class="elementor-heading-title elementor-size-default">sitee.in</h2><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="speculationrules">
+    {"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/nextmind\/neural-networks\/*"},{"not":{"href_matches":["\/nextmind\/neural-networks\/wp-*.php","\/nextmind\/neural-networks\/wp-admin\/*","\/nextmind\/neural-networks\/wp-content\/uploads\/*","\/nextmind\/neural-networks\/wp-content\/*","\/nextmind\/neural-networks\/wp-content\/plugins\/*","\/nextmind\/neural-networks\/wp-content\/themes\/nextmind\/*","\/nextmind\/neural-networks\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+    </script>
+    <script>
+    const lazyloadRunObserver = () => {
+        const lazyloadBackgrounds = document.querySelectorAll(`.e-con.e-parent:not(.e-lazyloaded)`);
+        const lazyloadBackgroundObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    let lazyloadBackground = entry.target;
+                    if (lazyloadBackground) {
+                        lazyloadBackground.classList.add('e-lazyloaded');
+                    }
+                    lazyloadBackgroundObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '200px 0px 200px 0px'
+        });
+        lazyloadBackgrounds.forEach((lazyloadBackground) => {
+            lazyloadBackgroundObserver.observe(lazyloadBackground);
+        });
+    };
+    const events = [
+    'DOMContentLoaded',
+    'elementor/lazyload/observe',
+    ];
+    events.forEach((event) => {
+        document.addEventListener(event, lazyloadRunObserver);
+    });
+    </script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/dist/hooks.min.js?ver=4d63a3d491d11ffd8ac6" id="wp-hooks-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/dist/i18n.min.js?ver=5e580eb46a90c2b997e6" id="wp-i18n-js"></script>
+    <script id="wp-i18n-js-after">
+    wp.i18n.setLocaleData({
+        'text direction\u0004ltr': ['ltr']
+    });
+    </script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/contact-form-7/includes/swv/js/index.js?ver=6.1" id="swv-js"></script>
+    <script id="contact-form-7-js-before">
+    var wpcf7 = {
+        "api": {
+            "root": "https:\/\/demo.awaikenthemes.com\/nextmind\/neural-networks\/wp-json\/",
+            "namespace": "contact-form-7\/v1"
+        }
+    };
+    </script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/contact-form-7/includes/js/index.js?ver=6.1" id="contact-form-7-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/js/SmoothScroll.js?ver=1.0.2" id="SmoothScroll-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/js/gsap.min.js?ver=1.0.2" id="gsap-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/js/magiccursor.js?ver=1.0.2" id="magiccursor-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/js/SplitText.js?ver=1.0.2" id="SplitText-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/js/ScrollTrigger.min.js?ver=1.0.2" id="ScrollTrigger-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/themes/nextmind/assets/js/function.js?ver=1.0.2" id="theme-js-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/libs/framework/assets/js/frontend-script.js?ver=3.5.5" id="elementskit-framework-js-frontend-js"></script>
+    <script id="elementskit-framework-js-frontend-js-after">
+    var elementskit = {
+        resturl: 'https://demo.awaikenthemes.com/nextmind/neural-networks/wp-json/elementskit/v1/',
+    }
+    </script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/widgets/init/assets/js/widget-scripts.js?ver=3.5.5" id="ekit-widget-scripts-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.30.2" id="elementor-webpack-runtime-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.30.2" id="elementor-frontend-modules-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/jquery/ui/core.min.js?ver=1.13.3" id="jquery-ui-core-js"></script>
+    <script id="elementor-frontend-js-before">
+    var elementorFrontendConfig = {
+        "environmentMode": {
+            "edit": false,
+            "wpPreview": false,
+            "isScriptDebug": false
+        },
+        "i18n": {
+            "shareOnFacebook": "Share on Facebook",
+            "shareOnTwitter": "Share on Twitter",
+            "pinIt": "Pin it",
+            "download": "Download",
+            "downloadImage": "Download image",
+            "fullscreen": "Fullscreen",
+            "zoom": "Zoom",
+            "share": "Share",
+            "playVideo": "Play Video",
+            "previous": "Previous",
+            "next": "Next",
+            "close": "Close",
+            "a11yCarouselPrevSlideMessage": "Previous slide",
+            "a11yCarouselNextSlideMessage": "Next slide",
+            "a11yCarouselFirstSlideMessage": "This is the first slide",
+            "a11yCarouselLastSlideMessage": "This is the last slide",
+            "a11yCarouselPaginationBulletMessage": "Go to slide"
+        },
+        "is_rtl": false,
+        "breakpoints": {
+            "xs": 0,
+            "sm": 480,
+            "md": 768,
+            "lg": 1025,
+            "xl": 1440,
+            "xxl": 1600
+        },
+        "responsive": {
+            "breakpoints": {
+                "mobile": {
+                    "label": "Mobile Portrait",
+                    "value": 767,
+                    "default_value": 767,
+                    "direction": "max",
+                    "is_enabled": true
+                },
+                "mobile_extra": {
+                    "label": "Mobile Landscape",
+                    "value": 880,
+                    "default_value": 880,
+                    "direction": "max",
+                    "is_enabled": false
+                },
+                "tablet": {
+                    "label": "Tablet Portrait",
+                    "value": 1024,
+                    "default_value": 1024,
+                    "direction": "max",
+                    "is_enabled": true
+                },
+                "tablet_extra": {
+                    "label": "Tablet Landscape",
+                    "value": 1200,
+                    "default_value": 1200,
+                    "direction": "max",
+                    "is_enabled": false
+                },
+                "laptop": {
+                    "label": "Laptop",
+                    "value": 1366,
+                    "default_value": 1366,
+                    "direction": "max",
+                    "is_enabled": false
+                },
+                "widescreen": {
+                    "label": "Widescreen",
+                    "value": 2400,
+                    "default_value": 2400,
+                    "direction": "min",
+                    "is_enabled": false
+                }
+            },
+            "hasCustomBreakpoints": false
+        },
+        "version": "3.30.2",
+        "is_static": false,
+        "experimentalFeatures": {
+            "container": true,
+            "e_optimized_markup": true,
+            "nested-elements": true,
+            "home_screen": true,
+            "global_classes_should_enforce_capabilities": true,
+            "cloud-library": true,
+            "e_opt_in_v4_page": true
+        },
+        "urls": {
+            "assets": "https:\/\/demo.awaikenthemes.com\/nextmind\/neural-networks\/wp-content\/plugins\/elementor\/assets\/",
+            "ajaxurl": "https:\/\/demo.awaikenthemes.com\/nextmind\/neural-networks\/wp-admin\/admin-ajax.php",
+            "uploadUrl": "https:\/\/demo.awaikenthemes.com\/nextmind\/neural-networks\/wp-content\/uploads"
+        },
+        "nonces": {
+            "floatingButtonsClickTracking": "6f8f6b4225"
+        },
+        "swiperClass": "swiper",
+        "settings": {
+            "page": [],
+            "editorPreferences": []
+        },
+        "kit": {
+            "body_background_background": "classic",
+            "active_breakpoints": ["viewport_mobile", "viewport_tablet"],
+            "global_image_lightbox": "yes",
+            "lightbox_enable_counter": "yes",
+            "lightbox_enable_fullscreen": "yes",
+            "lightbox_enable_zoom": "yes",
+            "lightbox_enable_share": "yes",
+            "lightbox_title_src": "title",
+            "lightbox_description_src": "description"
+        },
+        "post": {
+            "id": 9,
+            "title": "Nextmind%20%E2%80%93%20AI%20Agency%20%26%20Technology%20WordPress%20Theme",
+            "excerpt": "",
+            "featuredImage": false
+        }
+    };
+    </script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.30.2" id="elementor-frontend-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/lib/jquery-numerator/jquery-numerator.min.js?ver=0.2.1" id="jquery-numerator-js"></script>
+    <script id="mediaelement-core-js-before">
+    var mejsL10n = {
+        "language": "en",
+        "strings": {
+            "mejs.download-file": "Download File",
+            "mejs.install-flash": "You are using a browser that does not have Flash player enabled or installed. Please turn on your Flash player plugin or download the latest version from https:\/\/get.adobe.com\/flashplayer\/",
+            "mejs.fullscreen": "Fullscreen",
+            "mejs.play": "Play",
+            "mejs.pause": "Pause",
+            "mejs.time-slider": "Time Slider",
+            "mejs.time-help-text": "Use Left\/Right Arrow keys to advance one second, Up\/Down arrows to advance ten seconds.",
+            "mejs.live-broadcast": "Live Broadcast",
+            "mejs.volume-help-text": "Use Up\/Down Arrow keys to increase or decrease volume.",
+            "mejs.unmute": "Unmute",
+            "mejs.mute": "Mute",
+            "mejs.volume-slider": "Volume Slider",
+            "mejs.video-player": "Video Player",
+            "mejs.audio-player": "Audio Player",
+            "mejs.captions-subtitles": "Captions\/Subtitles",
+            "mejs.captions-chapters": "Chapters",
+            "mejs.none": "None",
+            "mejs.afrikaans": "Afrikaans",
+            "mejs.albanian": "Albanian",
+            "mejs.arabic": "Arabic",
+            "mejs.belarusian": "Belarusian",
+            "mejs.bulgarian": "Bulgarian",
+            "mejs.catalan": "Catalan",
+            "mejs.chinese": "Chinese",
+            "mejs.chinese-simplified": "Chinese (Simplified)",
+            "mejs.chinese-traditional": "Chinese (Traditional)",
+            "mejs.croatian": "Croatian",
+            "mejs.czech": "Czech",
+            "mejs.danish": "Danish",
+            "mejs.dutch": "Dutch",
+            "mejs.english": "English",
+            "mejs.estonian": "Estonian",
+            "mejs.filipino": "Filipino",
+            "mejs.finnish": "Finnish",
+            "mejs.french": "French",
+            "mejs.galician": "Galician",
+            "mejs.german": "German",
+            "mejs.greek": "Greek",
+            "mejs.haitian-creole": "Haitian Creole",
+            "mejs.hebrew": "Hebrew",
+            "mejs.hindi": "Hindi",
+            "mejs.hungarian": "Hungarian",
+            "mejs.icelandic": "Icelandic",
+            "mejs.indonesian": "Indonesian",
+            "mejs.irish": "Irish",
+            "mejs.italian": "Italian",
+            "mejs.japanese": "Japanese",
+            "mejs.korean": "Korean",
+            "mejs.latvian": "Latvian",
+            "mejs.lithuanian": "Lithuanian",
+            "mejs.macedonian": "Macedonian",
+            "mejs.malay": "Malay",
+            "mejs.maltese": "Maltese",
+            "mejs.norwegian": "Norwegian",
+            "mejs.persian": "Persian",
+            "mejs.polish": "Polish",
+            "mejs.portuguese": "Portuguese",
+            "mejs.romanian": "Romanian",
+            "mejs.russian": "Russian",
+            "mejs.serbian": "Serbian",
+            "mejs.slovak": "Slovak",
+            "mejs.slovenian": "Slovenian",
+            "mejs.spanish": "Spanish",
+            "mejs.swahili": "Swahili",
+            "mejs.swedish": "Swedish",
+            "mejs.tagalog": "Tagalog",
+            "mejs.thai": "Thai",
+            "mejs.turkish": "Turkish",
+            "mejs.ukrainian": "Ukrainian",
+            "mejs.vietnamese": "Vietnamese",
+            "mejs.welsh": "Welsh",
+            "mejs.yiddish": "Yiddish"
+        }
+    };
+    </script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/mediaelement/mediaelement-and-player.min.js?ver=4.2.17" id="mediaelement-core-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/mediaelement/mediaelement-migrate.min.js?ver=6.8.2" id="mediaelement-migrate-js"></script>
+    <script id="mediaelement-js-extra">
+    var _wpmejsSettings = {
+        "pluginPath": "\/nextmind\/neural-networks\/wp-includes\/js\/mediaelement\/",
+        "classPrefix": "mejs-",
+        "stretching": "responsive",
+        "audioShortcodeLibrary": "mediaelement",
+        "videoShortcodeLibrary": "mediaelement"
+    };
+    </script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/mediaelement/wp-mediaelement.min.js?ver=6.8.2" id="wp-mediaelement-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/widgets/init/assets/js/odometer.min.js?ver=3.5.5" id="odometer-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-includes/js/imagesloaded.min.js?ver=5.0.0" id="imagesloaded-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementor/assets/lib/swiper/v8/swiper.min.js?ver=8.4.5" id="swiper-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/widgets/init/assets/js/animate-circle.min.js?ver=3.5.5" id="animate-circle-js"></script>
+    <script id="elementskit-elementor-js-extra">
+    var ekit_config = {
+        "ajaxurl": "https:\/\/demo.awaikenthemes.com\/nextmind\/neural-networks\/wp-admin\/admin-ajax.php",
+        "nonce": "00d4bb11fe"
+    };
+    </script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit-lite/widgets/init/assets/js/elementor.js?ver=3.5.5" id="elementskit-elementor-js"></script>
+    <script src="https://demo.awaikenthemes.com/nextmind/neural-networks/wp-content/plugins/elementskit/widgets/init/assets/js/elementor.js?ver=3.8.9" id="elementskit-elementor-pro-js"></script>
+    <script src="https://demo.awaikenthemes.com/assets/js/theme-panel.js"></script>
+
+</body>
+</html>
