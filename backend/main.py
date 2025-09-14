@@ -1,4 +1,3 @@
-# main.py
 from fastapi import FastAPI, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -23,9 +22,12 @@ FIREWORKS_API_KEY = os.getenv("HF_TOKEN")
 if not FIREWORKS_API_KEY:
     raise RuntimeError("Missing Fireworks API key. Please set FIREWORKS_API_KEY in .env")
 
+# Set a long timeout for the InferenceClient to handle slow model responses.
+# The `timeout` parameter here is for the underlying httpx client.
 client = InferenceClient(
     provider="fireworks-ai",
     api_key=FIREWORKS_API_KEY,
+    timeout=120.0 # Set a generous timeout, e.g., 120 seconds
 )
 
 USERS_FILE = "payments.json"
@@ -145,6 +147,7 @@ async def generate_code(request: GenerationRequest):
             ]
             completion = client.chat.completions.create(
                 model=model, messages=messages, max_tokens=2048, temperature=0.5,
+                timeout=120.0 # Add timeout for chat as well
             )
             chat_response = completion.choices[0].message.content
             return JSONResponse(content={"html": chat_response, "credits_remaining": user.credits})
@@ -157,6 +160,7 @@ async def generate_code(request: GenerationRequest):
             ]
             completion = client.chat.completions.create(
                 model=model, messages=html_messages, max_tokens=8192, temperature=0.7,
+                timeout=120.0 # Add a timeout to this call
             )
             generated_content = completion.choices[0].message.content
             
@@ -173,6 +177,7 @@ async def generate_code(request: GenerationRequest):
             ]
             react_completion = client.chat.completions.create(
                 model=model, messages=react_messages, max_tokens=8192, temperature=0.4,
+                timeout=120.0 # Add a timeout to this call
             )
             react_code = react_completion.choices[0].message.content
 
@@ -279,4 +284,3 @@ def get_all_users():
 # --- Main Entry Point ---
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
-
