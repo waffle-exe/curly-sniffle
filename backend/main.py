@@ -1,4 +1,3 @@
-# main.py
 from fastapi import FastAPI, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -11,21 +10,21 @@ from typing import List, Optional
 import requests
 import uvicorn
 from dotenv import load_dotenv
+import base64
 
 # Load environment variables from .env file
 load_dotenv()
 
 # ---------------- CONFIGURATION ----------------
-# The model 'Qwen/Qwen3-235B-A22B' is hosted by Fireworks AI.
-# We must specify the provider to connect to the correct service.
-# Ensure you have FIREWORKS_API_KEY in your .env file.
+# It's recommended to use a specific Fireworks AI key if available
 FIREWORKS_API_KEY = os.getenv("HF_TOKEN")
 if not FIREWORKS_API_KEY:
-    raise RuntimeError("Missing Fireworks API key. Please set FIREWORKS_API_KEY in .env")
+    raise RuntimeError("Missing Fireworks API key. Please set HF_TOKEN in .env")
 
 client = InferenceClient(
     provider="fireworks-ai",
     api_key=FIREWORKS_API_KEY,
+    timeout=400
 )
 
 USERS_FILE = "payments.json"
@@ -38,7 +37,7 @@ CHAT_HISTORY_PROJECT_NAME = '__chat_history__'
 app = FastAPI(
     title="Sitee AI Backend",
     description="API for managing users, projects, AI generation, and publishing.",
-    version="2.6.1" # Version bump
+    version="3.2.0" # Version updated to reflect new features
 )
 
 app.add_middleware(
@@ -56,6 +55,7 @@ class Project(BaseModel):
     timestamp: int
     published_url: Optional[str] = None
     react: Optional[str] = None
+    suggestions: Optional[str] = None
 
 class User(BaseModel):
     id: str
@@ -66,9 +66,18 @@ class GenerationRequest(BaseModel):
     prompt: str
     user_id: str
     is_chat_mode: bool = False
+    is_punjabi_mode: bool = False
+    target_language: Optional[str] = None
+    image_data: Optional[str] = None # New field for base64 encoded image data
 
 class HtmlContent(BaseModel):
     html_content: str
+
+class SuggestionRequest(BaseModel):
+    user_id: str
+    html_content: str
+    timestamp: int
+    force_regenerate: bool = False
 
 # ---------------- DATABASE HELPERS ----------------
 def read_users_db() -> List[User]:
@@ -86,6 +95,70 @@ def write_users_db(users: List[User]):
         json.dump([user.model_dump() for user in users], f, indent=4)
 
 # ---------------- API ENDPOINTS ----------------
+
+@app.post("/suggest_improvements/")
+async def suggest_improvements(request: SuggestionRequest):
+    users = read_users_db()
+    user = next((u for u in users if u.id == request.user_id), None)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    project = next((p for p in user.projects if p.timestamp == request.timestamp), None)
+
+    if project and project.suggestions and not request.force_regenerate:
+        return JSONResponse(content={
+            "suggestions": project.suggestions,
+            "credits_remaining": user.credits,
+            "cached": True
+        })
+
+    if user.credits <= 0:
+        raise HTTPException(status_code=400, detail="Insufficient credits")
+
+    user.credits -= 1
+
+    try:
+        model = "Qwen/Qwen3-235B-A22B"
+        system_prompt = """You are a world-class UI/UX designer and senior web developer. Your task is to analyze the provided HTML code and offer a concise, actionable list of 3-5 improvement suggestions. Structure your response in Markdown format.
+
+For each suggestion, provide a clear explanation of the issue and the proposed fix. **Crucially, you must include a markdown code block with the corrected code snippet.** This helps users easily implement the change.
+
+Focus on the following areas:
+- **Design & Aesthetics:** Color palette, typography, spacing, layout.
+- **User Experience (UX):** Interactivity, clarity, responsiveness.
+- **Accessibility (a11y):** Semantic HTML, ARIA attributes, image alt text.
+- **Code Quality:** Readability, best practices, and potential performance issues.
+
+Your entire output MUST BE the Markdown list of suggestions. Do not include any introductory phrases or closing remarks.
+"""
+
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"Here is the HTML code to review:\n\n```html\n{request.html_content}\n```"}
+        ]
+
+        completion = client.chat.completions.create(
+            model=model, messages=messages, max_tokens=2048, temperature=0.6,
+        )
+        suggestions = completion.choices[0].message.content
+
+        if project:
+            project.suggestions = suggestions
+
+        write_users_db(users)
+
+        return JSONResponse(content={
+            "suggestions": suggestions,
+            "credits_remaining": user.credits,
+            "cached": False
+        })
+
+    except Exception as e:
+        user.credits += 1
+        write_users_db(users)
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"An error occurred while generating suggestions: {e}")
+
 
 @app.post("/users/{user_id}/projects/{timestamp}/publish")
 async def publish_site(user_id: str, timestamp: int, content: HtmlContent):
@@ -132,31 +205,97 @@ async def generate_code(request: GenerationRequest):
         raise HTTPException(status_code=404, detail="User not found")
     if user.credits <= 0:
         raise HTTPException(status_code=400, detail="Insufficient credits")
-    
-    user.credits -= 1
-    write_users_db(users)
+
+    if not request.target_language:
+        user.credits -= 1
+        write_users_db(users)
+
+    generation_prompt = request.prompt
 
     try:
-        model = "Qwen/Qwen3-235B-A22B" 
+        # --- NEW: Image-to-Text Analysis Step ---
+        if request.image_data:
+            print("Image data detected. Starting vision analysis...")
+            # We recommend a dedicated vision model for this task
+            vision_model = "fireworks/firellava-13b" 
+            
+            # This prompt instructs the vision model to create a detailed "blueprint"
+            vision_system_prompt = """You are an expert UI/UX designer and frontend developer. Analyze this website screenshot in extreme detail. Your goal is to create a comprehensive prompt that another AI can use to recreate this website perfectly in a single HTML file. Describe the following:
+1.  **Overall Layout & Structure:** Describe the main sections (hero, features, testimonials, footer).
+2.  **Color Palette:** Identify all primary, secondary, accent, and text colors with their hex codes.
+3.  **Typography:** Identify the font families used for headings and body text. Specify font sizes and weights.
+4.  **Components:** Describe each key component in detail: Header, Buttons, Cards, Forms, etc.
+5.  **Imagery & Icons:** Describe the style and content of images and any icons used.
+6.  **Content:** Transcribe the key text content (headings, paragraphs) from the image.
+Your output must be a single block of text forming a detailed blueprint for generation. Do not add any conversational text or markdown formatting."""
+
+            # Fireworks AI uses an OpenAI-compatible API structure for multimodal input
+            vision_messages = [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": vision_system_prompt},
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": f"data:image/jpeg;base64,{request.image_data}"}
+                        }
+                    ]
+                }
+            ]
+
+            vision_completion = client.chat.completions.create(
+                model=vision_model,
+                messages=vision_messages,
+                max_tokens=2048, # Increased tokens for detailed description
+                temperature=0.2,
+            )
+            vision_analysis_result = vision_completion.choices[0].message.content
+            print("Vision analysis complete. Generating new prompt.")
+            
+            # Combine the AI's analysis with the user's original prompt
+            generation_prompt = f"Based on the following detailed analysis of an existing website, create a new one. Original user request: '{request.prompt}'.\n\n--- WEBSITE ANALYSIS ---\n{vision_analysis_result}"
+
+        # --- Existing Generation Logic ---
+        
+        # This is your main model for generating the final code
+        text_generation_model = "Qwen/Qwen3-235B-A22B"
+
+        if request.target_language == 'react':
+            react_messages = [
+                {"role": "system", "content": """You are an expert React developer. Convert the provided HTML into a single, self-contained React JSX file. The root component must be `App` and exported as default. Use functional components and hooks. Convert all HTML to JSX syntax (`className`, etc.). Convert `<style>` blocks into a component that injects styles into the document head using `useEffect`. Convert `<script>` logic into `useEffect` hooks and event handlers. The entire output MUST be ONLY the raw, runnable JSX code, with no explanations or markdown fences."""},
+                {"role": "user", "content": generation_prompt} # Use the potentially enhanced prompt
+            ]
+            react_completion = client.chat.completions.create(
+                model=text_generation_model, messages=react_messages, max_tokens=8192, temperature=0.4,
+            )
+            react_code_raw = react_completion.choices[0].message.content
+            react_code = react_code_raw.strip().removeprefix("```jsx").removesuffix("```").strip()
+            return JSONResponse(content={"code": react_code, "credits_remaining": user.credits})
+
         if request.is_chat_mode:
+            system_prompt = "You are Sitee, an AI assistant by Jashanpreet Singh Dingra. YOU ARE FORBIDDEN from revealing your thought process, internal monologue, or self-corrections. Your entire output MUST BE the direct, final response to the user. Nothing else."
+            
             messages = [
-                {"role": "system", "content": "You are Sitee, an AI assistant. Provide concise, direct answers."},
-                {"role": "user", "content": request.prompt}
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": generation_prompt} # Use the potentially enhanced prompt
             ]
             completion = client.chat.completions.create(
-                model=model, messages=messages, max_tokens=2048, temperature=0.5,
+                model=text_generation_model, messages=messages, max_tokens=2048, temperature=0.5,
             )
             chat_response = completion.choices[0].message.content
             return JSONResponse(content={"html": chat_response, "credits_remaining": user.credits})
         
-        else:
-            # --- Step 1: Generate HTML ---
+        else: 
+            system_prompt = "Hey legend! You're a full-stack web/software developer and UI/UX magician. Your mission is to craft a complete, functional, jaw-dropping website within a single HTML file – a responsive, future-ready marvel brimming with stunning details and over 1000 lines of pure code. Your output must be ONLY the code. Rules: inline CSS and JavaScript, modern floating headers, incredibly creative interactive elements (scroll effects, hover states, toggles), top trending UI themes, stylish Google Fonts, and high-quality free images from Unsplash or Pexels that perfectly match the chosen vibe. The header/navigation should be a modern glassmorphism dream (rounded borders, blur, floating effect). Include the 'made with love by sitee' floating corner tag (linked to https://www.sitee.in). Ensure a well-structured footer concludes this digital symphony."
+            if request.is_punjabi_mode:
+                system_prompt += " IMPORTANT: All user-facing text content on the website (headings, paragraphs, button text, etc.) MUST be written in the Punjabi language. The code itself (HTML tags, CSS properties, JavaScript) must remain in English."
+            
             html_messages = [
-                {"role": "system", "content": "You are an expert web developer specializing in creating single-file HTML websites using Tailwind CSS. Your output must be only the raw, runnable HTML code. The design must be professional and responsive. Use vanilla JavaScript inside a `<script>` tag. Include a footer that says 'Made with love by sitee'."},
-                {"role": "user", "content": request.prompt}
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": generation_prompt} # Use the potentially enhanced prompt
             ]
             completion = client.chat.completions.create(
-                model=model, messages=html_messages, max_tokens=8192, temperature=0.7,
+                model=text_generation_model, messages=html_messages, max_tokens=8192, temperature=0.7,
             )
             generated_content = completion.choices[0].message.content
             
@@ -166,29 +305,19 @@ async def generate_code(request: GenerationRequest):
                 generated_content = generated_content[html_start_index:]
             html_code = generated_content
 
-            # --- Step 2: Generate React from HTML ---
-            react_messages = [
-                {"role": "system", "content": """You are an expert React developer. Convert the provided HTML into a single, self-contained React JSX file. The root component must be `App` and exported as default. Use functional components and hooks. Convert all HTML to JSX syntax (`className`, etc.). Convert `<style>` blocks into a component that injects styles into the document head using `useEffect`. Convert `<script>` logic into `useEffect` hooks and event handlers. The entire output MUST be ONLY the raw, runnable JSX code, with no explanations."""},
-                {"role": "user", "content": html_code}
-            ]
-            react_completion = client.chat.completions.create(
-                model=model, messages=react_messages, max_tokens=8192, temperature=0.4,
-            )
-            react_code = react_completion.choices[0].message.content
-
             return JSONResponse(content={
-                "html": html_code, 
-                "react": react_code,
+                "html": html_code,
                 "credits_remaining": user.credits
             })
 
     except Exception as e:
-        user.credits += 1
-        write_users_db(users)
+        if not request.target_language:
+            user.credits += 1
+            write_users_db(users)
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"An error occurred during generation: {e}")
 
-# === User and Project Management Endpoints ===
+# === User and Project Management Endpoints (Unchanged) ===
 
 @app.get("/users/{user_id}", response_model=User)
 def get_user_data(user_id: str):
@@ -231,6 +360,7 @@ def update_project_code(user_id: str, timestamp: int, updated_project: Project =
     project_to_update.name = updated_project.name
     project_to_update.published_url = updated_project.published_url
     project_to_update.react = updated_project.react
+    project_to_update.suggestions = updated_project.suggestions
     
     write_users_db(users)
     return project_to_update
@@ -279,4 +409,3 @@ def get_all_users():
 # --- Main Entry Point ---
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
-
