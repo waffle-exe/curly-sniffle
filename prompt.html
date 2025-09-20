@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sitee - AI Generation Canvas</title>
+    <title>Sitee - Sitee Generation Canvas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.2.12/marked.min.js"></script>
@@ -29,15 +29,15 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
-            --background-color: #131314;
-            --surface-color: rgba(255, 255, 255, 0.04);
-            --text-color: #E8EAED;
-            --text-muted-color: #969BA1;
-            --accent-color: #89B4FA;
-            --accent-gradient: linear-gradient(90deg, #F63B3B, #FBBC05, #4285F4, #34A853);
+            --background-color: #0A0B0F;
+            --surface-color: rgba(255, 255, 255, 0.02);
+            --text-color: #F0F2F5;
+            --text-muted-color: #8A9A9E;
+            --accent-color: #3B82F6;
+            --accent-gradient: linear-gradient(90deg, #3B82F6, #EF4444);
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow-color: rgba(0, 0, 0, 0.5);
-            --error-color: #F28B82;
+            --error-color: #E57373;
         }
 
         * {
@@ -54,8 +54,7 @@
             height: 100vh;
             display: flex;
         }
-        
-        /* UPDATED: Re-added background radial gradient and blobs */
+
         body::before {
             content: '';
             position: fixed;
@@ -63,19 +62,25 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle at 15% 15%, hsla(217, 91%, 60%, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 85% 75%, hsla(0, 84%, 60%, 0.1) 0%, transparent 40%);
+            background-image: radial-gradient(circle at 15% 15%, hsla(217, 91%, 60%, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, hsla(0, 84%, 60%, 0.15) 0%, transparent 40%);
             z-index: -1;
             transition: opacity 0.5s ease;
         }
-        
+
+        body.generating::before,
+        body.generating .blob,
+        body.chat-started::before,
+        body.chat-started .blob {
+            opacity: 0;
+        }
+
         .blob {
             position: fixed;
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.2;
+            filter: blur(100px);
+            opacity: 0.3;
             transition: opacity 0.5s ease;
-            z-index: -1;
         }
 
         #blob1 {
@@ -94,69 +99,21 @@
             right: -50px;
         }
 
-        #loading-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            z-index: 9999;
-            display: none;
-            overflow: hidden;
-        }
-        
-        /* UPDATED: Loading bar with glow effect */
-        #loading-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: var(--accent-gradient);
-            background-size: 200% 100%;
-            animation: scanEffect 4s linear infinite; /* Slower animation */
-            box-shadow: 0 0 15px 2px rgba(66, 133, 244, 0.6), 
-                        0 0 25px 4px rgba(251, 188, 5, 0.4),
-                        0 0 35px 6px rgba(246, 59, 59, 0.3);
-        }
-
-        @keyframes scanEffect {
-            0% {
-                background-position: 200% 0;
-            }
-            100% {
-                background-position: -200% 0;
-            }
-        }
-        
-        body.generating #loading-bar {
-            display: block;
-        }
-        
-        /* UPDATED: Hide background effects when generating or in chat */
-        body.generating::before,
-        body.chat-started::before,
-        body.generating .blob,
-        body.chat-started .blob {
-            opacity: 0;
-        }
-
-
         .glassy {
             background-color: var(--surface-color);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid var(--border-color);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 10px 50px var(--shadow-color);
-            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 10px 50px var(--shadow-color);
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
         }
 
         #login-modal,
         #confirmation-modal,
         #invite-modal,
         #feedback-modal,
-        #download-modal {
+        #ai-suggestion-modal,
+        #download-modal { 
             position: fixed;
             top: 0;
             left: 0;
@@ -169,6 +126,29 @@
             justify-content: center;
             z-index: 1000;
             padding: 1rem;
+        }
+        
+        #ai-suggestion-modal .modal-content {
+            max-width: 600px;
+        }
+
+        #suggestion-content {
+            text-align: left;
+            background-color: rgba(0,0,0,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            max-height: 60vh;
+            overflow-y: auto;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+            line-height: 1.6;
+        }
+        
+        #suggestion-actions button {
+            background-color: var(--accent-color);
+            color: white;
+            flex: 0;
+            padding: 0.5rem 1rem;
         }
 
         .login-container,
@@ -530,6 +510,12 @@
             position: relative;
         }
 
+        @keyframes premium-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         #invite-btn {
             position: absolute;
             top: 1.5rem;
@@ -538,23 +524,31 @@
             padding: 0.5rem 1rem;
             border-radius: 20px;
             text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
+            color: white;
+            font-weight: 600;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: background-color 0.2s, opacity 0.3s ease;
+            transition: all 0.3s ease;
+            background-size: 200% 200%;
+            animation: premium-gradient 5s ease infinite;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         #invite-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            background-color: transparent;
         }
 
         #invite-btn span {
             color: white;
             font-size: 1.1rem;
+            
         }
+
 
         #canvas {
             flex: 1;
@@ -671,11 +665,9 @@
             cursor: move;
         }
 
-        /* UPDATED: New style for the preview button */
-        .site-preview-tag {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted-color);
+        .review-tag {
+            background: var(--accent-gradient);
+            color: white;
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -1188,67 +1180,32 @@
             color: var(--text-color);
         }
 
-        /* --- NEW: Chat Mode Styles --- */
-        .mode-toggle-container {
+        #mode-selector {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 4px;
             background-color: var(--surface-color);
             padding: 6px;
             border-radius: 20px;
             border: 1px solid var(--border-color);
         }
 
-        .mode-toggle-container span {
-            font-size: 0.9rem;
-            font-weight: 500;
+        .mode-btn {
+            background: transparent;
+            border: none;
             color: var(--text-muted-color);
-            padding: 0 6px;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 22px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 16px;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 22px;
+            transition: all 0.3s ease;
         }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked+.slider {
+        .mode-btn.active {
             background: var(--accent-gradient);
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(18px);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         #chat-container {
@@ -1257,7 +1214,7 @@
             padding: 1rem;
             display: none;
             flex-direction: column;
-            gap: 1.5rem; /* Reduced gap for turn containers */
+            gap: 1.5rem;
             max-width: 800px;
             margin: 0 auto;
             width: 100%;
@@ -1297,11 +1254,11 @@
         }
 
         .message-content {
-            padding: 1rem 1.5rem; /* More padding */
+            padding: 1rem 1.5rem;
             border-radius: 16px;
             background-color: rgba(255, 255, 255, 0.05);
             line-height: 1.6;
-            max-width: 100%; /* Allow content to take full width of wrapper */
+            max-width: 100%;
             overflow-x: hidden;
             font-size: 1rem; 
         }
@@ -1322,8 +1279,8 @@
             overflow-x: auto;
             position: relative;
             max-width: 100%;
-            white-space: pre-wrap;       /* Fix: Allow text to wrap */
-            word-break: break-all;       /* Fix: Break long words */
+            white-space: pre-wrap;
+            word-break: break-all;
         }
 
         .message-content code {
@@ -1365,7 +1322,7 @@
             gap: 0.5rem;
             width: 100%;
             margin-bottom: 0.5rem;
-            height: 28px; /* Reserve space to prevent layout shift */
+            height: 28px;
         }
 
         .response-nav {
@@ -1405,7 +1362,7 @@
             align-items: center;
             gap: 0.75rem;
             margin-top: 0.75rem;
-            opacity: 0.7; /* Always visible */
+            opacity: 0.7;
         }
         
         .feedback-btn {
@@ -1420,7 +1377,6 @@
             transition: color 0.2s;
         }
 
-        /* NEW: Style for edit mode buttons */
         .edit-mode-btn {
             padding: 4px 10px;
             font-size: 0.8rem;
@@ -1528,12 +1484,16 @@
                 right: 1rem;
             }
         }
+        @media (max-width: 600px) {
+  .modal-buttons button {
+    flex: 1 1 0;
+  }
+}
     </style>
 
 </head>
 
 <body>
-    <div id="loading-bar"></div> <!-- NEW loading bar element -->
     <div id="cursor-dot"></div>
     <div class="blob" id="blob1"></div>
     <div class="blob" id="blob2"></div>
@@ -1560,7 +1520,6 @@
         </div>
     </div>
     
-    <!-- NEW: Download Modal -->
     <div id="download-modal" style="display: none;">
         <div class="modal-content glassy">
              <button id="close-download-modal-btn" class="close-modal-btn">&times;</button>
@@ -1582,6 +1541,7 @@
         </div>
     </div>
 
+
     <div id="invite-modal" style="display: none;">
         <div class="modal-content glassy">
             <button id="close-invite-modal-btn" class="close-modal-btn">&times;</button>
@@ -1594,7 +1554,8 @@
         </div>
     </div>
     
-    <!-- NEW: Feedback Modal -->
+    
+    
     <div id="feedback-modal" style="display: none;">
         <div class="modal-content glassy">
             <button id="close-feedback-modal-btn" class="close-modal-btn">&times;</button>
@@ -1604,6 +1565,18 @@
                 <textarea id="feedback-textarea" placeholder="Describe the issue or why you're dissatisfied..." required></textarea>
                 <button type="submit" id="submit-feedback-btn">Submit Feedback</button>
             </form>
+        </div>
+    </div>
+
+    <div id="ai-suggestion-modal" style="display: none;">
+        <div class="modal-content glassy">
+            <button id="close-suggestion-modal-btn" class="close-modal-btn">&times;</button>
+            <h2>Sitee Suggestions</h2>
+            <p>Here are some suggestions to improve your website's code and design.</p>
+            <div id="suggestion-content"></div>
+            <div class="modal-buttons" id="suggestion-actions" style="margin-top: 1rem; display: none;">
+                <button id="regenerate-suggestion-btn">Regenerate (1 Credit)</button>
+            </div>
         </div>
     </div>
 
@@ -1635,9 +1608,10 @@
                     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
                 </svg>
             </button>
-            <a href="#" id="invite-btn" class="glassy">
-                <span>✦</span> Invite a friend
-            </a>
+           
+<a href="#" id="invite-btn" class="glassy" aria-label="Invite a friend">
+  <span aria-hidden="true">✦</span> Invite a friend
+</a>
             <div id="canvas">
                 <div id="chat-container"></div>
             </div>
@@ -1664,13 +1638,11 @@
                     <div id="theme-dropdown" class="glassy">
                     </div>
                 </div>
-                <div class="mode-toggle-container">
-                    <span>Canvas</span>
-                    <label class="switch">
-                        <input type="checkbox" id="mode-toggle-switch">
-                        <span class="slider"></span>
-                    </label>
-                    <span>Chat</span>
+                <!-- UPDATED: New Mode Selector -->
+                <div id="mode-selector">
+                    <button class="mode-btn active" data-mode="canvas-en">Canvas</button>
+                    <button class="mode-btn" data-mode="canvas-pa">ਕੈਨਵਸ</button>
+                    <button class="mode-btn" data-mode="chat">Chat</button>
                 </div>
             </div>
 
@@ -1725,7 +1697,7 @@
         // --- GLOBAL STATE ---
         let currentUser = null;
         let selectedTheme = null;
-        let isChatMode = false;
+        let currentMode = 'canvas-en';
         let chatHistory = []; 
         const CHAT_HISTORY_PROJECT_NAME = '__chat_history__';
         const LOCAL_STORAGE_SYNC_KEY = 'sitee_user_sync';
@@ -1767,13 +1739,15 @@
         const closeInviteModalBtn = document.getElementById('close-invite-modal-btn');
         const inviteLinkInput = document.getElementById('invite-link-input');
         const copyInviteLinkBtn = document.getElementById('copy-invite-link-btn');
-        const modeToggleSwitch = document.getElementById('mode-toggle-switch');
+        const modeSelector = document.getElementById('mode-selector');
         const chatContainer = document.getElementById('chat-container');
         const feedbackModal = document.getElementById('feedback-modal');
         const closeFeedbackModalBtn = document.getElementById('close-feedback-modal-btn');
         const feedbackForm = document.getElementById('feedback-form');
         const feedbackTextarea = document.getElementById('feedback-textarea');
-
+        const suggestionModal = document.getElementById('ai-suggestion-modal');
+        const closeSuggestionModalBtn = document.getElementById('close-suggestion-modal-btn');
+        const regenerateSuggestionBtn = document.getElementById('regenerate-suggestion-btn');
         const codeEditorTabs = document.getElementById('code-editor-tabs');
         const copyEditorCodeBtn = document.getElementById('copy-editor-code-btn');
         const downloadCodeBtn = document.getElementById('download-code-btn');
@@ -1796,8 +1770,27 @@
 
 
         // --- CONFIG & ICONS ---
-        const backendUrl = 'https://waffle-exe-github-io.onrender.com';
-        const shareIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>`;
+        const backendUrl = 'http://127.0.0.1:8000';
+       const suggestionIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="suggestion-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#79C2FF"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="shine-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="white" stop-opacity="0"/>
+      <stop offset="50%" stop-color="white" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+      <animate attributeName="x1" values="-1;1" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="0;2" dur="4s" repeatCount="indefinite"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#suggestion-gradient)" d="M12 0L14.34 9.66L24 12L14.34 14.34L12 24L9.66 14.34L0 12L9.66 9.66L12 0Z"/>
+  <path fill="url(#shine-gradient)" d="M12 0L14.34 9.66L24 12L14.34 14.34L12 24L9.66 14.34L0 12L9.66 9.66L12 0Z"/>
+</svg>
+`;
+const shareIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>`;
         const publishIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>`;
         const fullscreenIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>`;
         const exitFullscreenIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>`;
@@ -1905,7 +1898,8 @@
             const hasCredits = currentUser && currentUser.credits > 0;
             promptInput.disabled = !hasCredits;
             generateBtn.disabled = !hasCredits;
-            if (isChatMode) {
+            const isChat = currentMode === 'chat';
+            if (isChat) {
                 promptInput.placeholder = hasCredits ? "Message Sitee..." : "No credits remaining.";
             } else {
                 promptInput.placeholder = hasCredits ? "Describe a website..." : "No credits remaining.";
@@ -1936,7 +1930,8 @@
                     body: JSON.stringify({ 
                         prompt: prompt, 
                         is_chat_mode: false, 
-                        user_id: currentUser.id 
+                        user_id: currentUser.id,
+                        is_punjabi_mode: currentMode === 'canvas-pa'
                     })
                 });
 
@@ -1944,7 +1939,6 @@
 
                 const result = await response.json();
                 const htmlCode = result.html;
-                const reactCode = result.react;
 
                 iframe.onload = () => {
                     if (loading) loading.style.display = 'none';
@@ -1953,8 +1947,8 @@
                 };
 
                 iframe.srcdoc = htmlCode;
-                
-                const savedProject = await saveProject(prompt, htmlCode, false, null, reactCode);
+
+                const savedProject = await saveProject(prompt, htmlCode);
                 if (savedProject) {
                     container.dataset.timestamp = savedProject.timestamp;
                 }
@@ -1970,15 +1964,12 @@
                 console.error("Error generating website:", error);
                 preview.innerHTML = `<div style="color: var(--error-color); padding: 1rem;">Error: Could not generate. Check server.</div>`;
                 promptInput.value = prompt;
-                 document.body.classList.remove('generating');
             } finally {
                 clearInterval(timerInterval);
                 const finalTime = Math.floor((Date.now() - startTime) / 1000);
                 stats.innerHTML = `<span>Time: ${finalTime}s</span><span>Credit Used: 1 </span>`;
             }
         }
-
-        // --- CHAT REFACTOR START ---
 
         function convertOldHistory(oldHistory) {
             const newHistory = [];
@@ -2006,13 +1997,11 @@
             return newHistory;
         }
 
-
         function updateTurnUI(turnContainer, turn, isLoading = false) {
             if (!turnContainer || !turn) return;
 
             const aiMessageWrapper = turnContainer.querySelector('.ai-message .message-wrapper');
             if (!aiMessageWrapper) return;
-
             aiMessageWrapper.innerHTML = '';
 
             const aiMessageHeader = document.createElement('div');
@@ -2216,10 +2205,8 @@
             aiMessageWrapper.className = 'message-wrapper';
 
             aiMessageDiv.append(aiAvatarImg, aiMessageWrapper);
-
             turnContainer.append(userMessageDiv, aiMessageDiv);
             chatContainer.appendChild(turnContainer);
-
             updateTurnUI(turnContainer, turn, isLoading);
 
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -2261,7 +2248,7 @@
                     body: JSON.stringify({ 
                         prompt: prompt, 
                         is_chat_mode: true, 
-                        user_id: currentUser.id 
+                        user_id: currentUser.id
                     })
                 });
 
@@ -2297,8 +2284,6 @@
             }
         }
 
-        // --- CHAT REFACTOR END ---
-
         function addCopyButton(preElement) {
             const copyButton = document.createElement('button');
             copyButton.className = 'copy-code-btn';
@@ -2326,16 +2311,23 @@
             container.className = 'site-container glassy';
             container.style.top = `${Math.random() * 20 + 5}%`;
             container.style.left = `${Math.random() * 50 + 5}%`;
-
+            container.style.zIndex = getMaxZIndex() + 1;
+            
             const header = document.createElement('div');
             header.className = 'site-header';
             const reviewTag = document.createElement('div');
-            reviewTag.className = 'site-preview-tag'; // UPDATED Class name
+            reviewTag.className = 'review-tag';
             reviewTag.textContent = 'Preview';
             header.appendChild(reviewTag);
 
             const windowControls = document.createElement('div');
             windowControls.className = 'window-controls';
+
+            const suggestionBtn = document.createElement('button');
+            suggestionBtn.className = 'control-btn suggestion-btn';
+            suggestionBtn.innerHTML = suggestionIcon;
+            suggestionBtn.title = 'Get Sitee Suggestions for Improvement';
+            windowControls.appendChild(suggestionBtn);
 
             const publishBtn = document.createElement('button');
             publishBtn.className = 'control-btn publish-btn';
@@ -2388,7 +2380,25 @@
             const iframe = document.createElement('iframe');
             iframe.sandbox = "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox";
             preview.appendChild(iframe);
+            
+            suggestionBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const timestamp = parseInt(container.dataset.timestamp);
+                if (!timestamp) {
+                    showNotification("Please save the project before getting suggestions.", "error");
+                    return;
+                }
+                handleSuggestionRequest(timestamp, iframe.srcdoc, false);
+            });
 
+            regenerateSuggestionBtn.onclick = () => {
+                const timestamp = parseInt(suggestionModal.dataset.currentTimestamp);
+                const currentIframe = document.querySelector(`.site-container[data-timestamp='${timestamp}'] iframe`);
+                if(timestamp && currentIframe) {
+                    handleSuggestionRequest(timestamp, currentIframe.srcdoc, true);
+                }
+            };
+            
             const handlePublish = async () => {
                 const timestamp = container.dataset.timestamp;
                 if (!timestamp) {
@@ -2406,12 +2416,8 @@
                 try {
                     const response = await fetch(`${backendUrl}/users/${currentUser.id}/projects/${timestamp}/publish`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            html_content: iframe.srcdoc
-                        })
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ html_content: iframe.srcdoc })
                     });
 
                     if (!response.ok) {
@@ -2446,7 +2452,7 @@
                 e.stopPropagation();
                 showConfirmationModal(
                     'Publish Project',
-                    'This will make your website publicly accessible via a shareable link. Are you sure you want to proceed?',
+                    'This will make your website publicly accessible. Are you sure?',
                     handlePublish,
                     'publish'
                 );
@@ -2454,14 +2460,14 @@
 
             editBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const project = currentUser.projects.find(p => p.timestamp == container.dataset.timestamp);
-
-                if (project && project.html) {
-                    currentCodeCache.html = project.html;
-                    currentCodeCache.react = project.react || `// React code not yet available.`;
-                    
+                let htmlContent = iframe.srcdoc || '';
+                 if (htmlContent) {
+                    if (!htmlContent.trim().toLowerCase().startsWith('<!doctype html>')) {
+                        htmlContent = '<!DOCTYPE html>\n' + htmlContent;
+                    }
+                    currentCodeCache.html = htmlContent;
+                    currentCodeCache.react = `// Click 'React' tab to generate JSX code...`;
                     openCodeEditor();
-                    
                     currentEditingIframe = iframe;
                     currentEditingProjectTimestamp = parseInt(container.dataset.timestamp);
                 } else {
@@ -2521,7 +2527,6 @@
 
         function displayPublishInfo(container, url) {
             container.innerHTML = '';
-
             const link = document.createElement('a');
             link.href = url;
             link.textContent = url;
@@ -2589,8 +2594,10 @@
             }
             let userPrompt = promptInput.value.trim();
             if (!userPrompt) return;
+            
+            const isChat = currentMode === 'chat';
 
-            if (isChatMode) {
+            if (isChat) {
                 sendChatMessage(userPrompt);
             } else {
                 let finalPrompt = userPrompt;
@@ -2612,21 +2619,17 @@
             copyEditorCodeBtn.innerHTML = copyCodeIcon;
             downloadCodeBtn.innerHTML = downloadIcon;
 
-
             window.addEventListener('storage', (e) => {
-                if (e.key === LOCAL_STORAGE_SYNC_KEY) {
-                    if (e.newValue && currentUser) {
-                        try {
-                            const updatedUser = JSON.parse(e.newValue);
-                            if (updatedUser.id === currentUser.id) {
-                                console.log('User data updated from another tab. Syncing state.');
-                                currentUser = updatedUser;
-                                updateCreditDisplay();
-                                checkCreditStatus();
-                            }
-                        } catch (err) {
-                            console.error('Error parsing synced user data:', err);
+                if (e.key === LOCAL_STORAGE_SYNC_KEY && e.newValue && currentUser) {
+                    try {
+                        const updatedUser = JSON.parse(e.newValue);
+                        if (updatedUser.id === currentUser.id) {
+                            currentUser = updatedUser;
+                            updateCreditDisplay();
+                            checkCreditStatus();
                         }
+                    } catch (err) {
+                        console.error('Error parsing synced user data:', err);
                     }
                 }
             });
@@ -2656,7 +2659,8 @@
         });
 
         promptInput.addEventListener('input', () => {
-            if (promptInput.value.trim() !== '' || isChatMode) {
+            const isChat = currentMode === 'chat';
+            if (promptInput.value.trim() !== '' || isChat) {
                 promptSuggestions.classList.add('hidden');
             } else {
                 promptSuggestions.classList.remove('hidden');
@@ -2674,7 +2678,7 @@
             const activeTab = document.querySelector('.code-tab.active');
             if (activeTab && activeTab.dataset.lang === 'html') {
                 const newContent = codeEditorContent.textContent;
-                currentCodeCache.html = newContent; 
+                currentCodeCache.html = newContent;
                 if (currentEditingIframe) {
                     currentEditingIframe.srcdoc = newContent;
                 }
@@ -2685,7 +2689,40 @@
             updateCodeEditorView('html');
             codeEditorModal.classList.add('open');
         }
-        
+
+        async function fetchAndDisplayReactCode() {
+            updateCodeEditorView('react', true);
+            try {
+                const response = await fetch(`${backendUrl}/generate/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: currentCodeCache.html,
+                        user_id: currentUser.id,
+                        is_chat_mode: false,
+                        target_language: 'react'
+                    })
+                });
+                if (!response.ok) throw new Error("Failed to generate React code.");
+
+                const result = await response.json();
+                currentCodeCache.react = result.code;
+
+                if (result.credits_remaining !== undefined) {
+                    currentUser.credits = result.credits_remaining;
+                    updateCreditDisplay();
+                }
+                checkCreditStatus();
+
+            } catch (error) {
+                console.error("React generation error:", error);
+                currentCodeCache.react = `// Error: Could not generate React code.\n// ${error.message}`;
+                showNotification("Failed to generate React code.", "error");
+            } finally {
+                updateCodeEditorView('react', false);
+            }
+        }
+
         function updateCodeEditorView(lang, isLoading = false) {
             document.querySelectorAll('.code-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.lang === lang);
@@ -2696,17 +2733,21 @@
             codeEditorContent.className = lang === 'react' ? 'language-jsx' : 'language-html';
 
             if (isLoading) {
-                 codeEditorContent.innerHTML = `<div class="spinner" style="margin: auto; width:24px; height:24px; border-width: 3px;"></div>`;
+                codeEditorContent.innerHTML = `<div class="spinner" style="margin: auto; width:24px; height:24px; border-width: 3px;"></div>`;
             } else {
-                 codeEditorContent.textContent = content;
-                 hljs.highlightElement(codeEditorContent);
+                codeEditorContent.textContent = content;
+                hljs.highlightElement(codeEditorContent);
             }
         }
         
         codeEditorTabs.addEventListener('click', (e) => {
             if (e.target.classList.contains('code-tab')) {
                 const lang = e.target.dataset.lang;
-                updateCodeEditorView(lang);
+                if (lang === 'react' && currentCodeCache.react.startsWith('//')) {
+                    fetchAndDisplayReactCode();
+                } else {
+                    updateCodeEditorView(lang);
+                }
             }
         });
         
@@ -2721,7 +2762,7 @@
         downloadCodeBtn.addEventListener('click', () => {
             const activeTab = document.querySelector('.code-tab.active');
             const lang = activeTab ? activeTab.dataset.lang : 'html';
-            const project = currentUser.projects.find(p => p.timestamp == currentEditingProjectTimestamp);
+            const project = currentUser.projects.find(p => p.timestamp === currentEditingProjectTimestamp);
             const projectName = project ? project.name.toLowerCase().replace(/\s+/g, '-').substring(0, 20) : 'untitled';
             const extension = lang === 'react' ? 'jsx' : 'html';
             
@@ -2760,12 +2801,7 @@
 
         closeEditorBtn.addEventListener('click', async () => {
             if (currentEditingProjectTimestamp) {
-                const project = currentUser.projects.find(p => p.timestamp === currentEditingProjectTimestamp);
-                if(project) {
-                    project.html = currentCodeCache.html;
-                    project.react = currentCodeCache.react;
-                    await saveProject(project.name, project.html, true, project.timestamp, project.react);
-                }
+                await updateProjectCode(currentEditingProjectTimestamp, currentCodeCache.html);
             }
             codeEditorModal.classList.remove('open');
             currentEditingIframe = null;
@@ -2781,27 +2817,36 @@
             e.stopPropagation();
             avatarDropdown.classList.toggle('show');
         });
+        
+        modeSelector.addEventListener('click', (e) => {
+            if (e.target.classList.contains('mode-btn')) {
+                const newMode = e.target.dataset.mode;
+                if (newMode === currentMode) return;
+                
+                currentMode = newMode;
+                
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.mode === newMode);
+                });
 
-        modeToggleSwitch.addEventListener('change', (e) => {
-            isChatMode = e.target.checked;
-            document.body.classList.toggle('chat-active', isChatMode);
+                const isChat = newMode === 'chat';
+                document.body.classList.toggle('chat-active', isChat);
 
-            if (isChatMode) {
-                promptInput.placeholder = "Message Sitee...";
-                promptSuggestions.classList.add('hidden');
-                themeSelectorBtn.style.display = 'none';
-                if (chatHistory.length > 0) {
-                    document.body.classList.add('chat-started');
+                if (isChat) {
+                    promptSuggestions.classList.add('hidden');
+                    themeSelectorBtn.style.display = 'none';
+                    if (chatHistory.length > 0) {
+                        document.body.classList.add('chat-started');
+                    }
+                } else {
+                    if (promptInput.value.trim() === '') {
+                        promptSuggestions.classList.remove('hidden');
+                    }
+                    themeSelectorBtn.style.display = 'flex';
+                    document.body.classList.remove('chat-started');
                 }
-            } else {
-                promptInput.placeholder = "Describe a website...";
-                if (promptInput.value.trim() === '') {
-                    promptSuggestions.classList.remove('hidden');
-                }
-                themeSelectorBtn.style.display = 'flex';
-                document.body.classList.remove('chat-started');
+                checkCreditStatus();
             }
-            checkCreditStatus();
         });
 
 
@@ -2882,6 +2927,16 @@
             }
         });
 
+        closeSuggestionModalBtn.addEventListener('click', () => {
+            suggestionModal.style.display = 'none';
+        });
+
+        suggestionModal.addEventListener('click', (e) => {
+            if (e.target === suggestionModal) {
+                suggestionModal.style.display = 'none';
+            }
+        });
+
 
         function autoResizePrompt() {
             this.style.height = 'auto';
@@ -2895,6 +2950,59 @@
 
 
         // --- UTILITY FUNCTIONS ---
+        async function handleSuggestionRequest(timestamp, htmlContent, forceRegenerate = false) {
+            const suggestionContent = document.getElementById('suggestion-content');
+            const suggestionActions = document.getElementById('suggestion-actions');
+            suggestionModal.dataset.currentTimestamp = timestamp; 
+
+            suggestionModal.style.display = 'flex';
+            suggestionContent.innerHTML = '<div class="spinner"></div>';
+            suggestionActions.style.display = 'none';
+
+            try {
+                const response = await fetch(`${backendUrl}/suggest_improvements/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: currentUser.id,
+                        html_content: htmlContent,
+                        timestamp: timestamp,
+                        force_regenerate: forceRegenerate
+                    })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.detail || 'Failed to fetch suggestions');
+                }
+
+                const result = await response.json();
+                suggestionContent.innerHTML = marked.parse(result.suggestions);
+
+                if (result.credits_remaining !== undefined) {
+                    currentUser.credits = result.credits_remaining;
+                    updateCreditDisplay();
+                }
+                checkCreditStatus();
+
+                const projectIndex = currentUser.projects.findIndex(p => p.timestamp === timestamp);
+                if (projectIndex !== -1 && !result.cached) {
+                    currentUser.projects[projectIndex].suggestions = result.suggestions;
+                }
+
+                suggestionContent.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+
+
+            } catch (error) {
+                console.error("Error fetching Sitee suggestions:", error);
+                suggestionContent.innerHTML = `<p style="color: var(--error-color);">Error: ${error.message}</p>`;
+            } finally {
+                suggestionActions.style.display = 'flex';
+            }
+        }
+
         function updateThemeSelectorPosition() {
             const controls = document.getElementById('controls');
             const themeSelector = document.getElementById('theme-selector-container');
@@ -3053,11 +3161,10 @@
         }
 
         // --- SERVER-BASED PROJECT & CHAT MANAGEMENT ---
-        async function saveProject(name, htmlCode, isUpdate = false, timestampToUpdate = null, reactCode = '') {
+        async function saveProject(name, htmlCode, isUpdate = false, timestampToUpdate = null) {
             const project = {
                 name,
                 html: htmlCode,
-                react: reactCode,
                 timestamp: isUpdate ? timestampToUpdate : Date.now()
             };
 
@@ -3157,12 +3264,11 @@
         }
 
 
-        async function updateProjectCode(timestamp, newHtml, newReact) {
+        async function updateProjectCode(timestamp, newHtml) {
             const project = currentUser.projects.find(p => p.timestamp === timestamp);
             if (project) {
-                project.html = newHtml;
-                project.react = newReact;
-                await saveProject(project.name, project.html, true, timestamp, project.react);
+                const updatedProjectData = { ...project, html: newHtml };
+                await saveProject(project.name, newHtml, true, timestamp);
             }
         }
 
@@ -3215,15 +3321,15 @@
             li.textContent = project.name;
             li.dataset.timestamp = project.timestamp;
             li.addEventListener("click", () => {
-                if (isChatMode) {
-                    modeToggleSwitch.click(); 
+                if (currentMode === 'chat') {
+                    const englishCanvasBtn = document.querySelector('.mode-btn[data-mode="canvas-en"]');
+                    if(englishCanvasBtn) englishCanvasBtn.click();
                 }
                 createSiteContainer(null, project)
             });
             projectList.append(li);
         }
 
-        // --- SPEECH RECOGNITION & VISUALIZER ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
@@ -3275,7 +3381,7 @@
                 micBtn.classList.remove('listening');
                 micBtn.innerHTML = micIcon;
                 stopVisualizer();
-                if (promptInput.value.trim() === '' && !isChatMode) {
+                if (promptInput.value.trim() === '' && currentMode !== 'chat') {
                     promptSuggestions.classList.remove('hidden');
                 }
             };
